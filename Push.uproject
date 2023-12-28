@@ -1,21 +1,16 @@
 {
 	"FileVersion": 3,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream:GitTest.uproject
-	"EngineAssociation": "4.26",
-=======
-	"EngineAssociation": "{0B0AFD0D-4406-0B39-765A-A1BD9C8847CF}",
->>>>>>> Stashed changes:Push.uproject
-=======
-	"EngineAssociation": "{0B0AFD0D-4406-0B39-765A-A1BD9C8847CF}",
->>>>>>> Stashed changes
+	"EngineAssociation": "{878AC846-4233-3443-209A-84ACE9E7985F}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
 		{
-			"Name": "GitTest",
+			"Name": "Push",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
 		}
 	]
 }
