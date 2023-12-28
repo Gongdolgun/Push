@@ -2,18 +2,18 @@
 
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "../Global.h"
 
 UMoveComponent::UMoveComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	
+	Owner = Cast<APawn>(GetOwner());
 }
 
 
 void UMoveComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	//Owner = GetOwner();
 }
 
 void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -22,25 +22,29 @@ void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 }
 
-void UMoveComponent::MoveForward(float InAxis)
+void UMoveComponent::OnMoveForward(float InAxis)
 {
 	if (!IsValid(Owner.Get()))
 		return;
-
 	FVector direction = UKismetMathLibrary::GetForwardVector(FRotator(0, Owner->GetControlRotation().Yaw, 0));
-
-	Owner->AddMovementInput(direction, (SpeedX * SpeedPercent));
-
+	
+	Owner->AddMovementInput(direction, ((SpeedX * InAxis) * SpeedPercent));
 }
 
-void UMoveComponent::MoveRight(float InAxis)
+void UMoveComponent::OnMoveRight(float InAxis)
 {
 	if (!IsValid(Owner.Get()))
-		return;
+	{
+		FRotator rotate = Owner->GetActorRotation();
+		rotate.Yaw = rotate.Yaw + SpeedY * InAxis;
+		Owner->SetActorRotation(rotate);
+		
 
+		return;
+	}
 	FVector direction = UKismetMathLibrary::GetRightVector(FRotator(0, Owner->GetControlRotation().Yaw, 0));
 
-	Owner->AddMovementInput(direction, (SpeedY * SpeedPercent));
+	Owner->AddMovementInput(direction, ((SpeedY * InAxis) * SpeedPercent));
 
 }
 
