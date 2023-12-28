@@ -1,7 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
-
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "PushGameMode.generated.h"
@@ -13,7 +10,8 @@ class APushGameMode : public AGameModeBase
 
 public:
 	APushGameMode();
+
+protected:
+	virtual void BeginPlay() override;
+
 };
-
-
-
