@@ -6,15 +6,14 @@
 UMoveComponent::UMoveComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-
+	
 }
 
 
 void UMoveComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
+	//Owner = GetOwner();
 }
 
 void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

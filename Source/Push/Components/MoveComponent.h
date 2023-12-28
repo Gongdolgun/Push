@@ -22,7 +22,8 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 		void MoveForward(float InAxis);
-	void MoveRight(float InAxis);
+	UFUNCTION(BlueprintCallable)
+		void MoveRight(float InAxis);
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Property")
