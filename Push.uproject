@@ -1,10 +1,14 @@
 {
 	"FileVersion": 3,
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream:GitTest.uproject
 	"EngineAssociation": "4.26",
 =======
 	"EngineAssociation": "{0B0AFD0D-4406-0B39-765A-A1BD9C8847CF}",
 >>>>>>> Stashed changes:Push.uproject
+=======
+	"EngineAssociation": "{0B0AFD0D-4406-0B39-765A-A1BD9C8847CF}",
+>>>>>>> Stashed changes
 	"Category": "",
 	"Description": "",
 	"Modules": [
