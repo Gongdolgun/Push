@@ -3,14 +3,15 @@
 
 ASkill::ASkill()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
-	Owner = Cast<ACharacter>(GetOwner());
 }
 
 void ASkill::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Owner = Cast<ACharacter>(GetOwner());
 	
 
 }
@@ -21,4 +22,5 @@ void ASkill::Tick(float DeltaTime)
 
 
 }
+
 

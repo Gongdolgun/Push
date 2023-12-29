@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "Skill.generated.h"
 
 UCLASS(Blueprintable)
@@ -19,10 +18,12 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	virtual void SkillPressed() {}
+
 protected:
 	class ACharacter* Owner;
 
-private:
 	
 
 };
