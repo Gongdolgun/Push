@@ -55,28 +55,28 @@ APushCharacter::APushCharacter()
 
 void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
-	// Set up gameplay key bindings
-	check(PlayerInputComponent);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	//// Set up gameplay key bindings
+	//check(PlayerInputComponent);
+	//PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	//PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &APushCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &APushCharacter::MoveRight);
+	//PlayerInputComponent->BindAxis("MoveForward", this, &APushCharacter::MoveForward);
+	//PlayerInputComponent->BindAxis("MoveRight", this, &APushCharacter::MoveRight);
 
-	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
-	// "turn" handles devices that provide an absolute delta, such as a mouse.
-	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("TurnRate", this, &APushCharacter::TurnAtRate);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookUpRate", this, &APushCharacter::LookUpAtRate);
+	//// We have 2 versions of the rotation bindings to handle different kinds of devices differently
+	//// "turn" handles devices that provide an absolute delta, such as a mouse.
+	//// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
+	//PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	//PlayerInputComponent->BindAxis("TurnRate", this, &APushCharacter::TurnAtRate);
+	//PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	//PlayerInputComponent->BindAxis("LookUpRate", this, &APushCharacter::LookUpAtRate);
 
-	// handle touch devices
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &APushCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &APushCharacter::TouchStopped);
+	//// handle touch devices
+	//PlayerInputComponent->BindTouch(IE_Pressed, this, &APushCharacter::TouchStarted);
+	//PlayerInputComponent->BindTouch(IE_Released, this, &APushCharacter::TouchStopped);
 
-	// VR headset functionality
-	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APushCharacter::OnResetVR);
+	//// VR headset functionality
+	//PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APushCharacter::OnResetVR);
 }
 
 void APushCharacter::NumberPressed()
