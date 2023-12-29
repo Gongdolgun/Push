@@ -18,6 +18,4 @@ class PUSH_API IDamageable
 public:
 	UFUNCTION(NetMulticast, Reliable)
 		virtual void Hit(const FHitData& InHitData) = 0;
-
-
 };
