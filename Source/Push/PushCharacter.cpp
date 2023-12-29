@@ -5,12 +5,9 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
-#include "Engine/DecalActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Kismet/GameplayStatics.h"
-#include "Skill/Area/Area.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APushCharacter
@@ -77,37 +74,6 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 	// VR headset functionality
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APushCharacter::OnResetVR);
-}
-
-void APushCharacter::NumberPressed()
-{
-	FTransform SkillTransform;
-	SkillTransform.SetLocation(FVector(GetActorLocation()));
-	SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
-	SkillTransform.SetScale3D(FVector(1, 1, 1));
-
-	FActorSpawnParameters param;
-	param.Owner = this;
-
-	SkillActor = GetWorld()->SpawnActor<AArea>(SkillClass, SkillTransform, param);
-
-	if (SkillActor)
-	{
-		SkillActor->SkillPressed();
-	}
-}
-
-void APushCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-
-}
-
-void APushCharacter::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-
 }
 
 
