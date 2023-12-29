@@ -1,13 +1,17 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{5A2C82D1-4FB6-80F0-7464-A9933EB232FE}",
+
+	"EngineAssociation": "{8EBFEF76-4805-8B63-9312-55BCE9637515}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
 		{
 			"Name": "Push",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
 		}
 	]
 }
