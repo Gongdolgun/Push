@@ -80,5 +80,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
+
+
 };
 
