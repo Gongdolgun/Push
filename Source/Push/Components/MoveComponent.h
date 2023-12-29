@@ -21,18 +21,18 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable)
-		void OnMoveForward(float InAxis);
+		void MoveForward(float InAxis);
 	UFUNCTION(BlueprintCallable)
-		void OnMoveRight(float InAxis);
+		void MoveRight(float InAxis);
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Property")
-		float SpeedX = 100;
+		float SpeedX;
 
 	UPROPERTY(EditAnywhere, Category = "Property")
-		float SpeedY = 100;
+		float SpeedY;
 	UPROPERTY(EditAnywhere, Category = "Property")
-		float SpeedPercent = 100;
+		float SpeedPercent;
 private:
-	TWeakObjectPtr<APawn> Owner;
+	TWeakObjectPtr<ACharacter> Owner;
 };
