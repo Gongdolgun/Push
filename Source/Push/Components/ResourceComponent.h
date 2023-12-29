@@ -14,17 +14,17 @@ public:
 	UResourceComponent();
 
 	FORCEINLINE float GetHP() { return HP; }
+	FORCEINLINE float GetMaxHP() { return MaxHP; }
 	FORCEINLINE void SetHP(float hp) { HP = hp; }
-	
-	
+
 protected:
 	virtual void BeginPlay() override;
 
 
 private:
-	UPROPERTY(EditAnywhere, Category = "Property")
-		float HP = 100.0f;
-	UPROPERTY(EditAnywhere,  Category = "Property")
-		float MaxHP = 100.0f;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property", meta = (AllowPrivateAccess))
+	float HP = 100.0f;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property", meta = (AllowPrivateAccess))
+	float MaxHP = 100.0f;
 
 };

@@ -30,6 +30,8 @@ public:
 
 	class ASkill* SkillActor;
 
+	UPROPERTY(VisibleAnywhere)
+		class UResourceComponent* ResorceComponent;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -38,8 +40,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* FollowCamera;
 
-	UPROPERTY(VisibleAnywhere)
-		class UResourceComponent* ResorceComponent;
 	UPROPERTY(VisibleAnywhere)
 		class UMoveComponent* MoveComponent;
 

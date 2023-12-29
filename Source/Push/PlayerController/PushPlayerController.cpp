@@ -6,6 +6,7 @@
 #include "HUD/Resource.h"
 #include "Net/UnrealNetwork.h"
 #include "Components/ProgressBar.h"
+#include "Components/ResourceComponent.h"
 
 void APushPlayerController::BeginPlay()
 {
@@ -25,7 +26,7 @@ void APushPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	SetHUDHealth(HUDHealth, HUDMaxHealth);
+	SetHUDHealth(HUDHealth, HUDMaxHealth); // WDG에서 관리할거면 삭제
 }
 
 void APushPlayerController::OnPossess(APawn* InPawn)
@@ -35,7 +36,7 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
 	if (PushCharacter.IsValid())
 	{
-		//SetHUDHealth(PushCharacter->GetHP(), PushCharacter->GetMaxHP());
+		SetHUDHealth(PushCharacter->ResorceComponent->GetHP(), PushCharacter->ResorceComponent->GetMaxHP());
 	}
 }
 
@@ -85,15 +86,20 @@ void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(APushPlayerController, MatchState); // replicated 되도록 MatchState 등록
 }
 
-void APushPlayerController::SetHUDHealth(float Health, float MaxHealth)
+void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG에서 관리할거면 삭제
 {
-	MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(GetHUD()) : MainHUD;
+	//MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(GetHUD()) : MainHUD;
 
-	if(IsValid(MainHUD))
-	{
-		const float HealthPercent = Health / MaxHealth;
-		MainHUD->ResourceWidget->HealthBar->SetPercent(HealthPercent);
-	}
+	//if(IsValid(MainHUD) && IsValid(MainHUD->ResourceWidget) && IsValid(MainHUD->ResourceWidget->HealthBar))
+	//{
+	//	const float HealthPercent = Health / MaxHealth;
+	//	MainHUD->ResourceWidget->HealthBar->SetPercent(HealthPercent);
+	//}
+	//else // HUD가 없다면
+	//{
+	//	HUDHealth = Health;
+	//	HUDMaxHealth = MaxHealth;
+	//}
 }
 
 void APushPlayerController::OnRep_MatchState()
