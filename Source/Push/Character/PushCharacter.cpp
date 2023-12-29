@@ -11,7 +11,6 @@
 #include "Engine/DecalActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Skill/Area/Area.h"
 #include "Global.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,8 +58,8 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAxis("MoveForward", MoveComponent, &UMoveComponent::OnMoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", MoveComponent, &UMoveComponent::OnMoveRight);
 
-	PlayerInputComponent->BindAxis("TurnRate", MoveComponent, &UMoveComponent::OnTurnAt);
-	PlayerInputComponent->BindAxis("LookUpRate", MoveComponent, &UMoveComponent::OnLookUp);
+	PlayerInputComponent->BindAxis("Turn", MoveComponent, &UMoveComponent::OnTurnAt);
+	PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
 }
 
 void APushCharacter::NumberPressed()
@@ -70,20 +69,16 @@ void APushCharacter::NumberPressed()
 	SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
 	SkillTransform.SetScale3D(FVector(1, 1, 1));
 
-	FActorSpawnParameters param;
-	param.Owner = this;
-
-	SkillActor = GetWorld()->SpawnActor<AArea>(SkillClass, SkillTransform, param);
-
-	if (SkillActor)
-	{
-		SkillActor->SkillPressed();
-	}
 }
-
 void APushCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+
+	/*if(HasAuthority())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, GetName() + FString::SanitizeFloat(ResorceComponent->GetHP()));
+	}*/
 }
 
 void APushCharacter::Tick(float DeltaSeconds)
