@@ -47,4 +47,3 @@ void UMoveComponent::OnMoveRight(float InAxis)
 	Owner->AddMovementInput(direction, ((SpeedY * InAxis) * SpeedPercent));
 
 }
-
