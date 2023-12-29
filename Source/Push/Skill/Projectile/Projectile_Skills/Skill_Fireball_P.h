@@ -14,4 +14,15 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+
+protected:
+	virtual void OnDestroy() override;
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Explosion Particle")
+		class UParticleSystem* Explosion;
+
+private:
+	UFUNCTION()
+		void FOnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

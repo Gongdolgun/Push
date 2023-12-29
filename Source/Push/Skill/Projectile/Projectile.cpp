@@ -1,6 +1,7 @@
 #include "Skill/Projectile/Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Global.h"
 
 AProjectile::AProjectile()
@@ -8,6 +9,7 @@ AProjectile::AProjectile()
 	Helpers::CreateComponent(this, &Root, "Root");
 	Helpers::CreateComponent(this, &Mesh, "Mesh", Root);
 	Helpers::CreateComponent(this, &Collision, "Collision", Root);
+	Helpers::CreateComponent(this, &Particle, "Particle", Root);
 
 	Helpers::CreateActorComponent(this, &ProjectileComponent, "ProjectileComponent");
 }
@@ -44,4 +46,8 @@ void AProjectile::OnConstruction(const FTransform& Transform)
 	// 스피드, 중력값 초기화
 	ProjectileComponent->InitialSpeed = 1000 * Datas.Speed;
 	ProjectileComponent->ProjectileGravityScale = 1 * Datas.Gravity_Scale;
+}
+
+void AProjectile::OnDestroy()
+{
 }
