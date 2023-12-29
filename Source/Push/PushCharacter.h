@@ -29,6 +29,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+
 protected:
 
 	/** Resets HMD orientation in VR. */
@@ -68,5 +71,14 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+public:
+	UFUNCTION(BlueprintCallable)
+		void NumberPressed();
+
+	class ASkill* SkillActor;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ASkill> SkillClass;
 };
 
