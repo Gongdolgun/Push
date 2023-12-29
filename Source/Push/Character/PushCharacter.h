@@ -28,6 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void NumberPressed();
 
+	class ASkill* SkillActor;
 
 
 private:
