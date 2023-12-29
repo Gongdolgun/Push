@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Skill/Skill.h"
+#include "Misc/Structures.h"
 #include "Projectile.generated.h"
 
 UCLASS()
@@ -18,12 +19,23 @@ public:
 	
 public:
 	UPROPERTY(VisibleAnywhere)
+		class USceneComponent* Root;
+
+	UPROPERTY(EditAnywhere)
+		class UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere)
+		class USphereComponent* Collision;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class UProjectileMovementComponent* ProjectileComponent;
 
 public:
-	UPROPERTY(EditAnywhere)
-		float Speed;
+	UPROPERTY(EditAnywhere, Category = "Init")
+		FProjectileData Datas;
 
-	UPROPERTY(EditAnywhere)
-		float Gravity_Scale;
+private:
+	FRotator rotation;
+	FVector velocity;
+
 };
