@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interface/Damageable.h"
 #include "PushCharacter.generated.h"
 
 UCLASS(config = Game)
-class APushCharacter : public ACharacter
+class APushCharacter : public ACharacter, public IDamageable
 {
 	GENERATED_BODY()
 
@@ -30,6 +31,8 @@ public:
 
 	class ASkill* SkillActor;
 
+	virtual void Hit(const FHitData& InHitData) override {};
+	virtual void Hit_Implementation(const FHitData& InHitData) override;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))

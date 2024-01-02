@@ -19,84 +19,82 @@
 
 APushCharacter::APushCharacter()
 {
-	// 캡슐 사이즈 지정
-	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+    // 캡슐 사이즈 지정
+    GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
-	// Don't rotate when the controller rotates. Let that just affect the camera.
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
+    // Don't rotate when the controller rotates. Let that just affect the camera.
+    bUseControllerRotationPitch = false;
+    bUseControllerRotationYaw = false;
+    bUseControllerRotationRoll = false;
 
-	//캐릭터 Movement설정
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
-	GetCharacterMovement()->JumpZVelocity = 600.f;
-	GetCharacterMovement()->AirControl = 0.2f;
+    //캐릭터 Movement설정
+    GetCharacterMovement()->bOrientRotationToMovement = true;
+    GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+    GetCharacterMovement()->JumpZVelocity = 600.f;
+    GetCharacterMovement()->AirControl = 0.2f;
 
-	// Create a camera boom (pulls in towards the player if there is a collision)
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 300.0f;
-	CameraBoom->bUsePawnControlRotation = true;
+    // Create a camera boom (pulls in towards the player if there is a collision)
+    CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+    CameraBoom->SetupAttachment(RootComponent);
+    CameraBoom->TargetArmLength = 300.0f;
+    CameraBoom->bUsePawnControlRotation = true;
 
-	// Create a follow camera
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	FollowCamera->bUsePawnControlRotation = false;
+    // Create a follow camera
+    FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+    FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+    FollowCamera->bUsePawnControlRotation = false;
 
-	//Component
-	Helpers::CreateActorComponent<UMoveComponent>(this, &MoveComponent, "MoveComponent");
-	Helpers::CreateActorComponent<UResourceComponent>(this, &ResorceComponent, "ResourceComponent");
+    //Component
+    Helpers::CreateActorComponent<UMoveComponent>(this, &MoveComponent, "MoveComponent");
+    Helpers::CreateActorComponent<UResourceComponent>(this, &ResorceComponent, "ResourceComponent");
 }
 
 
 // Input
 void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
-	//// Set up gameplay key bindings
-	check(PlayerInputComponent);
+    //// Set up gameplay key bindings
+    check(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("MoveForward", MoveComponent, &UMoveComponent::OnMoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", MoveComponent, &UMoveComponent::OnMoveRight);
+    PlayerInputComponent->BindAxis("MoveForward", MoveComponent, &UMoveComponent::OnMoveForward);
+    PlayerInputComponent->BindAxis("MoveRight", MoveComponent, &UMoveComponent::OnMoveRight);
 
-	PlayerInputComponent->BindAxis("Turn", MoveComponent, &UMoveComponent::OnTurnAt);
-	PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
+    PlayerInputComponent->BindAxis("Turn", MoveComponent, &UMoveComponent::OnTurnAt);
+    PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
 }
 
 void APushCharacter::NumberPressed()
 {
-	FTransform SkillTransform;
-	SkillTransform.SetLocation(FVector(GetActorLocation()));
-	SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
-	SkillTransform.SetScale3D(FVector(1, 1, 1));
+    //FTransform SkillTransform;
+    //SkillTransform.SetLocation(FVector(GetActorLocation()));
+    //SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
+    //SkillTransform.SetScale3D(FVector(1, 1, 1));
 
-	FActorSpawnParameters param;
-	param.Owner = this;
+    //FActorSpawnParameters param;
+    //param.Owner = this;
 
-	SkillActor = GetWorld()->SpawnActor<AArea>(SkillClass, SkillTransform, param);
+    //SkillActor = GetWorld()->SpawnActor<AArea>(SkillClass, SkillTransform, param);
 
-	if (SkillActor)
-	{
-		SkillActor->SkillPressed();
-	}
+    //if (SkillActor)
+    //{
+    //    SkillActor->SkillPressed();
+    //}
 }
 
 void APushCharacter::Hit_Implementation(const FHitData& InHitData)
 {
-	FVector launchValue = FVector(InHitData.xLaunchValue, InHitData.yLaunchValue, InHitData.zLaunchValue);
-	CLog::Print(InHitData.Damage, -1, 1);
+
 }
 
 void APushCharacter::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 }
 
 void APushCharacter::Tick(float DeltaSeconds)
 {
-	Super::Tick(DeltaSeconds);
+    Super::Tick(DeltaSeconds);
 
 
 }
-
 
