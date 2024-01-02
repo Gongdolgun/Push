@@ -58,5 +58,10 @@ public:
 
 private:
 	TWeakObjectPtr<class ASkill_Meteor_A> SkillActor;
+
+	UPROPERTY(VisibleAnywhere)
+		class UResourceComponent* ResorceComponent;
+	UPROPERTY(VisibleAnywhere)
+		class UMoveComponent* MoveComponent;
 };
 
