@@ -10,10 +10,15 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+<<<<<<< HEAD
 #include "Kismet/GameplayStatics.h"
 #include "Skill/Area/Area.h"
 #include "Skill/Area/AreaSkills/Skill_Meteor_A.h"
 
+=======
+#include "Skill/Area/Area.h"
+#include "Global.h"
+>>>>>>> parent of 16cf9d5 (2023.12.29 이현중)
 
 //////////////////////////////////////////////////////////////////////////
 // APushCharacter
@@ -59,6 +64,7 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAxis("MoveForward", MoveComponent, &UMoveComponent::OnMoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", MoveComponent, &UMoveComponent::OnMoveRight);
 
+<<<<<<< HEAD
 	PlayerInputComponent->BindAxis("Turn", MoveComponent, &UMoveComponent::OnTurnAt);
 	PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
 
@@ -85,6 +91,10 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 	//// VR headset functionality
 	//PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &APushCharacter::OnResetVR);
+=======
+	PlayerInputComponent->BindAxis("TurnRate", MoveComponent, &UMoveComponent::OnTurnAt);
+	PlayerInputComponent->BindAxis("LookUpRate", MoveComponent, &UMoveComponent::OnLookUp);
+>>>>>>> parent of 16cf9d5 (2023.12.29 이현중)
 }
 
 void APushCharacter::NumberPressed()
@@ -96,6 +106,7 @@ void APushCharacter::NumberPressed()
 		SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
 		SkillTransform.SetScale3D(FVector(1, 1, 1));
 
+<<<<<<< HEAD
 		FActorSpawnParameters param;
 		param.Owner = this;
 
@@ -122,6 +133,22 @@ void APushCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+=======
+	FActorSpawnParameters param;
+	param.Owner = this;
+
+	SkillActor = GetWorld()->SpawnActor<AArea>(SkillClass, SkillTransform, param);
+
+	if (SkillActor)
+	{
+		SkillActor->SkillPressed();
+	}
+}
+
+void APushCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+>>>>>>> parent of 16cf9d5 (2023.12.29 이현중)
 }
 
 void APushCharacter::Tick(float DeltaSeconds)

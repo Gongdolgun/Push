@@ -50,8 +50,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void NumberPressed();
 
+<<<<<<< HEAD
 	UFUNCTION(BlueprintCallable)
 		void OnSkillClicked();
+=======
+	class ASkill* SkillActor;
+>>>>>>> parent of 16cf9d5 (2023.12.29 이현중)
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SubclassSkill;
