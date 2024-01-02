@@ -1,10 +1,6 @@
 {
 	"FileVersion": 3,
-<<<<<<< HEAD
-	"EngineAssociation": "{8EBFEF76-4805-8B63-9312-55BCE9637515}",
-=======
-	"EngineAssociation": "{0B0AFD0D-4406-0B39-765A-A1BD9C8847CF}",
->>>>>>> parent of 34cbec8 (Merge branch 'Test' into HJ)
+	"EngineAssociation": "{5A2C82D1-4FB6-80F0-7464-A9933EB232FE}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
