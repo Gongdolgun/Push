@@ -10,12 +10,6 @@ namespace MatchState
 
 APushGameMode::APushGameMode()
 {
-	//static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/BP///Character/BP_PushCharacter"));
-	//if (PlayerPawnBPClass.Class != NULL)
-	//{
-	//	DefaultPawnClass = PlayerPawnBPClass.Class;
-	//}
-
 	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태
 }
 

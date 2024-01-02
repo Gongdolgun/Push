@@ -16,7 +16,7 @@ void AMainHUD::DrawHUD()
 
 }
 
-void AMainHUD::AddResourceWidget() //
+void AMainHUD::AddResourceWidget()
 {
 	TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
 	if (PlayerController.IsValid() && IsValid(ResourceWidgetClass))

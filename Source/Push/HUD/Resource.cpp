@@ -1,5 +1,6 @@
 #include "HUD/Resource.h"
 #include "Global.h"
+#include "Components/TextBlock.h"
 
 UResource::UResource(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
