@@ -7,18 +7,22 @@
 UMoveComponent::UMoveComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	Owner = Cast<APawn>(GetOwner());
 }
 
 void UMoveComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	Owner = Cast<APawn>(GetOwner());
 
 	//2023.12.29 이현중
 	//view허용값 설정
 	APlayerController* playerController = Cast<APlayerController>(Owner->GetController());
-	/*playerController->PlayerCameraManager->ViewPitchMax = ViewMaxPitch;
-	playerController->PlayerCameraManager->ViewPitchMin = ViewMinPitch;*/
+
+	if (playerController)
+	{
+		playerController->PlayerCameraManager->ViewPitchMax = ViewMaxPitch;
+		playerController->PlayerCameraManager->ViewPitchMin = ViewMinPitch;
+	}
 }
 
 void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

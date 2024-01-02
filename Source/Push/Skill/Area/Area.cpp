@@ -1,24 +1,12 @@
 #include "Area.h"
-#include "Global.h"
-#include "Components/DecalComponent.h"
 #include "GameFramework/Character.h"
-#include "Components/SphereComponent.h"
-#include "Particles/ParticleSystemComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 AArea::AArea()
 {
-	Helpers::CreateComponent(this, &Root, "Root", RootComponent);
-
-	Helpers::CreateComponent(this, &Decal_Cursor, "Decal_Cursor", Root);
-
-	Helpers::CreateComponent(this, &Particle, "Particle", Root);
-
-	Decal_Cursor->SetVisibility(true);
-	Decal_Cursor->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
-
+	PrimaryActorTick.bCanEverTick = true;
 	
-
-	Particle->bAutoActivate = false;
 }
 
 void AArea::BeginPlay()
@@ -32,68 +20,43 @@ void AArea::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (bShowDecal)
-	{
-		TraceDecal();
-		Decal_Cursor->SetWorldLocation(DecalLocation);
-	}
-
 }
 
-void AArea::OnSkillPressed()
+void AArea::SkillPressed()
 {
-	Super::OnSkillPressed();
+	Super::SkillPressed();
 
-	bShowDecal = !bShowDecal;
-
-	if (!bShowDecal)
-	{
-		Destroy();
-	}
-	
-}
-
-void AArea::TraceDecal()
-{
-	// 231229_문인수
-	// 카메라가 바라보는 방향에 Decal_Cursor Spawn
-
-	FVector start;
-	FRotator PlayerViewRotation;
-	APlayerController* controller = Cast<APlayerController>(Owner->GetController());
-
-	if (controller)
-		controller->GetPlayerViewPoint(start, PlayerViewRotation);
-
-	FVector direction = PlayerViewRotation.Vector();
-	FVector end = start + (direction * MaxDistance);
+	FVector start = Owner->GetActorLocation();
+	FVector end = start + (Owner->GetActorForwardVector() * MaxDistance);
 
 	FHitResult HitResult;
 	TArray<AActor*> ignores;
 	ignores.Add(Owner);
 
-	UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), start, end, TraceType,false, ignores, DrawDebug, HitResult, true);
+	UKismetSystemLibrary::LineTraceSingle(
+		Owner->GetWorld(), start, end, TraceType,
+		false, ignores, DrawDebug, HitResult, true);
+		//Owner->GetWorld(), start, end, TraceTypeQuery2,
+		//false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
 
-	// 최대 거리 전에 Hit 판정이 난다면, 아래로 한번 더 추적
-    if (HitResult.bBlockingHit)
-    {
-		// Decal이 벽에 파고 들어가서 -direction 방향으로 위치 조절
-		FVector DownStart = HitResult.ImpactPoint - (direction * 20.0f);
-        FVector DownEnd = DownStart - FVector(0, 0, MaxDistance);
+	FVector DecalLocation = end;
 
-        FHitResult DownHitResult;
-        UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), DownStart, DownEnd, TraceType,false, ignores, DrawDebug, DownHitResult, true);
+	if (!HitResult.bBlockingHit)
+	{
+		FVector StartSecondTrace = end;
+		FVector EndSecondTrace = end + FVector(0, 0, -10000);
+		FHitResult HitResultSecondTrace;
+		UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), StartSecondTrace, EndSecondTrace,
+			TraceType, false, ignores, DrawDebug, HitResultSecondTrace, true);
 
-        if (DownHitResult.bBlockingHit)
-            DecalLocation = DownHitResult.ImpactPoint;
+		if (HitResultSecondTrace.bBlockingHit)
+		{
+			DecalLocation = HitResultSecondTrace.ImpactPoint;
+		}
+	}
 
-    	else
-            DecalLocation = HitResult.ImpactPoint;
-    }
+	UGameplayStatics::SpawnDecalAtLocation(Owner->GetWorld(), Decal, DecalScale, DecalLocation);
+	
 
-    else
-        DecalLocation = end;
-
-    Decal_Cursor->SetWorldLocation(DecalLocation);
 }
 

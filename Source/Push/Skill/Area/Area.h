@@ -20,36 +20,23 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 public:
-	virtual void OnSkillPressed() override;
+	virtual void SkillPressed() override;
 
-	FORCEINLINE virtual bool GetSkillPressed() { return bShowDecal; }
-	FORCEINLINE virtual void SetSkillPressed(bool bSkillPrssed) { bShowDecal = bSkillPrssed; }
-
-	virtual void TraceDecal();
-
-protected:
-	UPROPERTY(VisibleAnywhere)
-		class USceneComponent* Root;
-
+private:
 	UPROPERTY(EditAnywhere, Category = "Decal")
-		class UDecalComponent* Decal_Cursor;
-
-
-	UPROPERTY(EditAnywhere, Category = "Particle")
-		class UParticleSystemComponent* Particle;
+		UMaterialInterface* Decal;
 
 	UPROPERTY(EditAnywhere, Category = "Debug")
 		TEnumAsByte<EDrawDebugTrace::Type> DrawDebug;
 
 	UPROPERTY(EditAnywhere, Category = "Debug")
-		TEnumAsByte<ETraceTypeQuery> TraceType = TraceTypeQuery2;
+		TEnumAsByte<ETraceTypeQuery> TraceType;
 
 	UPROPERTY(EditAnywhere, Category = "Debug")
-		float MaxDistance = 2000.0f;
+		float MaxDistance = 500.0f;
 
-protected:
-	FVector DecalLocation;
-	bool bShowDecal = false;
+	UPROPERTY(EditDefaultsOnly, Category = "Debug")
+		FVector DecalScale = FVector(0.3f);
 
 
 };

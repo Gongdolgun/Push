@@ -2,7 +2,7 @@
 
 UResourceComponent::UResourceComponent()
 {
-	
+
 }
 
 

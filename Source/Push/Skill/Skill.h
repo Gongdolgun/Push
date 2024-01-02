@@ -19,8 +19,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	virtual void OnSkillPressed() {}
-	virtual void OnSkillClicked() {}
+	virtual void SkillPressed() {}
 
 protected:
 	class ACharacter* Owner;
