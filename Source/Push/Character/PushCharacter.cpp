@@ -59,8 +59,8 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAxis("MoveForward", MoveComponent, &UMoveComponent::OnMoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", MoveComponent, &UMoveComponent::OnMoveRight);
 
-	PlayerInputComponent->BindAxis("TurnRate", MoveComponent, &UMoveComponent::OnTurnAt);
-	PlayerInputComponent->BindAxis("LookUpRate", MoveComponent, &UMoveComponent::OnLookUp);
+	PlayerInputComponent->BindAxis("Turn", MoveComponent, &UMoveComponent::OnTurnAt);
+	PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
 }
 
 void APushCharacter::NumberPressed()

@@ -14,6 +14,3 @@ class APushGameMode : public AGameMode
 public:
 	APushGameMode();
 };
-
-
-
