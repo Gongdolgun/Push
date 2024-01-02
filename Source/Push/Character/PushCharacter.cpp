@@ -14,6 +14,8 @@
 #include "Skill/Area/Area.h"
 #include "Global.h"
 
+#include "Items/Item_FastMove.h"
+
 //////////////////////////////////////////////////////////////////////////
 // APushCharacter
 
@@ -63,22 +65,12 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
 }
 
-void APushCharacter::NumberPressed()
+void APushCharacter::Click()
 {
-	FTransform SkillTransform;
-	SkillTransform.SetLocation(FVector(GetActorLocation()));
-	SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
-	SkillTransform.SetScale3D(FVector(1, 1, 1));
-
 	FActorSpawnParameters param;
 	param.Owner = this;
-
-	SkillActor = GetWorld()->SpawnActor<AArea>(SkillClass, SkillTransform, param);
-
-	if (SkillActor)
-	{
-		SkillActor->SkillPressed();
-	}
+	Item = GetWorld()->SpawnActor<AItem_FastMove>(ItemClass, param);
+	Item->Use();
 }
 
 void APushCharacter::BeginPlay()

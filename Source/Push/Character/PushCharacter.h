@@ -26,7 +26,7 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable)
-		void NumberPressed();
+		void Click();
 
 	class ASkill* SkillActor;
 
@@ -46,5 +46,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
 
+	class AItemBase* Item;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class AItem_FastMove> ItemClass;
 };
 

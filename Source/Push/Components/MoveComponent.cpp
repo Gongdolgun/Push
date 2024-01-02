@@ -39,7 +39,9 @@ void UMoveComponent::OnMoveForward(float InAxis)
 
 	//2023.12.28 이현중
 	// 앞,뒤 이동
-	Owner->AddMovementInput(direction, ((SpeedX * InAxis) * SpeedPercent));
+	float speed = (SpeedX * InAxis) * SpeedPercent;
+	CLog::Print(speed);
+	Owner->AddMovementInput(direction, speed);
 }
 
 void UMoveComponent::OnMoveRight(float InAxis)
@@ -56,8 +58,9 @@ void UMoveComponent::OnMoveRight(float InAxis)
 	//2023.12.28 이현중
 	// 좌,우 이동
 	FVector direction = UKismetMathLibrary::GetRightVector(FRotator(0, Owner->GetControlRotation().Yaw, 0));
+	float speed = (SpeedY * InAxis) * SpeedPercent;
 
-	Owner->AddMovementInput(direction, ((SpeedY * InAxis) * SpeedPercent));
+	Owner->AddMovementInput(direction, speed);
 
 }
 

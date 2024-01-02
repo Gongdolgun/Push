@@ -20,16 +20,25 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
+	//2023.01.02 이현중
+	// 플레이어 이동
 	UFUNCTION(BlueprintCallable)
 		void OnMoveForward(float InAxis);
 	UFUNCTION(BlueprintCallable)
 		void OnMoveRight(float InAxis);
 
+	//2023.01.02 이현중
+	// 플레이어 시야 변경
 	UFUNCTION(BlueprintCallable)
 		void OnTurnAt(float Rate);
-
 	UFUNCTION(BlueprintCallable)
 		void OnLookUp(float Rate);
+
+public:
+	FORCEINLINE void SetSpeedPercent(float speed) { SpeedPercent = speed; }
+	FORCEINLINE float GetSpeedPercent() { return SpeedPercent; }
+
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Move_Property")
 		float SpeedX = 100;
@@ -42,6 +51,9 @@ private:
 		float MouseSenceX = 100;
 	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
 		float MouseSenceY = 100;
+
+	//2023.01.02 이현중
+	//플레이어 최대 Pitch변경값
 	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
 		float ViewMaxPitch = 90;
 	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
