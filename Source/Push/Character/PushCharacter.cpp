@@ -11,6 +11,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Skill/Area/Area.h"
+#include "Global.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APushCharacter
@@ -95,6 +96,12 @@ void APushCharacter::NumberPressed()
 	{
 		SkillActor->SkillPressed();
 	}
+}
+
+void APushCharacter::Hit_Implementation(const FHitData& InHitData)
+{
+	FVector launchValue = FVector(InHitData.xLaunchValue, InHitData.yLaunchValue, InHitData.zLaunchValue);
+	CLog::Print(InHitData.Damage, -1, 1);
 }
 
 void APushCharacter::BeginPlay()
