@@ -25,29 +25,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void OnMoveRight(float InAxis);
 
-	UFUNCTION(BlueprintCallable)
-		void OnTurnAt(float Rate);
-
-	UFUNCTION(BlueprintCallable)
-		void OnLookUp(float Rate);
 private:
-	UPROPERTY(EditAnywhere, Category = "Move_Property")
+	UPROPERTY(EditAnywhere, Category = "Property")
 		float SpeedX = 100;
-	UPROPERTY(EditAnywhere, Category = "Move_Property")
+
+	UPROPERTY(EditAnywhere, Category = "Property")
 		float SpeedY = 100;
-	UPROPERTY(EditAnywhere, Category = "Move_Property")
+	UPROPERTY(EditAnywhere, Category = "Property")
 		float SpeedPercent = 100;
-
-	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
-		float MouseSenceX = 100;
-	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
-		float MouseSenceY = 100;
-	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
-		float ViewMaxPitch = 90;
-	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
-		float ViewMinPitch = -90;
-
-
 
 private:
 	TWeakObjectPtr<APawn> Owner;

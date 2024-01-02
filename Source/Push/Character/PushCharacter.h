@@ -1,5 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -11,11 +9,35 @@ class APushCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class USpringArmComponent* CameraBoom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UCameraComponent* FollowCamera;
 public:
 	APushCharacter();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
+		float BaseTurnRate;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
+		float BaseLookUpRate;
+
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+
+protected:
+
+	void OnResetVR();
+
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+
+	void TurnAtRate(float Rate);
+	void LookUpAtRate(float Rate);
+
+	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
+	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -28,23 +50,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void NumberPressed();
 
-	class ASkill* SkillActor;
-
-
-private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class USpringArmComponent* CameraBoom;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* FollowCamera;
-
-	UPROPERTY(VisibleAnywhere)
-		class UResourceComponent* ResorceComponent;
-	UPROPERTY(VisibleAnywhere)
-		class UMoveComponent* MoveComponent;
+	UFUNCTION(BlueprintCallable)
+		void OnSkillClicked();
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ASkill> SkillClass;
+		TSubclassOf<class ASkill> SubclassSkill;
 
+private:
+	TWeakObjectPtr<class ASkill_Meteor_A> SkillActor;
 };
 
