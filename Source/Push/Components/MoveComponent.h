@@ -38,12 +38,13 @@ public:
 	FORCEINLINE void SetSpeedPercent(float speed) { SpeedPercent = speed; }
 	FORCEINLINE float GetSpeedPercent() { return SpeedPercent; }
 
-
+public:
+	UFUNCTION()
+		void UpdateSpeed();
 private:
+
 	UPROPERTY(EditAnywhere, Category = "Move_Property")
-		float SpeedX = 100;
-	UPROPERTY(EditAnywhere, Category = "Move_Property")
-		float SpeedY = 100;
+		float Speed = 600;
 	UPROPERTY(EditAnywhere, Category = "Move_Property")
 		float SpeedPercent = 100;
 
@@ -62,5 +63,5 @@ private:
 
 
 private:
-	TWeakObjectPtr<APawn> Owner;
+	TWeakObjectPtr<ACharacter> Owner;
 };

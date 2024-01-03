@@ -18,10 +18,6 @@ void AItem_FastMove::Use()
 	UCharacterMovementComponent* movementComponent = Helpers::GetComponent<UCharacterMovementComponent>(Owner.Get());
 	UMoveComponent* moveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
 
-	float speedPercent = moveComponent->GetSpeedPercent() * ((PlusSpeedPercent + 100) / 100);
-	
-	//TODO : 플레이어 이동속도는 무브컴포넌트x 캐릭터 무브먼트가 해야할 일 movement도 변경해주자
-	// 2024.01.02  이현중
-	//플레이어 이동속도 증가
-	movementComponent->MaxWalkSpeed = 2000;
+	moveComponent->SetSpeedPercent(moveComponent->GetSpeedPercent() + PlusSpeedPercent);
+	moveComponent->UpdateSpeed();
 }
