@@ -31,16 +31,25 @@ public:
 	UPROPERTY(EditAnywhere)
 		class UStaticMeshComponent* RingMesh;
 
+	//자기장 피해량
 	UPROPERTY(EditAnywhere)
 		float RingDamage = 5.0f;
 
+	//자기장 이펙트 Widget
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UWDG_EffectBase> DamageEffectWidget;
+
 public:
+	//2024_01_02 서동주 자기장 크기 줄이는 함수
+	//InRadius: 줄어들 자기장 반지름 크기, InTime: 줄어들 시간 (초단위)
 	UFUNCTION(BlueprintCallable)
 		void Shrink(float InRadius, float InTime);
 
+	//Timer를 통해 자기장 줄어드는 것을 적용하는 함수
 	UFUNCTION(BlueprintCallable)
 		void ChangeRadius();
 
+	//OnConstruction 때 Mesh와 Capsule의 크기를 맞춰주기 위한 함수
 	UFUNCTION()
 		void Refresh();
 

@@ -1,6 +1,8 @@
 #include "Objects/Ring.h"
 #include "Global.h"
+#include "Blueprint/UserWidget.h"
 #include "Character/PushCharacter.h"
+#include "Widgets/WDG_EffectBase.h"
 
 ARing::ARing()
 {
@@ -28,9 +30,27 @@ void ARing::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	RingCapsule->OnComponentBeginOverlap.AddDynamic(this, &ARing::OnBeginOverlap);
 	RingCapsule->OnComponentEndOverlap.AddDynamic(this, &ARing::OnEndOverlap);
+
+	for(AActor* actor : GetWorld()->GetCurrentLevel()->Actors)
+	{
+		APushCharacter* character = Cast<APushCharacter>(actor);
+
+		if (character == nullptr)
+			continue;
+
+		APlayerController* controller = Cast<APlayerController>(character->GetController());
+
+		if (controller == nullptr)
+			continue;
+
+		UWDG_EffectBase* widget = CreateWidget<UWDG_EffectBase>(controller, DamageEffectWidget);
+		widget->AddToViewport();
+		widget->SetVisibility(ESlateVisibility::Visible);
+
+		character->widget = widget;
+	}
 }
 
 void ARing::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -50,6 +70,7 @@ void ARing::Tick(float DeltaTime)
 	for(APushCharacter* character : OverlappedCharacters)
 	{
 		character->Hit_Implementation(hitData);
+		character->widget->PlayEffect();
 	}
 }
 

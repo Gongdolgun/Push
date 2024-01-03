@@ -8,23 +8,33 @@
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PUSH_API UResourceComponent : public UActorComponent
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	UResourceComponent();
+    UResourceComponent();
 
-	FORCEINLINE float GetHP() { return HP; }
-	FORCEINLINE void SetHP(float hp) { HP = hp; }
+public:
+    UFUNCTION(BlueprintCallable)
+        void AdjustHP(int InValue);
+
+    FORCEINLINE void SetHP(float hp) { HP = hp; }
+    FORCEINLINE float GetHP() { return HP; }
+
+    FORCEINLINE void SetMaxHP(float maxHP) { MaxHP = maxHP; }
+    FORCEINLINE float GetMaxHP() { return MaxHP; }
 
 
 protected:
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
 
 private:
-	UPROPERTY(EditAnywhere, Category = "Property")
-		float HP = 100.0f;
-	UPROPERTY(EditAnywhere, Category = "Property")
-		float MaxHP = 100.0f;
+    UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
+        meta = (AllowPrivateAccess))
+        float HP = 100.0f;
+
+    UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
+        meta = (AllowPrivateAccess))
+        float MaxHP = 100.0f;
 
 };

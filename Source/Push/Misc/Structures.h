@@ -26,29 +26,34 @@ public:
 
 	//Effect: 피격 시 나오는 이펙트
 	UPROPERTY(EditAnywhere, Category = "Effect")
-		class UFXSystemAsset* Effect;
+		class UFXSystemAsset* Effect = nullptr;
 
-	//EffectSize: 피격 시 나오는 이펙트 크기 비율
+	//EffectScale: 피격 시 나오는 이펙트 크기 비율
 	UPROPERTY(EditAnywhere, Category = "Effect")
-		FVector EffectSize = FVector(1.0f, 1.0f, 1.0f);
+		FVector EffectScale = FVector(1.0f, 1.0f, 1.0f);
+
+	//Location: 피격 시 나오는 이펙트와 사운드 위치
+	UPROPERTY(EditAnywhere, Category = "Effect")
+		FVector Location = FVector(0.0f, 0.0f, 0.0f);
 
 	//Sound: 피격 시 나오는 사운드
 	UPROPERTY(EditAnywhere, Category = "Sound")
-		class USoundWave* Sound;
+		class USoundWave* Sound = nullptr;
 
 	//Debuffs: 피격 시 적용하는 디버프들
 	UPROPERTY(EditAnywhere, Category = "Debuff")
 		TArray<EDebuff> Debuffs;
 
 public:
+	//실제 Launch값. 이걸 가져다가 Launch함수에 적용하면 됩니다.
 	float xLaunchValue = xLaunch * xLaunchPercent / 100.0f;
 	float yLaunchValue = yLaunch * yLaunchPercent / 100.0f;
 	float zLaunchValue = zLaunch * zLaunchPercent / 100.0f;
 
 private:
 	float xLaunch = 500.0f;
-	float zLaunch = 500.0f;
 	float yLaunch = 500.0f;
+	float zLaunch = 500.0f;
 
 };
 
