@@ -21,11 +21,14 @@ public:
 
 public:
 	virtual void OnSkillPressed() override;
+	virtual void OnSkillClicked() override;
 
 	FORCEINLINE virtual bool GetSkillPressed() { return bShowDecal; }
 	FORCEINLINE virtual void SetSkillPressed(bool bSkillPrssed) { bShowDecal = bSkillPrssed; }
 
 	virtual void TraceDecal();
+
+	
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -34,12 +37,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Decal")
 		class UDecalComponent* Decal_Cursor;
 
-
 	UPROPERTY(EditAnywhere, Category = "Particle")
 		class UParticleSystemComponent* Particle;
 
 	UPROPERTY(EditAnywhere, Category = "Debug")
-		TEnumAsByte<EDrawDebugTrace::Type> DrawDebug;
+		TEnumAsByte<EDrawDebugTrace::Type> DrawDebug_Decal;
 
 	UPROPERTY(EditAnywhere, Category = "Debug")
 		TEnumAsByte<ETraceTypeQuery> TraceType = TraceTypeQuery2;

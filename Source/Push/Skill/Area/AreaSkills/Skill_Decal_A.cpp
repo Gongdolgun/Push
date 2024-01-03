@@ -11,7 +11,6 @@ ASkill_Decal_A::ASkill_Decal_A()
 	Helpers::CreateComponent(this, &Decal_Ground, "Decal_Ground", Root);
 	Decal_Ground->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
 	Decal_Ground->SetVisibility(true);
-	//Decal_Ground->SetWorldLocation(DecalLocation);
 
 	Helpers::CreateActorComponent<UTimelineComponent>(this, &DecalTimeline, "DecalTimeline");
 	InterpFunction.BindUFunction(this, FName("OnTimelineUpdate"));
@@ -32,8 +31,21 @@ void ASkill_Decal_A::BeginPlay()
 		DecalTimeline->SetLooping(false);
 		DecalTimeline->SetIgnoreTimeDilation(true);
 
+		// 커브의 최소, 최댓값 구하기
+		Curve_DecalGround->GetTimeRange(Curve_MinTime, Curve_MaxTime);
+
+		// 타이머를 설정합니다.
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				// 커브의 끝 시간 - 0.3초 전에 출력
+				//CLog::Print("11");
+			}, Curve_MaxTime - Minus, false);
+
+
 		OnTimelinePlayfromStart();
 	}
+	
 }
 
 void ASkill_Decal_A::Tick(float DeltaTime)
@@ -53,12 +65,13 @@ void ASkill_Decal_A::OnTimelineUpdate(float Value)
 {
 	// Timeline Update
 	Dynamic->SetScalarParameterValue(FName("Radius"), Value);
+	
+
 }
 
 void ASkill_Decal_A::OnTimelineFinished()
 {
 	Decal_Ground->SetVisibility(false);
-
+	
 	Destroy();
 }
-

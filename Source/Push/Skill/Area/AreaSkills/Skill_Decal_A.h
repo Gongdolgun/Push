@@ -29,6 +29,9 @@ public:
 	UFUNCTION()
 		void OnTimelineFinished();
 
+	FORCEINLINE class UDecalComponent* GetDecalComponent() { return Decal_Ground; }
+	
+
 private:
 	UPROPERTY(VisibleAnywhere)
 		class USceneComponent* Root;
@@ -44,9 +47,14 @@ private:
 	UPROPERTY(EditAnywhere)
 		UCurveFloat* Curve_DecalGround;
 
+	UPROPERTY(EditAnywhere, Category = "Decal")
+		float Minus = 0.3f;
+
 	FOnTimelineFloat InterpFunction{};
 	FOnTimelineEvent TimelineFinished{};
 
 	class UMaterialInstanceDynamic* Dynamic;
 
+	float Curve_MinTime, Curve_MaxTime;
+	
 };

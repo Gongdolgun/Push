@@ -26,12 +26,22 @@ public:
 	UFUNCTION(BlueprintCallable)
 		virtual void OnSkillClicked() override;
 
+	// Particle 충돌 처리 함수
+	UFUNCTION()
+		void OnParticleCollide(FName EventName, float EmitterTime, int32 ParticleTime,
+			FVector Location, FVector Velocity, FVector Direction,
+			FVector Normal, FName BoneName, UPhysicalMaterial* PhysMat);
+
+	// 메테오 시작
+	UFUNCTION()
+		void OnVisibleMeteor();
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Meteor")
-		class UParticleSystem* Meteor;
+		TSubclassOf<class AActor> Decal_Class;
 
 	UPROPERTY(EditAnywhere, Category = "Meteor")
-		TSubclassOf<class AActor> SubclassSkill;
+		TEnumAsByte<EDrawDebugTrace::Type> DrawDebug_Particle;
 
 	TWeakObjectPtr<class ASkill_Decal_A> Meteor_Decal;
 
