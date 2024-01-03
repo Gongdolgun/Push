@@ -27,7 +27,7 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable)
-		void Click();
+		void NumberPressed();
 
 public:
 	UPROPERTY(VisibleInstanceOnly)
@@ -39,7 +39,6 @@ public:
 	//다른 Actor에서 피격 시 Hit_Implementation을 Call해서 해주세요
 	virtual void Hit(const FHitData& InHitData) override {};
 	virtual void Hit_Implementation(const FHitData& InHitData) override;
-
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -57,9 +56,5 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
 
-	class AItemBase* Item;
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class AItem_FastMove> ItemClass;
 };
 

@@ -35,10 +35,13 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
+	UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
 	if (PushCharacter.IsValid())
 	{
-		SetHUDHealth(PushCharacter->ResorceComponent->GetHP(), PushCharacter->ResorceComponent->GetMaxHP());
+		if(IsValid(resource))
+			SetHUDHealth(resource->GetHP(), resource->GetMaxHP());
 	}
 }
 

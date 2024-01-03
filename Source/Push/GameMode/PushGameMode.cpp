@@ -11,6 +11,8 @@ namespace MatchState
 APushGameMode::APushGameMode()
 {
 	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태
+
+
 }
 
 void APushGameMode::BeginPlay()
