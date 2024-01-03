@@ -4,8 +4,12 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+
+//CustomComponent
 #include "Components/ResourceComponent.h"
 #include "Components/MoveComponent.h"
+#include "Components/ItemComponent.h"
+
 #include "Engine/DecalActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -49,6 +53,7 @@ APushCharacter::APushCharacter()
     //Component
     Helpers::CreateActorComponent<UMoveComponent>(this, &MoveComponent, "MoveComponent");
     Helpers::CreateActorComponent<UResourceComponent>(this, &ResourceComponent, "ResourceComponent");
+    Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
 }
 
 

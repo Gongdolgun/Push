@@ -15,6 +15,9 @@ void AItem_FastMove::Tick(float DeltaTime)
 
 void AItem_FastMove::Use()
 {
+	if (Owner == nullptr)
+		return;
+
 	UCharacterMovementComponent* movementComponent = Helpers::GetComponent<UCharacterMovementComponent>(Owner.Get());
 	UMoveComponent* moveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
 

@@ -85,7 +85,6 @@ void ARing::ChangeRadius()
 {
 	float radius = RingCapsule->GetUnscaledCapsuleRadius() - DeltaRadius;
 	RingCapsule->SetCapsuleRadius(radius);
-	CLog::Print(radius);
 	if (FMath::IsNearlyEqual(radius, TargetRadius))
 		GetWorldTimerManager().ClearTimer(TimerHandle);
 
