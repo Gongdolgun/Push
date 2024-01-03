@@ -3,7 +3,7 @@
 
 ASkill::ASkill()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 }
 

@@ -1,7 +1,6 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "PushCharacter.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
+#include "Global.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -11,6 +10,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Skill/Area/Area.h"
+#include "Skill/Area/AreaSkills/Skill_Meteor_A.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // APushCharacter
@@ -48,6 +49,7 @@ APushCharacter::APushCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,19 +59,19 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 {
 	//// Set up gameplay key bindings
 	//check(PlayerInputComponent);
-	//PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	//PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	//PlayerInputComponent->BindAxis("MoveForward", this, &APushCharacter::MoveForward);
-	//PlayerInputComponent->BindAxis("MoveRight", this, &APushCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("MoveForward", this, &APushCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &APushCharacter::MoveRight);
 
 	//// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	//// "turn" handles devices that provide an absolute delta, such as a mouse.
 	//// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	//PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	//PlayerInputComponent->BindAxis("TurnRate", this, &APushCharacter::TurnAtRate);
-	//PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	//PlayerInputComponent->BindAxis("LookUpRate", this, &APushCharacter::LookUpAtRate);
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("TurnRate", this, &APushCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookUpRate", this, &APushCharacter::LookUpAtRate);
 
 	//// handle touch devices
 	//PlayerInputComponent->BindTouch(IE_Pressed, this, &APushCharacter::TouchStarted);
@@ -81,19 +83,32 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 void APushCharacter::NumberPressed()
 {
-	FTransform SkillTransform;
-	SkillTransform.SetLocation(FVector(GetActorLocation()));
-	SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
-	SkillTransform.SetScale3D(FVector(1, 1, 1));
-
-	FActorSpawnParameters param;
-	param.Owner = this;
-
-	SkillActor = GetWorld()->SpawnActor<AArea>(SkillClass, SkillTransform, param);
-
-	if (SkillActor)
+	if (!SkillActor.IsValid())
 	{
-		SkillActor->SkillPressed();
+		FTransform SkillTransform;
+		SkillTransform.SetLocation(FVector(GetActorLocation()));
+		SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
+		SkillTransform.SetScale3D(FVector(1, 1, 1));
+
+		FActorSpawnParameters param;
+		param.Owner = this;
+
+		SkillActor = MakeWeakObjectPtr(GetWorld()->SpawnActor<ASkill_Meteor_A>(SubclassSkill, SkillTransform, param));
+		SkillActor->OnSkillPressed();
+	}
+
+	else
+	{
+		SkillActor->OnSkillPressed();
+	}
+	
+}
+
+void APushCharacter::OnSkillClicked()
+{
+	if (SkillActor.IsValid())
+	{
+		SkillActor->OnSkillClicked();
 	}
 }
 
@@ -124,12 +139,12 @@ void APushCharacter::OnResetVR()
 
 void APushCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		Jump();
+	Jump();
 }
 
 void APushCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		StopJumping();
+	StopJumping();
 }
 
 void APushCharacter::TurnAtRate(float Rate)

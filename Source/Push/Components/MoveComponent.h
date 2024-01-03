@@ -33,6 +33,7 @@ private:
 		float SpeedY = 100;
 	UPROPERTY(EditAnywhere, Category = "Property")
 		float SpeedPercent = 100;
+
 private:
 	TWeakObjectPtr<APawn> Owner;
 };
