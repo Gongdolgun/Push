@@ -5,18 +5,18 @@
 #include "MoveComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PUSH_API UMoveComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	UMoveComponent();
 
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
@@ -25,14 +25,30 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void OnMoveRight(float InAxis);
 
-private:
-	UPROPERTY(EditAnywhere, Category = "Property")
-		float SpeedX = 100;
+	UFUNCTION(BlueprintCallable)
+		void OnTurnAt(float Rate);
 
-	UPROPERTY(EditAnywhere, Category = "Property")
+	UFUNCTION(BlueprintCallable)
+		void OnLookUp(float Rate);
+private:
+	UPROPERTY(EditAnywhere, Category = "Move_Property")
+		float SpeedX = 100;
+	UPROPERTY(EditAnywhere, Category = "Move_Property")
 		float SpeedY = 100;
-	UPROPERTY(EditAnywhere, Category = "Property")
+	UPROPERTY(EditAnywhere, Category = "Move_Property")
 		float SpeedPercent = 100;
+
+	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
+		float MouseSenceX = 100;
+	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
+		float MouseSenceY = 100;
+	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
+		float ViewMaxPitch = 90;
+	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
+		float ViewMinPitch = -90;
+
+
+
 private:
 	TWeakObjectPtr<APawn> Owner;
 };
