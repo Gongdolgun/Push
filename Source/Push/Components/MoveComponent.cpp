@@ -3,6 +3,7 @@
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "../Global.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 UMoveComponent::UMoveComponent()
 {
@@ -12,7 +13,7 @@ UMoveComponent::UMoveComponent()
 void UMoveComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	Owner = Cast<APawn>(GetOwner());
+	Owner = Cast<ACharacter>(GetOwner());
 
 	//2023.12.29 이현중
 	//view허용값 설정
@@ -22,6 +23,7 @@ void UMoveComponent::BeginPlay()
 	{
 		playerController->PlayerCameraManager->ViewPitchMax = ViewMaxPitch;
 		playerController->PlayerCameraManager->ViewPitchMin = ViewMinPitch;
+		UpdateSpeed();
 	}
 }
 
@@ -39,25 +41,16 @@ void UMoveComponent::OnMoveForward(float InAxis)
 
 	//2023.12.28 이현중
 	// 앞,뒤 이동
-	Owner->AddMovementInput(direction, ((SpeedX * InAxis) * SpeedPercent));
+	Owner->AddMovementInput(direction, InAxis);
 }
 
 void UMoveComponent::OnMoveRight(float InAxis)
 {
-	if (!IsValid(Owner.Get()))
-	{
-		FRotator rotate = Owner->GetActorRotation();
-		rotate.Yaw = rotate.Yaw + SpeedY * InAxis;
-		Owner->SetActorRotation(rotate);
-
-
-		return;
-	}
 	//2023.12.28 이현중
 	// 좌,우 이동
 	FVector direction = UKismetMathLibrary::GetRightVector(FRotator(0, Owner->GetControlRotation().Yaw, 0));
 
-	Owner->AddMovementInput(direction, ((SpeedY * InAxis) * SpeedPercent));
+	Owner->AddMovementInput(direction, InAxis);
 
 }
 
@@ -71,5 +64,10 @@ void UMoveComponent::OnTurnAt(float Rate)
 void UMoveComponent::OnLookUp(float Rate)
 {
 	Owner->AddControllerPitchInput(Rate * MouseSenceY * GetWorld()->GetDeltaSeconds());
+}
+
+void UMoveComponent::UpdateSpeed()
+{
+	Helpers::GetComponent<UCharacterMovementComponent>(Owner.Get())->MaxWalkSpeed = Speed * (SpeedPercent / 100);
 }
 
