@@ -22,11 +22,14 @@ void UItemComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
+//아이템 사용
 void UItemComponent::UseItem()
 {
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
 	Item = Cast<AItemBase>(Owner->GetWorld()->SpawnActor(ItemClass, 0, 0, param));
+	//TODO : 아이템 생성후 설정 차후 변경 예정
+
 
 	if (!Item.IsValid())
 		return;
