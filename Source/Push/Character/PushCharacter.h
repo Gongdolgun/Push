@@ -1,43 +1,22 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interface/Damageable.h"
 #include "PushCharacter.generated.h"
 
-UCLASS(config=Game)
-class APushCharacter : public ACharacter
+UCLASS(config = Game)
+class APushCharacter : public ACharacter, public IDamageable
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class USpringArmComponent* CameraBoom;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* FollowCamera;
 public:
 	APushCharacter();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
-		float BaseTurnRate;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
-		float BaseLookUpRate;
-
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
-
-protected:
-
-	void OnResetVR();
-
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-
-	void TurnAtRate(float Rate);
-	void LookUpAtRate(float Rate);
-
-	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
-	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -50,14 +29,32 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void NumberPressed();
 
-	UFUNCTION(BlueprintCallable)
-		void OnSkillClicked();
+public:
+	UPROPERTY(VisibleInstanceOnly)
+		class UWDG_EffectBase* widget;
 
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ASkill> SubclassSkill;
+	class ASkill* SkillActor;
+
+	//2024_01_02 서동주 Hit Interface 적용
+	//다른 Actor에서 피격 시 Hit_Implementation을 Call해서 해주세요
+	virtual void Hit(const FHitData& InHitData) override {};
+	virtual void Hit_Implementation(const FHitData& InHitData) override;
 
 private:
-	TWeakObjectPtr<class ASkill_Meteor_A> SkillActor;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class USpringArmComponent* CameraBoom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UCameraComponent* FollowCamera;
+
+	UPROPERTY(VisibleAnywhere)
+		class UResourceComponent* ResourceComponent;
+
+	UPROPERTY(VisibleAnywhere)
+		class UMoveComponent* MoveComponent;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ASkill> SkillClass;
 
 };
 

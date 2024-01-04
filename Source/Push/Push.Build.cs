@@ -11,7 +11,7 @@ public class Push : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[]
         {
-            "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "Slate", "SlateCore", "PhysicsCore",
+            "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "Slate", "SlateCore", "Niagara", "UMG", "PhysicsCore"
 		});
 	}
 }

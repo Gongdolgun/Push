@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Skill/Skill.h"
+#include "Misc/Structures.h"
 #include "Projectile.generated.h"
 
 UCLASS()
@@ -15,15 +16,32 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void OnConstruction(const FTransform& Transform) override;
-	
+
+protected:
+	virtual void OnDestroy();
+
 public:
 	UPROPERTY(VisibleAnywhere)
+		class USceneComponent* Root;
+
+	UPROPERTY(EditAnywhere)
+		class UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere)
+		class UParticleSystemComponent* Particle;
+
+	UPROPERTY(EditAnywhere)
+		class USphereComponent* Collision;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class UProjectileMovementComponent* ProjectileComponent;
 
 public:
-	UPROPERTY(EditAnywhere)
-		float Speed;
+	UPROPERTY(EditAnywhere, Category = "Init")
+		FProjectileData Datas;
 
-	UPROPERTY(EditAnywhere)
-		float Gravity_Scale;
+private:
+	FRotator rotation;
+	FVector velocity;
+
 };
