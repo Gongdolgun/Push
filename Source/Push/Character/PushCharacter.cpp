@@ -63,24 +63,8 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
     PlayerInputComponent->BindAxis("Turn", MoveComponent, &UMoveComponent::OnTurnAt);
     PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
-}
 
-void APushCharacter::NumberPressed()
-{
-    //FTransform SkillTransform;
-    //SkillTransform.SetLocation(FVector(GetActorLocation()));
-    //SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
-    //SkillTransform.SetScale3D(FVector(1, 1, 1));
-
-    //FActorSpawnParameters param;
-    //param.Owner = this;
-
-    //SkillActor = GetWorld()->SpawnActor<AArea>(SkillClass, SkillTransform, param);
-
-    //if (SkillActor)
-    //{
-    //    SkillActor->SkillPressed();
-    //}
+    PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 }
 
 void APushCharacter::Hit_Implementation(const FHitData& InHitData)

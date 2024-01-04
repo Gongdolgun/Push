@@ -26,10 +26,6 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 public:
-	UFUNCTION(BlueprintCallable)
-		void NumberPressed();
-
-public:
 	UPROPERTY(VisibleInstanceOnly)
 		class UWDG_EffectBase* widget;
 
