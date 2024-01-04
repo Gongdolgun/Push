@@ -17,9 +17,6 @@ public:
 		float Gravity_Scale = 0.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Projectile")
-		float Damage = 0.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Projectile")
 		bool CanRotate = false;
 
 	UPROPERTY(EditAnywhere, Category = "Projectile")

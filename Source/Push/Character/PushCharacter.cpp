@@ -14,6 +14,7 @@
 #include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Global.h"
+#include "Components/SkillComponent.h"
 #include "Widgets/WDG_EffectBase.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,6 +50,13 @@ APushCharacter::APushCharacter()
     //Component
     Helpers::CreateActorComponent<UMoveComponent>(this, &MoveComponent, "MoveComponent");
     Helpers::CreateActorComponent<UResourceComponent>(this, &ResourceComponent, "ResourceComponent");
+    Helpers::CreateActorComponent<USkillComponent>(this, &SkillComponent, "SkillComponent");
+
+    if(SkillComponent != nullptr)
+    {
+        SkillComponent->SetNetAddressable();
+        SkillComponent->SetIsReplicated(true);
+    }
 }
 
 
