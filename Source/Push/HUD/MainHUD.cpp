@@ -1,27 +1,38 @@
 #include "Push/HUD/MainHUD.h"
 #include "Push/HUD/Resource.h"
+#include "Push/Widgets/WDG_EffectBase.h"
 #include "Global.h"
 
 void AMainHUD::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
-	CLog::Print("BeginPlay1");
-	AddResourceWidget();
+    AddResourceWidget();
+    AddEffectWidget();
 }
 
 void AMainHUD::DrawHUD()
 {
-	Super::DrawHUD();
+    Super::DrawHUD();
 
 }
 
 void AMainHUD::AddResourceWidget()
 {
-	TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
-	if (PlayerController.IsValid() && IsValid(ResourceWidgetClass))
-	{
-		ResourceWidget = CreateWidget<UResource>(PlayerController.Get(), ResourceWidgetClass);
-		ResourceWidget->AddToViewport(); // Viewport에 등록
-	}
+    TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
+    if (PlayerController.IsValid() && IsValid(ResourceWidgetClass))
+    {
+        ResourceWidget = CreateWidget<UResource>(PlayerController.Get(), ResourceWidgetClass);
+        ResourceWidget->AddToViewport(); // Viewport에 등록
+    }
+}
+
+void AMainHUD::AddEffectWidget()
+{
+    TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
+    if (PlayerController.IsValid() && IsValid(EffectWidgetClass))
+    {
+        EffectWidget = CreateWidget<UWDG_EffectBase>(PlayerController.Get(), EffectWidgetClass);
+        EffectWidget->AddToViewport(); // Viewport에 등록
+    }
 }

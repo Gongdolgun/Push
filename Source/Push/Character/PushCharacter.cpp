@@ -121,6 +121,9 @@ void APushCharacter::Hit_Implementation(const FHitData& InHitData)
 void APushCharacter::BeginPlay()
 {
     Super::BeginPlay();
+
+
+
 }
 
 void APushCharacter::Tick(float DeltaSeconds)

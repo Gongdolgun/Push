@@ -35,7 +35,6 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
 	UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
 	if (PushCharacter.IsValid())
@@ -118,6 +117,12 @@ void APushPlayerController::SetHUDTime()
 		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime;
 
 	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
+
+	if (MainHUD == nullptr)
+		return;
+
+	if (MainHUD->ResourceWidget == nullptr)
+		return;
 
 	if (MainHUD->ResourceWidget->MatchCountdownText)
 	{
