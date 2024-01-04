@@ -20,11 +20,14 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 public:
-	virtual void OnSkillPressed() override;
+	
 	virtual void TraceDecal() override;
 
 	UFUNCTION(BlueprintCallable)
 		virtual void OnSkillClicked() override;
+
+	UFUNCTION(BlueprintCallable)
+		virtual void OnSkillPressed() override;
 
 	// Particle 충돌 처리 함수
 	UFUNCTION()
