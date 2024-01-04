@@ -30,9 +30,6 @@ void UNF_SpawnSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 	TSubclassOf<ASkill> SpawnSkill = SkillComponent->curSkillData->Skill;
 
 	FRotator SpawnRotation = FRotator(0, Owner->GetControlRotation().Yaw, 0);
-	FActorSpawnParameters params;
-	params.Owner = Owner;
-	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	Owner->GetWorld()->SpawnActor<ASkill>(SpawnSkill, SpawnLocation, SpawnRotation, params);
+	SkillComponent->SpawnCallOnServer_Implementation(SpawnSkill, SpawnLocation, SpawnRotation);
 }

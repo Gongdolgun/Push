@@ -40,7 +40,7 @@ public:
 	virtual void Hit(const FHitData& InHitData) override {};
 	virtual void Hit_Implementation(const FHitData& InHitData) override;
 
-private:
+public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class USpringArmComponent* CameraBoom;
 
@@ -52,6 +52,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 		class UMoveComponent* MoveComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class USkillComponent* SkillComponent;
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;

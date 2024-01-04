@@ -119,7 +119,13 @@ void APushPlayerController::SetHUDTime()
 
 	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
 
-	if (MainHUD->ResourceWidget->MatchCountdownText)
+	if (MainHUD == nullptr)
+		return;
+
+	if (MainHUD->ResourceWidget == nullptr)
+		return;
+
+	if (MainHUD->ResourceWidget->MatchCountdownText != nullptr)
 	{
 		int32 Minutes = FMath::FloorToInt(CountdownTime / 60.f);
 		int32 Seconds = CountdownTime - Minutes * 60;

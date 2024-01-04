@@ -36,4 +36,11 @@ public:
 public:
 	UPROPERTY(EditAnywhere)
 		class USkillData* curSkillData;
+
+	UFUNCTION(Server, Reliable)
+		void SpawnCallOnServer(TSubclassOf<class ASkill> SpawnSkill, FVector SpawnLocation, FRotator SpawnRotation);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void SpawnCallMulticast(TSubclassOf<class ASkill> SpawnSkill, FVector SpawnLocation, FRotator SpawnRotation);
+
 };

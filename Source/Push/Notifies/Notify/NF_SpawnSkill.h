@@ -12,4 +12,5 @@ class PUSH_API UNF_SpawnSkill : public UAnimNotify
 public:
 	virtual FString GetNotifyName_Implementation() const override;
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
+
 };
