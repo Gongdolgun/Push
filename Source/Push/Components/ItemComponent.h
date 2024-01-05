@@ -24,12 +24,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UseItem();
 	void DestroyItem();
-	
-
 
 private:
 	TWeakObjectPtr<ACharacter> Owner;
-
 private:
 	TWeakObjectPtr<class AItemBase> Item;
 
