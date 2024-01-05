@@ -34,7 +34,7 @@ public:
 		TSubclassOf<USkillData> ss;
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class USkillData* curSkillData;
 
 	UFUNCTION(Server, Reliable)
@@ -43,4 +43,7 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void SpawnCallMulticast(TSubclassOf<class ASkill> SpawnSkill, FVector SpawnLocation, FRotator SpawnRotation);
 
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		FTransform GetSpawnTransform();
 };

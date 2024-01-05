@@ -3,6 +3,7 @@
 #include "Skill/SkillData.h"
 #include "Skill/Skill.h"
 #include "Skill/SkillDatas/SkillData_Projectile.h"
+#include "Global.h"
 
 
 USkillComponent::USkillComponent()
@@ -43,8 +44,16 @@ void USkillComponent::Execute()
 	curSkillData->Play(Owner);
 }
 
+FTransform USkillComponent::GetSpawnTransform()
+{
+	FVector SpawnLoc = Owner->GetActorLocation() + (Owner->GetActorForwardVector() * 300);
+	FRotator SpawnRot = UKismetMathLibrary::MakeRotFromX(Owner->GetActorForwardVector());
+
+	return UKismetMathLibrary::MakeTransform(SpawnLoc, SpawnRot, FVector::OneVector);
+}
+
 void USkillComponent::SpawnCallOnServer_Implementation(TSubclassOf<ASkill> SpawnSkill, FVector SpawnLocation,
-	FRotator SpawnRotation)
+                                                       FRotator SpawnRotation)
 {
 	SpawnCallMulticast_Implementation(SpawnSkill, SpawnLocation, SpawnRotation);
 }

@@ -1,6 +1,7 @@
 #include "PushGameMode.h"
 #include "Push/Character/PushCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Global.h"
 #include "PlayerController/PushPlayerController.h"
 
 namespace MatchState
@@ -69,4 +70,20 @@ void APushGameMode::OnMatchStateSet()
 			SelectedPlayer->OnMatchStateSet(MatchState);
 		}
 	}
+}
+
+void APushGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	APushPlayerController* Controller = Cast<APushPlayerController>(NewPlayer);
+
+	if (!HasAuthority())
+		CLog::Log("11");
+
+	else
+	{
+		CLog::Log("2222");
+	}
+
 }

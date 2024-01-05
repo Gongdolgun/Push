@@ -40,4 +40,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void OnMatchStateSet() override;
 
+public:
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+
 };

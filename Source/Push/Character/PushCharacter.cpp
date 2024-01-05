@@ -15,6 +15,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Global.h"
 #include "Components/SkillComponent.h"
+#include "PlayerController/PushPlayerController.h"
 #include "Widgets/WDG_EffectBase.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -129,6 +130,8 @@ void APushCharacter::Hit_Implementation(const FHitData& InHitData)
 void APushCharacter::BeginPlay()
 {
     Super::BeginPlay();
+
+    
 }
 
 void APushCharacter::Tick(float DeltaSeconds)
