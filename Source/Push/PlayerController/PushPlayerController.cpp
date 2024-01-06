@@ -19,10 +19,8 @@ void APushPlayerController::BeginPlay()
 
 	if (IsValid(MainHUD))
 	{
-		MainHUD->AddStoreUIWidget();
-		MainHUD->AddResourceWidget();
-		MainHUD->AddKillDeathWidget();
-		MainHUD->KillDeathWidget->SetVisibility(ESlateVisibility::Hidden);
+		MainHUD->AddWidget();
+		MainHUD->GetWidget<UKillDeathUI>("KillDeathWidget")->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	ClientCheckMatchState();
@@ -35,7 +33,7 @@ void APushPlayerController::Tick(float DeltaSeconds)
 
 	SetHUDHealth(HUDHealth, HUDMaxHealth); // WDG에서 관리할거면 삭제
 	SetHUDTime(); // 시간
-	Init();
+	//Init();
 }
 
 void APushPlayerController::OnPossess(APawn* InPawn)
@@ -73,22 +71,22 @@ void APushPlayerController::OnMatchStateSet(FName State)
 	{
 		// TODO: HUD를 업데이트 함수
 		CLog::Print("WaitingToStart!!");
-		MainHUD->StoreUIWidget->SetVisibility(ESlateVisibility::Visible);
-		MainHUD->ResourceWidget->SetVisibility(ESlateVisibility::Hidden);
+		MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Visible);
+		MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Hidden);
 	}
 	else if (MatchState == MatchState::InProgress) // 경기
 	{
 		// TODO: HUD를 업데이트 함수
 		CLog::Print("InProgress!!");
-		MainHUD->StoreUIWidget->SetVisibility(ESlateVisibility::Hidden);
-		MainHUD->ResourceWidget->SetVisibility(ESlateVisibility::Visible);
+		MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
+		MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Visible);
 	}
 	else if (MatchState == MatchState::Result) // 결과발표
 	{
 		// TODO: HUD를 업데이트 함수
 		CLog::Print("Result!!");
-		MainHUD->StoreUIWidget->SetVisibility(ESlateVisibility::Hidden);
-		MainHUD->ResourceWidget->SetVisibility(ESlateVisibility::Hidden);
+		MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
+		MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -109,10 +107,10 @@ void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG에
 {
 	MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(GetHUD()) : MainHUD;
 
-	if(IsValid(MainHUD) && IsValid(MainHUD->ResourceWidget) && IsValid(MainHUD->ResourceWidget->HealthBar))
+	if(IsValid(MainHUD) && IsValid(MainHUD->GetWidget<UResource>("ResourceWidget")) && IsValid(MainHUD->GetWidget<UResource>("ResourceWidget")->HealthBar))
 	{
 		const float HealthPercent = Health / MaxHealth;
-		MainHUD->ResourceWidget->HealthBar->SetPercent(HealthPercent);
+		MainHUD->GetWidget<UResource>("ResourceWidget")->HealthBar->SetPercent(HealthPercent);
 	}
 	else // HUD가 없다면
 	{
@@ -124,7 +122,7 @@ void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG에
 void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 {
 	if (MainHUD == nullptr) return;
-	if (MainHUD->ResourceWidget == nullptr) return;
+	if (MainHUD->GetWidget<UResource>("ResourceWidget") == nullptr) return;
 
 	float TimeLeft = 0.0f;
 	if (MatchState == MatchState::WaitingToStart) // 대기
@@ -136,18 +134,18 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 
 	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
 
-	if (MainHUD->ResourceWidget->MatchCountdownText)
+	if (MainHUD->GetWidget<UResource>("ResourceWidget")->MatchCountdownText)
 	{
 		int32 Minutes = FMath::FloorToInt(CountdownTime / 60.f);
 		int32 Seconds = CountdownTime - Minutes * 60;
 
 		FString CountdownText = FString::Printf(TEXT("%02d:%02d"), Minutes, Seconds);
-		MainHUD->ResourceWidget->MatchCountdownText->SetText(FText::FromString(CountdownText));
+		MainHUD->GetWidget<UResource>("ResourceWidget")->MatchCountdownText->SetText(FText::FromString(CountdownText));
 	}
 
-	if (MainHUD->ResourceWidget->MatchStateTypeText)
+	if (MainHUD->GetWidget<UResource>("ResourceWidget")->MatchStateTypeText)
 	{
-		MainHUD->ResourceWidget->MatchStateTypeText->SetText(FText::FromName(MatchState));
+		MainHUD->GetWidget<UResource>("ResourceWidget")->MatchStateTypeText->SetText(FText::FromName(MatchState));
 	}
 }
 

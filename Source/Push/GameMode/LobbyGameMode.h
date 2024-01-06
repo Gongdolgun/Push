@@ -3,8 +3,8 @@
 #include "GameFramework/GameMode.h"
 #include "LobbyGameMode.generated.h"
 
-/**
- * 
+/** 게임 시작 시 GameMode
+ *  
  */
 
 UCLASS()

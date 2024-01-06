@@ -77,7 +77,10 @@ void ARing::Tick(float DeltaTime)
 		if (controller == nullptr) continue;
 
 		TWeakObjectPtr<AMainHUD> MainHUD = Cast<AMainHUD>(controller->GetHUD());
-		if (MainHUD.IsValid()) MainHUD->EffectWidget->PlayEffect();
+		if (MainHUD.IsValid())
+		{
+			MainHUD->GetWidget<UWDG_EffectBase>("EffectWidget")->PlayEffect();
+		}
 	}
 }
 
