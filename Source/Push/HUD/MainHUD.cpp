@@ -17,46 +17,6 @@ void AMainHUD::DrawHUD()
 	Super::DrawHUD();
 
 }
-//
-//void AMainHUD::AddStoreUIWidget()
-//{
-//	TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
-//	if (PlayerController.IsValid() && IsValid(StoreUIWidgetClass))
-//	{
-//		StoreUIWidget = CreateWidget<UStoreUI>(PlayerController.Get(), StoreUIWidgetClass);
-//		StoreUIWidget->AddToViewport(); // Viewport에 등록
-//	}
-//}
-//
-//void AMainHUD::AddResourceWidget()
-//{
-//	TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
-//	if (PlayerController.IsValid() && IsValid(ResourceWidgetClass))
-//	{
-//		ResourceWidget = CreateWidget<UResource>(PlayerController.Get(), ResourceWidgetClass);
-//		ResourceWidget->AddToViewport(); // Viewport에 등록
-//	}
-//}
-//
-//void AMainHUD::AddEffectWidget()
-//{
-//	TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
-//	if (PlayerController.IsValid() && IsValid(EffectWidgetClass))
-//	{
-//		EffectWidget = CreateWidget<UWDG_EffectBase>(PlayerController.Get(), EffectWidgetClass);
-//		EffectWidget->AddToViewport(); // Viewport에 등록
-//	}
-//}
-//
-//void AMainHUD::AddKillDeathWidget()
-//{
-//	TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
-//	if (PlayerController.IsValid() && IsValid(KillDeathWidgetClass))
-//	{
-//		KillDeathWidget = CreateWidget<UKillDeathUI>(PlayerController.Get(), KillDeathWidgetClass);
-//		KillDeathWidget->AddToViewport(); // Viewport에 등록
-//	}
-//}
 
 void AMainHUD::AddWidget()
 {
