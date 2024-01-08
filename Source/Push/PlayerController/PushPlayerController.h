@@ -28,13 +28,13 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(Client, Reliable) // Client RPC
-	void ClientCheckMatchState(); // Client가 게임에 들어왔을때 Client에게 MatchState을 알리는 함수
+		void ClientCheckMatchState(); // Client가	 게임에 들어왔을때 Client에게 MatchState을 알리는 함수
 
 private:
 	UPROPERTY()
-	class AMainHUD* MainHUD;
+		class AMainHUD* MainHUD;
 	UPROPERTY()
-	class UResourceComponent* resourceComponent;
+		class UResourceComponent* resourceComponent;
 
 	float LevelStartingTime = 0.0f; // 게임레벨맵에 들어간 시간
 	float WarmupTime = 0.0f;	// 대기 시간
@@ -42,12 +42,11 @@ private:
 	float ResultTime = 0.0f;  // 결과 시간
 
 	UPROPERTY(ReplicatedUsing = OnRep_MatchState) // Client들에게 Replicated 되도록 설정
-	FName MatchState; // GameMode.h의 이름이 같은 MatchState이 있다
+		FName MatchState; // GameMode.h의 이름이 같은 MatchState이 있다
 
 	UFUNCTION()
-	void OnRep_MatchState();
+		void OnRep_MatchState();
 
 	float HUDHealth;
 	float HUDMaxHealth;
 };
-

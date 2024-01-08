@@ -17,15 +17,16 @@ class PUSH_API AMainHUD : public AHUD
 public:
 	virtual void DrawHUD() override;
 	void AddWidget();
+	bool CheckWidget(const FString& widgetname);
 
 	template<class T>
 	T* GetWidget(FString Key);
 
 	UPROPERTY(EditAnywhere, Category = "Widgets")
-	TMap<FString, TSubclassOf<class UUserWidget>> UserWidgetClasses;
+		TMap<FString, TSubclassOf<class UUserWidget>> UserWidgetClasses;
 
 	UPROPERTY()
-	TMap<FString, class UUserWidget*> UserWidgets;
+		TMap<FString, class UUserWidget*> UserWidgets;
 
 protected:
 	virtual void BeginPlay() override;
@@ -34,6 +35,8 @@ protected:
 template <class T>
 T* AMainHUD::GetWidget(FString Key)
 {
+	if (false == UserWidgets.Contains(Key)) return nullptr;
+
 	T* temp = Cast<T>((*(UserWidgets.Find(Key))));
 
 	if (temp == nullptr)

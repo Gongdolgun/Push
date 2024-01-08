@@ -53,6 +53,12 @@ public:
 		class USkillComponent* SkillComponent;
 
 	UPROPERTY(EditAnywhere)
+		class UBuffComponent* BuffComponent;
+
+	UPROPERTY(EditAnywhere)
+		class UItemComponent* ItemComponent;
+
+	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
 
 

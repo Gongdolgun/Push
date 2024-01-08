@@ -5,6 +5,7 @@
 #include "Widgets/WDG_EffectBase.h"
 #include "HUD/MainHUD.h"
 
+
 ARing::ARing()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -82,7 +83,6 @@ void ARing::Tick(float DeltaTime)
 		if (hud == nullptr)
 			return;
 
-		hud->EffectWidget->PlayEffect();
 	}
 }
 

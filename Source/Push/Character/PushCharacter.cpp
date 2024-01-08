@@ -6,6 +6,8 @@
 #include "Components/InputComponent.h"
 #include "Components/ResourceComponent.h"
 #include "Components/MoveComponent.h"
+#include "Components/BuffComponent.h"
+#include "Components/ItemComponent.h"
 #include "Engine/DecalActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -52,6 +54,8 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UMoveComponent>(this, &MoveComponent, "MoveComponent");
     Helpers::CreateActorComponent<UResourceComponent>(this, &ResourceComponent, "ResourceComponent");
     Helpers::CreateActorComponent<USkillComponent>(this, &SkillComponent, "SkillComponent");
+    Helpers::CreateActorComponent<UBuffComponent>(this, &BuffComponent, "BuffComponent");
+    Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
 
     if(SkillComponent != nullptr)
     {
@@ -74,6 +78,10 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
     PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
 
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+
+    PlayerInputComponent->BindAction("KD", EInputEvent::IE_Pressed, ResourceComponent, &UResourceComponent::OnKillDeathUI);
+    PlayerInputComponent->BindAction("KD", EInputEvent::IE_Released, ResourceComponent, &UResourceComponent::OffKillDeathUI);
+
 }
 
 void APushCharacter::Hit_Implementation(const FHitData& InHitData)
