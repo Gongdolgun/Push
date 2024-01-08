@@ -16,6 +16,5 @@ class PUSH_API IDamageable
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(NetMulticast, Reliable)
-		virtual void Hit(const FHitData& InHitData) = 0;
+	virtual void Hit_Implementation(const FHitData& InHitData) = 0;
 };

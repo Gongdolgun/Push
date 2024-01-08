@@ -3,6 +3,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Character/PushCharacter.h"
 #include "Widgets/WDG_EffectBase.h"
+#include "HUD/MainHUD.h"
 
 ARing::ARing()
 {
@@ -70,7 +71,18 @@ void ARing::Tick(float DeltaTime)
 	for(APushCharacter* character : OverlappedCharacters)
 	{
 		character->Hit_Implementation(hitData);
-		character->widget->PlayEffect();
+
+		APlayerController* controller = Cast<APlayerController>(character->GetController());
+
+		if (controller == nullptr)
+			return;
+
+		AMainHUD* hud = Cast<AMainHUD>(controller->GetHUD());
+
+		if (hud == nullptr)
+			return;
+
+		hud->EffectWidget->PlayEffect();
 	}
 }
 
@@ -85,7 +97,7 @@ void ARing::ChangeRadius()
 {
 	float radius = RingCapsule->GetUnscaledCapsuleRadius() - DeltaRadius;
 	RingCapsule->SetCapsuleRadius(radius);
-	CLog::Print(radius);
+
 	if (FMath::IsNearlyEqual(radius, TargetRadius))
 		GetWorldTimerManager().ClearTimer(TimerHandle);
 

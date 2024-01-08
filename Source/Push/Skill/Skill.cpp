@@ -1,4 +1,6 @@
 #include "Skill.h"
+
+#include "Components/ShapeComponent.h"
 #include "GameFramework/Character.h"
 
 ASkill::ASkill()
@@ -12,8 +14,6 @@ void ASkill::BeginPlay()
 	Super::BeginPlay();
 
 	Owner = Cast<ACharacter>(GetOwner());
-	
-
 }
 
 void ASkill::Tick(float DeltaTime)

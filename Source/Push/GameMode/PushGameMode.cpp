@@ -10,7 +10,7 @@ namespace MatchState
 
 APushGameMode::APushGameMode()
 {
-	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태
+	bDelayedStart = false; // true면 GameMode가 start 되기 전에 waiting 상태
 
 
 }
@@ -18,6 +18,11 @@ APushGameMode::APushGameMode()
 void APushGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UWorld* world = GetWorld();
+
+	if (world == nullptr)
+		return;
 
 	LevelStartingTime = GetWorld()->GetTimeSeconds();
 }
@@ -61,12 +66,21 @@ void APushGameMode::OnMatchStateSet()
 	Super::OnMatchStateSet();
 
 	// GameMode의 MatchState이 변경되면 서버에서 해당되는 PlayerController를 찾아 MatchState을 설정한다.
+	UWorld* world = GetWorld();
+
+	if (world == nullptr)
+		return;
+
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
-		TWeakObjectPtr<APushPlayerController> SelectedPlayer = Cast<APushPlayerController>(*It);
-		if (SelectedPlayer.IsValid())
+		if(*It != nullptr)
 		{
-			SelectedPlayer->OnMatchStateSet(MatchState);
+			TWeakObjectPtr<APushPlayerController> SelectedPlayer = Cast<APushPlayerController>(*It);
+			if (SelectedPlayer.IsValid())
+			{
+				SelectedPlayer->OnMatchStateSet(MatchState);
+			}
 		}
 	}
 }
+
