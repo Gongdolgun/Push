@@ -39,19 +39,19 @@ public:
 	FORCEINLINE float GetSpeedPercent() { return SpeedPercent; }
 
 public:
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void UpdateSpeed();
-private:
 
-	UPROPERTY(EditAnywhere, Category = "Move_Property")
+private:
+	UPROPERTY(EditAnywhere,Category = "Move_Property")
 		float Speed = 600;
-	UPROPERTY(EditAnywhere, Category = "Move_Property")
+	UPROPERTY(EditAnywhere,Category = "Move_Property")
 		float SpeedPercent = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
-		float MouseSenceX = 100;
+		float MouseSenceX = 45.0f;
 	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
-		float MouseSenceY = 100;
+		float MouseSenceY = 45.0f;
 
 	//2023.01.02 이현중
 	//플레이어 최대 Pitch변경값
