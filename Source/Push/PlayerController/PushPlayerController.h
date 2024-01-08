@@ -49,5 +49,8 @@ private:
 
 	float HUDHealth;
 	float HUDMaxHealth;
+
+	
+
 };
 

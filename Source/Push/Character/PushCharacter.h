@@ -26,19 +26,26 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 public:
-	UFUNCTION(BlueprintCallable)
-		void NumberPressed();
-
-public:
 	UPROPERTY(VisibleInstanceOnly)
 		class UWDG_EffectBase* widget;
 
-	class ASkill* SkillActor;
-
-	//2024_01_02 서동주 Hit Interface 적용
+	// 2024_01_02 서동주 Hit Interface 적용
 	//다른 Actor에서 피격 시 Hit_Implementation을 Call해서 해주세요
 	virtual void Hit(const FHitData& InHitData) override {};
 	virtual void Hit_Implementation(const FHitData& InHitData) override;
+
+	// 2024_01_05 Material Change 적용
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+		void ServerChangeMaterial(ACharacter* Character, FLinearColor NewColor);
+
+	UFUNCTION(NetMulticast, Reliable, BlueprintCallable)
+		void MulticastChangeMaterial(ACharacter* Character, FLinearColor NewColor);
+
+	UFUNCTION(BlueprintCallable)
+		void Create_DynamicMaterial(class ACharacter* InCharacter);
+
+	UFUNCTION(BlueprintCallable)
+		void Change_Color(class ACharacter* InCharacter, FLinearColor InColor);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -52,9 +59,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 		class UMoveComponent* MoveComponent;
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ASkill> SkillClass;
 
 };
 

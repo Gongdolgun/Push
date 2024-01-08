@@ -20,6 +20,12 @@ void APushPlayerController::BeginPlay()
 		MainHUD->AddResourceWidget();
 	}
 
+	else
+	{
+		CLog::Print("HUD Is Where");
+		return;
+	}
+
 	ServerCheckMatchState();
 }
 
@@ -34,7 +40,6 @@ void APushPlayerController::Tick(float DeltaSeconds)
 void APushPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-
 
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
 	UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
@@ -109,6 +114,18 @@ void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG¿¡
 
 void APushPlayerController::SetHUDTime()
 {
+	if (MainHUD == nullptr)
+	{
+		//CLog::Print("MainHUD Null"); 
+		return;
+	}
+
+	if (MainHUD->ResourceWidget == nullptr)
+	{
+		//CLog::Print("ResourceWidget Null");
+		return;
+	}
+
 	float TimeLeft = 0.0f;
 	if (MatchState == MatchState::WaitingToStart) // ´ë±â
 		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
@@ -128,7 +145,10 @@ void APushPlayerController::SetHUDTime()
 		MainHUD->ResourceWidget->MatchCountdownText->SetText(FText::FromString(CountdownText));
 	}
 
+	
 }
+
+
 
 void APushPlayerController::OnRep_MatchState()
 {

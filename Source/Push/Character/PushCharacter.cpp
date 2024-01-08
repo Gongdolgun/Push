@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PushCharacter.h"
+
+#include "EngineUtils.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -9,12 +11,15 @@
 #include "Engine/DecalActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Skill/Area/Area.h"
 #include "Particles/ParticleSystem.h"
 #include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Global.h"
 #include "Widgets/WDG_EffectBase.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Net/UnrealNetwork.h"
+#include "PlayerController/PushPlayerController.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APushCharacter
@@ -51,7 +56,6 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UResourceComponent>(this, &ResourceComponent, "ResourceComponent");
 }
 
-
 // Input
 void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
@@ -63,24 +67,8 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
     PlayerInputComponent->BindAxis("Turn", MoveComponent, &UMoveComponent::OnTurnAt);
     PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
-}
 
-void APushCharacter::NumberPressed()
-{
-    //FTransform SkillTransform;
-    //SkillTransform.SetLocation(FVector(GetActorLocation()));
-    //SkillTransform.SetRotation(FQuat(FRotator(0, 0, 0)));
-    //SkillTransform.SetScale3D(FVector(1, 1, 1));
-
-    //FActorSpawnParameters param;
-    //param.Owner = this;
-
-    //SkillActor = GetWorld()->SpawnActor<AArea>(SkillClass, SkillTransform, param);
-
-    //if (SkillActor)
-    //{
-    //    SkillActor->SkillPressed();
-    //}
+    PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 }
 
 void APushCharacter::Hit_Implementation(const FHitData& InHitData)
@@ -118,9 +106,32 @@ void APushCharacter::Hit_Implementation(const FHitData& InHitData)
     }
 }
 
+void APushCharacter::ServerChangeMaterial_Implementation(ACharacter* Character, FLinearColor NewColor)
+{
+    if (Character != nullptr)
+    {
+        MulticastChangeMaterial(Character, NewColor);
+    }
+}
+
+void APushCharacter::MulticastChangeMaterial_Implementation(ACharacter* Character, FLinearColor NewColor)
+{
+    if (Character != nullptr)
+    {
+        CLog::Print("MultiCast");
+
+        Create_DynamicMaterial(Character);
+        Change_Color(Character, NewColor);
+    }
+}
+
+
 void APushCharacter::BeginPlay()
 {
     Super::BeginPlay();
+
+    //ServerChangeMaterial_Implementation(this, FLinearColor::MakeRandomColor());
+
 }
 
 void APushCharacter::Tick(float DeltaSeconds)
@@ -129,3 +140,25 @@ void APushCharacter::Tick(float DeltaSeconds)
 
 }
 
+void APushCharacter::Create_DynamicMaterial(ACharacter* InCharacter)
+{
+    for (int32 i = 0; i < InCharacter->GetMesh()->GetMaterials().Num(); i++)
+    {
+        UMaterialInterface* material = InCharacter->GetMesh()->GetMaterials()[i];
+    
+        InCharacter->GetMesh()->SetMaterial(i, UMaterialInstanceDynamic::Create(material, InCharacter));
+    }
+}
+
+void APushCharacter::Change_Color(ACharacter* InCharacter, FLinearColor InColor)
+{
+    for (UMaterialInterface* material : InCharacter->GetMesh()->GetMaterials())
+    {
+        UMaterialInstanceDynamic* MaterialDynamic = Cast<UMaterialInstanceDynamic>(material);
+
+        if (MaterialDynamic)
+        {
+            MaterialDynamic->SetVectorParameterValue("BodyColor", InColor);
+        }
+    }
+}

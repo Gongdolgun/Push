@@ -1,6 +1,10 @@
 #include "PushGameMode.h"
 #include "Push/Character/PushCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Global.h"
+#include "GameFramework/GameStateBase.h"
+#include "GameFramework/PlayerState.h"
+#include "GameState/PushGameState.h"
 #include "PlayerController/PushPlayerController.h"
 
 namespace MatchState
@@ -12,7 +16,6 @@ APushGameMode::APushGameMode()
 {
 	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태
 
-
 }
 
 void APushGameMode::BeginPlay()
@@ -20,6 +23,7 @@ void APushGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	LevelStartingTime = GetWorld()->GetTimeSeconds();
+
 }
 
 void APushGameMode::Tick(float DeltaSeconds)
@@ -48,7 +52,7 @@ void APushGameMode::Tick(float DeltaSeconds)
 	{
 		// 대기시간 - 현재 시간 + 게임레벨맵에 들어간 시간 + 설정한 경기시간 + 설정한 결과발표시간
 		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime;
-		if (CountdownTime <= 0.0f) 
+		if (CountdownTime <= 0.0f)
 		{
 			RestartGame(); // 경기 재시작. GameMode 내장 클래스에 정의된 함수 콜
 		}
@@ -70,3 +74,34 @@ void APushGameMode::OnMatchStateSet()
 		}
 	}
 }
+
+void APushGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	APushPlayerController* Controller = Cast<APushPlayerController>(NewPlayer);
+
+	if (Controller)
+	{
+		//if (HasAuthority())
+		//{
+		//	CLog::Print("Server");
+		//}
+		//
+		//else
+		//{
+		//	CLog::Print("Client");
+		//}
+	}
+	
+	ULocalPlayer* LocalPlayer = Controller->GetLocalPlayer();
+
+	//CLog::Print(LocalPlayer);
+
+	APlayerState* PlayerState = NewPlayer->GetPlayerState<APlayerState>();
+	if (PlayerState)
+	{
+		//CLog::Print(PlayerState->GetPlayerId());
+	}
+}
+

@@ -6,7 +6,6 @@ void AMainHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CLog::Print("BeginPlay1");
 	AddResourceWidget();
 }
 
