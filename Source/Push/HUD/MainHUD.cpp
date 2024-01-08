@@ -35,3 +35,11 @@ void AMainHUD::AddWidget()
 		}
 	}
 }
+
+bool AMainHUD::CheckWidget(const FString& widgetname)
+{
+	if (false == UserWidgets.Contains(widgetname))
+		return false;
+
+	return true;
+}

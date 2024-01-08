@@ -2,6 +2,7 @@
 #include "Character/PushCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
+#include "GameInstance/PushGameInstance.h"
 #include "Widgets/StoreUI.h"
 
 namespace MatchState
@@ -12,6 +13,7 @@ namespace MatchState
 APushGameMode::APushGameMode()
 {
 	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태. false면 MatchState::WaitingToStart는 비활성화되어 실행되지 않는다
+
 }
 
 void APushGameMode::BeginPlay()

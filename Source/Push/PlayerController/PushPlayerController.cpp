@@ -20,11 +20,13 @@ void APushPlayerController::BeginPlay()
 	if (IsValid(MainHUD))
 	{
 		MainHUD->AddWidget();
+		MainHUD->CheckWidget("KillDeathWidget");
+		MainHUD->CheckWidget("StoreUIWidget");
 		MainHUD->GetWidget<UKillDeathUI>("KillDeathWidget")->SetVisibility(ESlateVisibility::Hidden);
+		MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	ClientCheckMatchState();
-	//ServerCheckMatchState();
 }
 
 void APushPlayerController::Tick(float DeltaSeconds)
@@ -69,24 +71,39 @@ void APushPlayerController::OnMatchStateSet(FName State)
 
 	if (MatchState == MatchState::WaitingToStart) // 대기
 	{
-		// TODO: HUD를 업데이트 함수
-		CLog::Print("WaitingToStart!!");
-		MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Visible);
-		MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Hidden);
+		if(false == HasAuthority())
+		{
+			// TODO: HUD를 업데이트 함수
+			CLog::Print("WaitingToStart!!");
+			MainHUD->CheckWidget("StoreUIWidget");
+			MainHUD->CheckWidget("ResourceWidget");
+			MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Visible);
+			MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Hidden);		
+		}
 	}
 	else if (MatchState == MatchState::InProgress) // 경기
 	{
-		// TODO: HUD를 업데이트 함수
-		CLog::Print("InProgress!!");
-		MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
-		MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Visible);
+		if (false == HasAuthority())
+		{
+			// TODO: HUD를 업데이트 함수
+			CLog::Print("InProgress!!");
+			MainHUD->CheckWidget("StoreUIWidget");
+			MainHUD->CheckWidget("ResourceWidget");
+			MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
+			MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Visible);
+		}
 	}
 	else if (MatchState == MatchState::Result) // 결과발표
 	{
-		// TODO: HUD를 업데이트 함수
-		CLog::Print("Result!!");
-		MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
-		MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Hidden);
+		if (false == HasAuthority())
+		{
+			// TODO: HUD를 업데이트 함수
+			CLog::Print("Result!!");
+			MainHUD->CheckWidget("StoreUIWidget");
+			MainHUD->CheckWidget("ResourceWidget");
+			MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
+			MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
 }
 
@@ -98,9 +115,9 @@ void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 }
 
 void APushPlayerController::Init()
-{	
-	if (IsValid(resourceComponent))
-		SetHUDHealth(resourceComponent->GetMaxHP(), resourceComponent->GetMaxHP());
+{
+	//if (IsValid(resourceComponent))
+	//	SetHUDHealth(resourceComponent->GetMaxHP(), resourceComponent->GetMaxHP());
 }
 
 void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG에서 관리할거면 삭제
