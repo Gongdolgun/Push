@@ -12,6 +12,7 @@ AProjectile::AProjectile()
 	Helpers::CreateComponent(this, &Particle, "Particle", Root);
 
 	Helpers::CreateActorComponent(this, &ProjectileComponent, "ProjectileComponent");
+	Particle->SetIsReplicated(true);
 }
 
 void AProjectile::BeginPlay()
@@ -27,10 +28,9 @@ void AProjectile::Tick(float DeltaSeconds)
 	{
 		// 231229 이민학
 		// 방향 조절 Projectile 핵심코드
-		if (!!Owner && !!Owner->GetController())
+		if (!!Owner)
 		{
-			rotation = FRotator(GetActorRotation().Pitch, Owner->GetController()->GetControlRotation().Yaw, GetActorRotation().Roll);
-			velocity = UKismetMathLibrary::GetForwardVector(rotation) * ProjectileComponent->InitialSpeed;
+			velocity = Owner->GetActorForwardVector() * ProjectileComponent->InitialSpeed;
 
 			ProjectileComponent->Velocity = UKismetMathLibrary::VInterpTo(ProjectileComponent->Velocity, velocity, DeltaSeconds, Datas.InterpSpeed);
 			SetActorRotation(UKismetMathLibrary::RInterpTo(GetActorRotation(), rotation, DeltaSeconds, Datas.InterpSpeed));
@@ -51,3 +51,10 @@ void AProjectile::OnConstruction(const FTransform& Transform)
 void AProjectile::OnDestroy()
 {
 }
+
+void AProjectile::FOnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+}
+

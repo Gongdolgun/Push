@@ -9,6 +9,7 @@ class PUSH_API USkillData_Projectile : public USkillData
 {
 	GENERATED_BODY()
 
+
 public:
 	virtual void Play(ACharacter* InOwner) override;
 };

@@ -37,10 +37,8 @@ public:
 	UPROPERTY(EditAnywhere)
 		class USkillData* curSkillData;
 
-	UFUNCTION(Server, Reliable)
-		void SpawnCallOnServer(TSubclassOf<class ASkill> SpawnSkill, FVector SpawnLocation, FRotator SpawnRotation);
+	UPROPERTY(EditAnywhere, Replicated)
+		FVector SpawnLocation;
 
-	UFUNCTION(NetMulticast, Reliable)
-		void SpawnCallMulticast(TSubclassOf<class ASkill> SpawnSkill, FVector SpawnLocation, FRotator SpawnRotation);
-
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

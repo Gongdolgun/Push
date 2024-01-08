@@ -6,24 +6,24 @@ void USkillData_Area::BeginPlay()
 
 }
 
-void USkillData_Area::Play(ACharacter* InOwner)
-{
-	Super::Play(InOwner);
-
-	// Decal Class 持失
-	if(bDecal == false)
-	{
-		bDecal = true;
-		if (DecalClass == nullptr)
-		{
-			PointDecal = GetWorld()->SpawnActor(DecalClass);
-		}
-	}
-
-	else
-	{
-		bDecal = false;
-		SpawnLocation = PointDecal->GetActorLocation();
-		PointDecal->Destroy();
-	}
-}
+//void USkillData_Area::Play(ACharacter* InOwner)
+//{
+//	Super::Play(InOwner);
+//
+//	// Decal Class 持失
+//	if(bDecal == false)
+//	{
+//		bDecal = true;
+//		if (DecalClass == nullptr)
+//		{
+//			PointDecal = GetWorld()->SpawnActor(DecalClass);
+//		}
+//	}
+//
+//	else
+//	{
+//		bDecal = false;
+//		SpawnLocation = PointDecal->GetActorLocation();
+//		PointDecal->Destroy();
+//	}
+//}

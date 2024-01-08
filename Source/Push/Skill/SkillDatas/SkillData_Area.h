@@ -23,5 +23,5 @@ public:
 		bool bDecal;
 
 public:
-	virtual void Play(ACharacter* InOwner) override;
+	//virtual void Play(ACharacter* InOwner) override;
 };

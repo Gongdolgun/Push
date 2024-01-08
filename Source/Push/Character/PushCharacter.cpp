@@ -16,6 +16,7 @@
 #include "Global.h"
 #include "Components/SkillComponent.h"
 #include "Widgets/WDG_EffectBase.h"
+#include "Skill/SkillData.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APushCharacter
@@ -96,12 +97,11 @@ void APushCharacter::Hit_Implementation(const FHitData& InHitData)
     if(ResourceComponent != nullptr)
     {
 		ResourceComponent->AdjustHP(-InHitData.Damage);
-        CLog::Log(InHitData.Damage);
     }
-
-    if(InHitData.xLaunchValue + InHitData.yLaunchValue + InHitData.zLaunchValue > 0.0f)
+    if(InHitData.xLaunch + InHitData.yLaunch + InHitData.zLaunch > 0.0f)
     {
-        LaunchCharacter(FVector(InHitData.xLaunchValue, InHitData.yLaunchValue, InHitData.zLaunchValue), false, false);
+        
+        //LaunchCharacter(FVector(InHitData.xLaunch, InHitData.yLaunch, InHitData.zLaunch), false, false);
     }
 
     if(InHitData.Effect != nullptr)
@@ -125,6 +125,41 @@ void APushCharacter::Hit_Implementation(const FHitData& InHitData)
         UGameplayStatics::SpawnSoundAtLocation(GetWorld(), InHitData.Sound, InHitData.Location);
     }
 }
+
+void APushCharacter::SetSpawnlocationRep_Implementation(FVector InVector)
+{
+    SetSpawnlocationNMC_Implementation(InVector);
+}
+
+void APushCharacter::SetSpawnlocationNMC_Implementation(FVector InVector)
+{
+	if(SkillComponent != nullptr)
+		SkillComponent->SpawnLocation = InVector;
+}
+
+void APushCharacter::Test()
+{
+    if (SkillComponent == nullptr)
+        return;
+    if (SkillComponent->curSkillData == nullptr)
+        return;
+    SkillComponent->curSkillData->Play(this);
+}
+
+void APushCharacter::PlayAnimMontageRep_Implementation(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate)
+{
+    PlayAnimMontageMC(InCharacter, InMontage, PlayRate);
+}
+
+
+void APushCharacter::PlayAnimMontageMC_Implementation(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate)
+{
+    if (InCharacter == nullptr || InMontage == nullptr)
+        return;
+
+    InCharacter->PlayAnimMontage(InMontage, PlayRate);
+}
+
 
 void APushCharacter::BeginPlay()
 {

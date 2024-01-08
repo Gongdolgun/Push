@@ -1,15 +1,15 @@
 #include "Components/SkillComponent.h"
 #include "GameFramework/Character.h"
+#include "Net/UnrealNetwork.h"
 #include "Skill/SkillData.h"
 #include "Skill/Skill.h"
 #include "Skill/SkillDatas/SkillData_Projectile.h"
+#include "Global.h"
 
 
 USkillComponent::USkillComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	/*SetNetAddressable();
-	SetIsReplicated(true);*/
 }
 
 
@@ -43,18 +43,10 @@ void USkillComponent::Execute()
 	curSkillData->Play(Owner);
 }
 
-void USkillComponent::SpawnCallOnServer_Implementation(TSubclassOf<ASkill> SpawnSkill, FVector SpawnLocation,
-	FRotator SpawnRotation)
+void USkillComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	SpawnCallMulticast_Implementation(SpawnSkill, SpawnLocation, SpawnRotation);
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(USkillComponent, SpawnLocation);
 }
 
-void USkillComponent::SpawnCallMulticast_Implementation(TSubclassOf<ASkill> SpawnSkill, FVector SpawnLocation,
-	FRotator SpawnRotation)
-{
-	FActorSpawnParameters params;
-	params.Owner = Owner;
-	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	Owner->GetWorld()->SpawnActor<ASkill>(SpawnSkill, SpawnLocation, SpawnRotation, params);
-}

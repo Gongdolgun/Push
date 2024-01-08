@@ -16,7 +16,7 @@ void UNF_SpawnSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 	Super::Notify(MeshComp, Animation);
 
 	ACharacter* Owner = Cast<ACharacter>(MeshComp->GetOwner());
-	if (Owner == nullptr)
+	if (Owner == nullptr || Owner->HasAuthority() == true)
 		return;
 
 	USkillComponent* SkillComponent =  Helpers::GetComponent<USkillComponent>(Owner);
@@ -24,12 +24,31 @@ void UNF_SpawnSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 	if (SkillComponent == nullptr)
 		return;
 
-	FVector RelativeSpawnLocation = SkillComponent->curSkillData->SpawnLocation - Owner->GetActorLocation();
-	FVector SpawnLocation =  Owner->GetActorLocation() + RelativeSpawnLocation + Owner->GetActorForwardVector() * SkillComponent->curSkillData->RelativeDistance;
+	FVector SpawnLocation, RelativeSpawnLocation;
 
 	TSubclassOf<ASkill> SpawnSkill = SkillComponent->curSkillData->Skill;
 
-	FRotator SpawnRotation = FRotator(0, Owner->GetControlRotation().Yaw, 0);
+	USkillData_Projectile* SkillData = Cast<USkillData_Projectile>(SkillComponent->curSkillData);
+	if (SkillData != nullptr)
+	{
+		SpawnLocation = Owner->GetActorLocation() + Owner->GetActorForwardVector() * SkillComponent->curSkillData->RelativeDistance;
+	}
+	else
+	{
+		RelativeSpawnLocation = SkillComponent->SpawnLocation - Owner->GetActorLocation();
+		SpawnLocation = Owner->GetActorLocation() + RelativeSpawnLocation + Owner->GetActorForwardVector() * SkillComponent->curSkillData->RelativeDistance;
+	}
 
-	SkillComponent->SpawnCallOnServer_Implementation(SpawnSkill, SpawnLocation, SpawnRotation);
+	FRotator SpawnRotation = Owner->GetActorForwardVector().Rotation();
+
+	FActorSpawnParameters params;
+	params.Owner = Owner;
+	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	Owner->GetWorld()->SpawnActor<ASkill>(SpawnSkill, SpawnLocation, SpawnRotation, params);
+
+	//if(controller == Owner->GetWorld()->GetFirstPlayerController())
+		//SkillComponent->SpawnCallOnServer_Implementation(controller, SpawnSkill, SpawnLocation, SpawnRotation);
+
+//	SkillComponent->SpawnCallOnServer_Implementation(SpawnSkill, SpawnLocation, SpawnRotation);
 }

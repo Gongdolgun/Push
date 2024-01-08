@@ -30,4 +30,5 @@ public:
 	UPROPERTY(EditAnywhere, Category = "HitData")
 		FHitData HitData;
 
+
 };

@@ -22,11 +22,11 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> Skill;
 
-	FVector SpawnLocation;
-
 	UPROPERTY(EditAnywhere)
 		float RelativeDistance = 0;
 
 public:
+	UFUNCTION()
 	virtual void Play(ACharacter* InOwner);
+	
 };
