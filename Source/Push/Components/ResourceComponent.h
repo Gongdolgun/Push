@@ -22,6 +22,11 @@ public:
 
 	UFUNCTION()
 		void AdjustHP(int InValue);
+
+	// 2024_01_04 박성우 - Tab키 입력 시 KillDeath 위젯 띄우기
+	void OnKillDeathUI();
+	void OffKillDeathUI();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -34,5 +39,8 @@ private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
 	meta = (AllowPrivateAccess))
 		float MaxHP = 100.0f;
+
+	UPROPERTY()
+	class AMainHUD* MainHUD;
 
 };

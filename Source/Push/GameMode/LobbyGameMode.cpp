@@ -4,14 +4,17 @@
 void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-	
-	TWeakObjectPtr<UGameInstance> GameInstance = GetGameInstance();
-	if (GameInstance.IsValid())
-	{
-		TWeakObjectPtr<UWorld> World = GetWorld();
-		if (World.IsValid())
-		{
-			World->ServerTravel(FString("/Game/Maps/ThirdPersonExampleMap"));
-		}
-	}
+
+	//if(HasAuthority())
+	//{
+	//	TWeakObjectPtr<UGameInstance> GameInstance = GetGameInstance();
+	//	if (GameInstance.IsValid())
+	//	{
+	//		TWeakObjectPtr<UWorld> World = GetWorld();
+	//		if (World.IsValid())
+	//		{
+	//			World->ServerTravel(FString("/Game/SW/Maps/TestLevelMap"));
+	//		}
+	//	}
+	//}
 }

@@ -1,36 +1,31 @@
 #include "PushGameMode.h"
-#include "Push/Character/PushCharacter.h"
+#include "Character/PushCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
+#include "Widgets/StoreUI.h"
 
 namespace MatchState
 {
-	const FName Result = FName("Result");
+	const FName Result = FName("Result"); // 결과발표. 내장되지 않은 MatchState을 사용시 명시해서 사용
 }
 
 APushGameMode::APushGameMode()
 {
-	bDelayedStart = false; // true면 GameMode가 start 되기 전에 waiting 상태
-
-
+	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태. false면 MatchState::WaitingToStart는 비활성화되어 실행되지 않는다
 }
 
 void APushGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UWorld* world = GetWorld();
-
-	if (world == nullptr)
-		return;
-
-	LevelStartingTime = GetWorld()->GetTimeSeconds();
+	LevelStartingTime = GetWorld()->GetTimeSeconds();	
 }
 
 void APushGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	//** '대기시간 > 경기시간 > 결과시간'을 반복
 	if (MatchState == MatchState::WaitingToStart) // 대기
 	{
 		// 대기시간 - 현재시간 + 게임레벨맵에 들어간 시간
@@ -66,21 +61,12 @@ void APushGameMode::OnMatchStateSet()
 	Super::OnMatchStateSet();
 
 	// GameMode의 MatchState이 변경되면 서버에서 해당되는 PlayerController를 찾아 MatchState을 설정한다.
-	UWorld* world = GetWorld();
-
-	if (world == nullptr)
-		return;
-
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
-		if(*It != nullptr)
+		TWeakObjectPtr<APushPlayerController> SelectedPlayer = Cast<APushPlayerController>(*It);
+		if (SelectedPlayer.IsValid())
 		{
-			TWeakObjectPtr<APushPlayerController> SelectedPlayer = Cast<APushPlayerController>(*It);
-			if (SelectedPlayer.IsValid())
-			{
-				SelectedPlayer->OnMatchStateSet(MatchState);
-			}
+			SelectedPlayer->OnMatchStateSet(MatchState);
 		}
 	}
 }
-
