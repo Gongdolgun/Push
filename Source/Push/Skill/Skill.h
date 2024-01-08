@@ -5,7 +5,7 @@
 #include "Misc/Structures.h"
 #include "Skill.generated.h"
 
-UCLASS(Blueprintable)
+UCLASS(Abstract)
 class PUSH_API ASkill : public AActor
 {
 	GENERATED_BODY()
