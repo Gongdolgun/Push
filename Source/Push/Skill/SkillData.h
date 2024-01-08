@@ -4,7 +4,7 @@
 #include "UObject/NoExportTypes.h"
 #include "SkillData.generated.h"
 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, BlueprintType)
 class PUSH_API USkillData : public UObject
 {
 	GENERATED_BODY()
@@ -13,6 +13,12 @@ public:
 	virtual void BeginPlay();
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		FString SkillName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UTexture2D* SkillTexture;
+
 	UPROPERTY(EditAnywhere)
 		class UAnimMontage* ActionMontage;
 

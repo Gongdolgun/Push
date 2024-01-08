@@ -4,7 +4,7 @@
 #include "Skill/SkillData.h"
 #include "SkillData_Projectile.generated.h"
 
-UCLASS(Blueprintable)
+UCLASS(Blueprintable, BlueprintType)
 class PUSH_API USkillData_Projectile : public USkillData
 {
 	GENERATED_BODY()
