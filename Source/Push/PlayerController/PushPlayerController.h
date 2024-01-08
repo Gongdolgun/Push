@@ -32,6 +32,8 @@ protected:
 
 private:
 	UPROPERTY()
+	class APushGameMode* PushGameMode;
+	UPROPERTY()
 	class AMainHUD* MainHUD;
 	UPROPERTY()
 	class UResourceComponent* resourceComponent;
@@ -40,6 +42,8 @@ private:
 	float WarmupTime = 0.0f;	// 대기 시간
 	float MatchTime = 0.0f;		// 경기 시간
 	float ResultTime = 0.0f;  // 결과 시간
+	
+	float tempTime = 0.0f;
 
 	UPROPERTY(ReplicatedUsing = OnRep_MatchState) // Client들에게 Replicated 되도록 설정
 	FName MatchState; // GameMode.h의 이름이 같은 MatchState이 있다

@@ -35,6 +35,7 @@ public:
 	float LevelStartingTime = 0.0f; // 게임레벨맵에 들어간 시간
 
 	float CountdownTime = 0.0f;
+	float tempTime = 0.0f;
 
 protected:
 	virtual void BeginPlay() override;

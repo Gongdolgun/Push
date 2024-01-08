@@ -38,7 +38,7 @@ void UPushGameInstance::OnSessionCreationReply(FName SessionName, bool bWasSucce
 	if(bWasSuccess)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Session Creation Success "));
-		//GetWorld()->ServerTravel(MapPath);
+		GetWorld()->ServerTravel(MapPath);
 	}
 	else
 	{

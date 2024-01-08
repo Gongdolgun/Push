@@ -26,6 +26,13 @@ void APushPlayerController::BeginPlay()
 		MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
 	}
 
+	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(this));
+	if (IsValid(PushGameMode))
+	{
+		tempTime = PushGameMode->tempTime;
+	}
+
+
 	ClientCheckMatchState();
 }
 
@@ -36,6 +43,7 @@ void APushPlayerController::Tick(float DeltaSeconds)
 	SetHUDHealth(HUDHealth, HUDMaxHealth); // WDG에서 관리할거면 삭제
 	SetHUDTime(); // 시간
 	//Init();
+	
 }
 
 void APushPlayerController::OnPossess(APawn* InPawn)
@@ -103,6 +111,10 @@ void APushPlayerController::OnMatchStateSet(FName State)
 			MainHUD->CheckWidget("ResourceWidget");
 			MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
 			MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Hidden);
+			if (IsValid(PushGameMode))
+			{
+				tempTime = PushGameMode->tempTime;
+			}
 		}
 	}
 }
@@ -143,11 +155,12 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 
 	float TimeLeft = 0.0f;
 	if (MatchState == MatchState::WaitingToStart) // 대기
-		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
+		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + tempTime;
 	else if (MatchState == MatchState::InProgress) // 경기
-		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime;
-	else if (MatchState == MatchState::Result) // 결과
-		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime;
+		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + tempTime;
+	else if (MatchState == MatchState::Result) {// 결과
+		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime + tempTime;
+	}
 
 	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
 
