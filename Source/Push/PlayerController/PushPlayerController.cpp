@@ -20,18 +20,11 @@ void APushPlayerController::BeginPlay()
 	if (IsValid(MainHUD))
 	{
 		MainHUD->AddWidget();
-		MainHUD->CheckWidget("KillDeathWidget");
-		MainHUD->CheckWidget("StoreUIWidget");
-		MainHUD->GetWidget<UKillDeathUI>("KillDeathWidget")->SetVisibility(ESlateVisibility::Hidden);
-		MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
+		MainHUD->CheckWidget("KDA");
+		MainHUD->CheckWidget("Store");
+		MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
+		MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
 	}
-
-	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(this));
-	if (IsValid(PushGameMode))
-	{
-		tempTime = PushGameMode->tempTime;
-	}
-
 
 	ClientCheckMatchState();
 }
@@ -43,7 +36,6 @@ void APushPlayerController::Tick(float DeltaSeconds)
 	SetHUDHealth(HUDHealth, HUDMaxHealth); // WDG에서 관리할거면 삭제
 	SetHUDTime(); // 시간
 	//Init();
-	
 }
 
 void APushPlayerController::OnPossess(APawn* InPawn)
@@ -54,7 +46,7 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 	resourceComponent = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
 	if (PushCharacter.IsValid())
 	{
-		if(IsValid(resourceComponent))
+		if (IsValid(resourceComponent))
 			SetHUDHealth(resourceComponent->GetHP(), resourceComponent->GetMaxHP());
 	}
 }
@@ -79,14 +71,14 @@ void APushPlayerController::OnMatchStateSet(FName State)
 
 	if (MatchState == MatchState::WaitingToStart) // 대기
 	{
-		if(false == HasAuthority())
+		if (false == HasAuthority())
 		{
 			// TODO: HUD를 업데이트 함수
 			CLog::Print("WaitingToStart!!");
-			MainHUD->CheckWidget("StoreUIWidget");
-			MainHUD->CheckWidget("ResourceWidget");
-			MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Visible);
-			MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Hidden);		
+			MainHUD->CheckWidget("Store");
+			MainHUD->CheckWidget("Resource");
+			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
+			MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 	else if (MatchState == MatchState::InProgress) // 경기
@@ -95,10 +87,10 @@ void APushPlayerController::OnMatchStateSet(FName State)
 		{
 			// TODO: HUD를 업데이트 함수
 			CLog::Print("InProgress!!");
-			MainHUD->CheckWidget("StoreUIWidget");
-			MainHUD->CheckWidget("ResourceWidget");
-			MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
-			MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Visible);
+			MainHUD->CheckWidget("Store");
+			MainHUD->CheckWidget("Resource");
+			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
+			MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);
 		}
 	}
 	else if (MatchState == MatchState::Result) // 결과발표
@@ -107,14 +99,10 @@ void APushPlayerController::OnMatchStateSet(FName State)
 		{
 			// TODO: HUD를 업데이트 함수
 			CLog::Print("Result!!");
-			MainHUD->CheckWidget("StoreUIWidget");
-			MainHUD->CheckWidget("ResourceWidget");
-			MainHUD->GetWidget<UStoreUI>("StoreUIWidget")->SetVisibility(ESlateVisibility::Hidden);
-			MainHUD->GetWidget<UResource>("ResourceWidget")->SetVisibility(ESlateVisibility::Hidden);
-			if (IsValid(PushGameMode))
-			{
-				tempTime = PushGameMode->tempTime;
-			}
+			MainHUD->CheckWidget("Store");
+			MainHUD->CheckWidget("Resource");
+			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
+			MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }
@@ -136,10 +124,10 @@ void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG에
 {
 	MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(GetHUD()) : MainHUD;
 
-	if(IsValid(MainHUD) && IsValid(MainHUD->GetWidget<UResource>("ResourceWidget")) && IsValid(MainHUD->GetWidget<UResource>("ResourceWidget")->HealthBar))
+	if (IsValid(MainHUD) && IsValid(MainHUD->GetWidget<UResource>("Resource")) && IsValid(MainHUD->GetWidget<UResource>("Resource")->HealthBar))
 	{
 		const float HealthPercent = Health / MaxHealth;
-		MainHUD->GetWidget<UResource>("ResourceWidget")->HealthBar->SetPercent(HealthPercent);
+		MainHUD->GetWidget<UResource>("Resource")->HealthBar->SetPercent(HealthPercent);
 	}
 	else // HUD가 없다면
 	{
@@ -151,35 +139,34 @@ void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG에
 void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 {
 	if (MainHUD == nullptr) return;
-	if (MainHUD->GetWidget<UResource>("ResourceWidget") == nullptr) return;
+	if (MainHUD->GetWidget<UResource>("Resource") == nullptr) return;
 
 	float TimeLeft = 0.0f;
 	if (MatchState == MatchState::WaitingToStart) // 대기
-		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + tempTime;
+		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
 	else if (MatchState == MatchState::InProgress) // 경기
-		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + tempTime;
-	else if (MatchState == MatchState::Result) {// 결과
-		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime + tempTime;
-	}
+		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime;
+	else if (MatchState == MatchState::Result) // 결과
+		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime;
 
 	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
 
-	if (MainHUD->GetWidget<UResource>("ResourceWidget")->MatchCountdownText)
+	if (MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText)
 	{
 		int32 Minutes = FMath::FloorToInt(CountdownTime / 60.f);
 		int32 Seconds = CountdownTime - Minutes * 60;
 
 		FString CountdownText = FString::Printf(TEXT("%02d:%02d"), Minutes, Seconds);
-		MainHUD->GetWidget<UResource>("ResourceWidget")->MatchCountdownText->SetText(FText::FromString(CountdownText));
+		MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText->SetText(FText::FromString(CountdownText));
 	}
 
-	if (MainHUD->GetWidget<UResource>("ResourceWidget")->MatchStateTypeText)
+	if (MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText)
 	{
-		MainHUD->GetWidget<UResource>("ResourceWidget")->MatchStateTypeText->SetText(FText::FromName(MatchState));
+		MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText->SetText(FText::FromName(MatchState));
 	}
 }
 
 void APushPlayerController::OnRep_MatchState()
 {
-	
+
 }

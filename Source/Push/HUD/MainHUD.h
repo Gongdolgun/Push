@@ -23,10 +23,10 @@ public:
 	T* GetWidget(FString Key);
 
 	UPROPERTY(EditAnywhere, Category = "Widgets")
-	TMap<FString, TSubclassOf<class UUserWidget>> UserWidgetClasses;
+		TMap<FString, TSubclassOf<class UUserWidget>> UserWidgetClasses;
 
 	UPROPERTY()
-	TMap<FString, class UUserWidget*> UserWidgets;
+		TMap<FString, class UUserWidget*> UserWidgets;
 
 protected:
 	virtual void BeginPlay() override;

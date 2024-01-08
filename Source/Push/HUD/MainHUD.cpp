@@ -8,7 +8,7 @@
 void AMainHUD::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	//AddEffectWidget();
 }
 
@@ -21,16 +21,16 @@ void AMainHUD::DrawHUD()
 void AMainHUD::AddWidget()
 {
 	TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
-	
+
 	if (UserWidgetClasses.Num() == 0 || !PlayerController.IsValid())
 		return;
 
 	for (TPair<FString, TSubclassOf<UUserWidget>> widgetClass : UserWidgetClasses)
 	{
-		if(IsValid(widgetClass.Value))
+		if (IsValid(widgetClass.Value))
 		{
 			UUserWidget* temp = CreateWidget<UUserWidget>(PlayerController.Get(), widgetClass.Value);
-			temp->AddToViewport(); // Viewport¿¡ µî·Ï
+			temp->AddToViewport(); //
 			UserWidgets.Add(widgetClass.Key, temp);
 		}
 	}

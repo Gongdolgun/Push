@@ -19,7 +19,7 @@ public:
 	class UProgressBar* HealthBar; // 체력 바
 
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* MatchStateTypeText; 
+		class UTextBlock* MatchStateTypeText; 
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* MatchCountdownText; // 시간
+		class UTextBlock* MatchCountdownText; // 시간
 };

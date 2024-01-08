@@ -8,6 +8,8 @@
 UMoveComponent::UMoveComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+
+	
 }
 
 void UMoveComponent::BeginPlay()
@@ -68,6 +70,9 @@ void UMoveComponent::OnLookUp(float Rate)
 
 void UMoveComponent::UpdateSpeed()
 {
-	Helpers::GetComponent<UCharacterMovementComponent>(Owner.Get())->MaxWalkSpeed = Speed * (SpeedPercent / 100);
+	UCharacterMovementComponent* movementComponent = Helpers::GetComponent<UCharacterMovementComponent>(Owner.Get());
+
+
+	movementComponent->MaxWalkSpeed = Speed * (SpeedPercent / 100);
 }
 
