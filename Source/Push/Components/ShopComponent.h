@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<TSubclassOf<class USkillData>> SkillDatas;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class UMainUI* MainUI;
+
 public:
 	UFUNCTION(BlueprintCallable)
 		void OpenStoreUI();

@@ -1,8 +1,10 @@
 #include "Components/ShopComponent.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "GameFramework/Character.h"
 #include "HUD/MainHUD.h"
 #include "PlayerController/PushPlayerController.h"
 #include "Widgets/StoreUI.h"
+#include "Widgets/MainUI.h"
 
 UShopComponent::UShopComponent()
 {
@@ -31,11 +33,24 @@ void UShopComponent::OpenStoreUI()
 	if (Owner == nullptr || PlayerController == nullptr || MainHUD == nullptr)
 		return;
 
+	if (MainHUD->CheckWidget("Main") == true)
+		MainUI = MainHUD->GetWidget<UMainUI>("Main");
+
+	MainUI->OpenStoreUI();
+
+	/*
+	if (Owner == nullptr || PlayerController == nullptr || MainHUD == nullptr)
+		return;
+		
 	if(bOpen == false)
 	{
 		if(MainHUD->CheckWidget("Store") == true)
 		{
+			PlayerController->SetShowMouseCursor(true);
+			MainHUD->GetWidget<UStoreUI>("Store")->RemoveFromParent();
+			MainHUD->GetWidget<UStoreUI>("Store")->AddToViewport();
 			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
+			UWidgetBlueprintLibrary::SetInputMode_GameAndUI(PlayerController);
 			bOpen = true;
 		}
 	}
@@ -44,8 +59,11 @@ void UShopComponent::OpenStoreUI()
 	{
 		if (MainHUD->CheckWidget("Store") == true)
 		{
-			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
+			PlayerController->SetShowMouseCursor(false);
+			MainHUD->GetWidget<UStoreUI>("Store")->RemoveFromParent();
+			UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+			
 			bOpen = false;
 		}
-	}
+	}*/
 }

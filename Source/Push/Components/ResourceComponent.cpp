@@ -27,7 +27,8 @@ void UResourceComponent::OnKillDeathUI()
 
 	if (false == IsValid(MainHUD)) return;
 
-	MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Visible);
+	if(MainHUD->CheckWidget("KDA"))
+		MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UResourceComponent::OffKillDeathUI()
@@ -41,7 +42,8 @@ void UResourceComponent::OffKillDeathUI()
 
 	if (false == IsValid(MainHUD)) return;
 
-	MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
+	if (MainHUD->CheckWidget("KDA"))
+		MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UResourceComponent::BeginPlay()
