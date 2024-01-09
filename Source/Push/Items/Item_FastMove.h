@@ -20,5 +20,5 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = "BuffClass")
-		TSubclassOf<class UBuffInstance> BuffClass;
+		TSubclassOf<class ABuffInstance> BuffClass;
 };

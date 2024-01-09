@@ -17,6 +17,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Global.h"
 #include "Components/SkillComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "Skill/SkillData.h"
 
@@ -56,6 +57,11 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<USkillComponent>(this, &SkillComponent, "SkillComponent");
     Helpers::CreateActorComponent<UBuffComponent>(this, &BuffComponent, "BuffComponent");
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
+	/*if (ResourceComponent != nullptr)
+	{
+		ResourceComponent->SetNetAddressable();
+		ResourceComponent->SetIsReplicated(true);
+	}*/
 
     if(SkillComponent != nullptr)
     {
@@ -88,7 +94,7 @@ void APushCharacter::Hit_Implementation(const FHitData& InHitData)
 {
     if(ResourceComponent != nullptr)
     {
-		ResourceComponent->AdjustHP(-InHitData.Damage);
+		ResourceComponent->AdjustHP_Server(-InHitData.Damage);
     }
     if(InHitData.xLaunch + InHitData.yLaunch + InHitData.zLaunch > 0.0f)
     {
@@ -166,4 +172,3 @@ void APushCharacter::Tick(float DeltaSeconds)
     Super::Tick(DeltaSeconds);
 
 }
-

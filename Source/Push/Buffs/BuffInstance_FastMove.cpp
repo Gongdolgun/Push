@@ -2,7 +2,7 @@
 #include "Components/MoveComponent.h"
 #include "Global.h"
 
-void UBuffInstance_FastMove::OnEffect()
+void ABuffInstance_FastMove::OnEffect()
 {
 	Super::OnEffect();
 
@@ -16,9 +16,8 @@ void UBuffInstance_FastMove::OnEffect()
 	moveComponent->UpdateSpeed();
 }
 
-void UBuffInstance_FastMove::OffEffect()
+void ABuffInstance_FastMove::OffEffect()
 {
-	Super::OffEffect();
 
 
 	UMoveComponent* moveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
@@ -32,4 +31,6 @@ void UBuffInstance_FastMove::OffEffect()
 	moveComponent->UpdateSpeed();
 
 	ConditionalBeginDestroy();
+
+	Super::OffEffect();
 }

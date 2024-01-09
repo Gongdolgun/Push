@@ -13,20 +13,27 @@ class PUSH_API UBuffComponent : public UActorComponent
 
 public:	
 	UBuffComponent();
-
 protected:
 	virtual void BeginPlay() override;
-
+	
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
 public:
-	void AddBuff(TSubclassOf<UBuffInstance> BuffClass);
-
+	void AddBuff(TSubclassOf<ABuffInstance> BuffClass);
+	void RemoveBuff(ABuffInstance* removeBuff);
 
 private:
-	class ACharacter* Owner;
+	TWeakObjectPtr<ACharacter> Owner;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,
 	meta = (AllowPrivateAccess))
-		TArray<UBuffInstance*> Buffs;
+		TArray<ABuffInstance*> Buffs;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UWDG_BuffBoard> WidgetClass;
+
+	UWDG_BuffBoard* Widget;
+
+public:
+	int BuffCount = 0;
 };

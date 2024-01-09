@@ -3,15 +3,42 @@
 #include "Character/PushCharacter.h"
 #include "HUD/MainHUD.h"
 #include "Widgets/KillDeathUI.h"
+#include "Net/UnrealNetwork.h"
 
 UResourceComponent::UResourceComponent()
 {
+}
 
+void UResourceComponent::SetHP_Server_Implementation(float hp)
+{
+	SetMaxHP_NMC(hp);
+}
+
+
+void UResourceComponent::SetHP_NMC_Implementation(float hp)
+{
+	HP = hp;
+}
+
+void UResourceComponent::SetMaxHP_Server_Implementation(float maxHP)
+{
+	SetMaxHP_NMC(maxHP);
+}
+
+void UResourceComponent::SetMaxHP_NMC_Implementation(float maxHP)
+{
+	MaxHP = maxHP;
 }
 
 // 2024.01.02 이현중
 // 현재 수치에 Value값을 현재HP에 plus 최대값은 0~MaxHP까지
-void UResourceComponent::AdjustHP(int InValue)
+
+void UResourceComponent::AdjustHP_Server_Implementation(int InValue)
+{
+	AdjustHP_NMC(InValue);
+}
+
+void UResourceComponent::AdjustHP_NMC_Implementation(int InValue)
 {
 	HP = FMath::Clamp(HP + InValue, 0.0f, MaxHP);
 }

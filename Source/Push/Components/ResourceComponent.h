@@ -13,15 +13,29 @@ class PUSH_API UResourceComponent : public UActorComponent
 public:
 	UResourceComponent();
 
-
-	FORCEINLINE void SetHP(float hp) { HP = hp; }
 	FORCEINLINE float GetHP() { return HP; }
-
-	FORCEINLINE void SetMaxHP(float maxHP) { MaxHP = maxHP; }
 	FORCEINLINE float GetMaxHP() { return MaxHP; }
 
-	UFUNCTION()
-		void AdjustHP(int InValue);
+	//2024.01.09 이현중
+	//기존 INLINE함수 RPC를 이용한 함수로 변경
+	UFUNCTION(Server, Reliable)
+		void SetHP_Server(float hp);
+
+	UFUNCTION(Server, Reliable)
+		void SetMaxHP_Server(float maxHP);
+
+	UFUNCTION(Server, Reliable)
+		void AdjustHP_Server(int InValue);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void SetHP_NMC(float hp);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void SetMaxHP_NMC(float maxHP);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void AdjustHP_NMC(int InValue);
+
 
 	// 2024_01_04 박성우 - Tab키 입력 시 KillDeath 위젯 띄우기
 	void OnKillDeathUI();
