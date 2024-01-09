@@ -30,7 +30,7 @@ void ABuffInstance::BeginPlay()
 	if (!controller || !buffComponent)
 		return;
 
-	
+	//버프 위젯 생성
 	Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->BuffCount++);
 	Widget->SetBuffUI(UIImage, &PlayTime, &LifeTime);
 	Widget->AddToViewport();

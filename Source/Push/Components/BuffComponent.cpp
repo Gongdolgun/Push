@@ -37,7 +37,7 @@ void UBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 }
 
 //2024.01.05 이현중
-//버프 자료형을 집어넣으면 그에 따른 클래스를 생성후 OnEffect를 발생
+//버프 자료형을 집어넣으면 그에 따른 엑터를 생성후 OnEffect를 발생 <- 2024.01.09 기존 클래스생성에서 엑터생성으로 변경
 void UBuffComponent::AddBuff(TSubclassOf<ABuffInstance> BuffClass)
 {
 	if (!Owner.IsValid())
