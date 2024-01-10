@@ -6,6 +6,12 @@
 #include "GameFramework/PlayerState.h"
 #include "GameState/PushGameState.h"
 #include "PlayerController/PushPlayerController.h"
+<<<<<<< Updated upstream
+=======
+#include "Widgets/StoreUI.h"
+#include "Global.h"
+#include "GameFramework/GameStateBase.h"
+>>>>>>> Stashed changes
 
 namespace MatchState
 {
@@ -79,6 +85,7 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
+<<<<<<< Updated upstream
 	APushPlayerController* Controller = Cast<APushPlayerController>(NewPlayer);
 
 	if (Controller)
@@ -105,3 +112,10 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 }
 
+=======
+	
+
+}
+
+
+>>>>>>> Stashed changes

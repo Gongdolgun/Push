@@ -1,4 +1,8 @@
 #include "Skill.h"
+<<<<<<< Updated upstream
+=======
+#include "Components/ShapeComponent.h"
+>>>>>>> Stashed changes
 #include "GameFramework/Character.h"
 
 ASkill::ASkill()

@@ -69,8 +69,23 @@ void ARing::Tick(float DeltaTime)
 
 	for(APushCharacter* character : OverlappedCharacters)
 	{
+<<<<<<< Updated upstream
 		character->Hit_Implementation(hitData);
 		character->widget->PlayEffect();
+=======
+		character->Hit(this, hitData);
+
+		APlayerController* controller = Cast<APlayerController>(character->GetController());
+
+		if (controller == nullptr)
+			return;
+
+		AMainHUD* hud = Cast<AMainHUD>(controller->GetHUD());
+
+		if (hud == nullptr)
+			return;
+
+>>>>>>> Stashed changes
 	}
 }
 

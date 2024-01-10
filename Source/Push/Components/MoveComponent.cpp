@@ -37,7 +37,9 @@ void UMoveComponent::OnMoveForward(float InAxis)
 {
 	if (!IsValid(Owner.Get()))
 		return;
-	FVector direction = UKismetMathLibrary::GetForwardVector(FRotator(0, Owner->GetControlRotation().Yaw, 0));
+	//FVector direction = UKismetMathLibrary::GetForwardVector(FRotator(0, Owner->GetControlRotation().Yaw, 0));
+	FRotator rotator = FRotator(0, Owner->GetControlRotation().Yaw, 0);
+	FVector direction = FQuat(rotator).GetForwardVector();
 
 	//2023.12.28 이현중
 	// 앞,뒤 이동
@@ -48,7 +50,9 @@ void UMoveComponent::OnMoveRight(float InAxis)
 {
 	//2023.12.28 이현중
 	// 좌,우 이동
-	FVector direction = UKismetMathLibrary::GetRightVector(FRotator(0, Owner->GetControlRotation().Yaw, 0));
+	//FVector direction = UKismetMathLibrary::GetRightVector(FRotator(0, Owner->GetControlRotation().Yaw, 0));
+	FRotator rotator = FRotator(0, Owner->GetControlRotation().Yaw, 0);
+	FVector direction = FQuat(rotator).GetRightVector();
 
 	Owner->AddMovementInput(direction, InAxis);
 

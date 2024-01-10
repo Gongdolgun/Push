@@ -16,6 +16,10 @@ class PUSH_API IDamageable
 	GENERATED_BODY()
 
 public:
+<<<<<<< Updated upstream
 	UFUNCTION(NetMulticast, Reliable)
 		virtual void Hit(const FHitData& InHitData) = 0;
+=======
+	virtual void Hit(AActor* InAttacker, const FHitData& InHitData) = 0;
+>>>>>>> Stashed changes
 };

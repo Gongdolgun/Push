@@ -39,5 +39,11 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnMatchStateSet() override;
+<<<<<<< Updated upstream
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+=======
+
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+
+>>>>>>> Stashed changes
 };

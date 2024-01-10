@@ -8,6 +8,13 @@
 #include "Components/ProgressBar.h"
 #include "Components/ResourceComponent.h"
 #include "Components/TextBlock.h"
+<<<<<<< Updated upstream
+=======
+#include "Widgets/KillDeathUI.h"
+#include "Widgets/StoreUI.h"
+#include "Character/PushCharacter.h"
+
+>>>>>>> Stashed changes
 
 void APushPlayerController::BeginPlay()
 {
@@ -50,7 +57,12 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 	}
 }
 
+<<<<<<< Updated upstream
 void APushPlayerController::ServerCheckMatchState_Implementation()
+=======
+
+void APushPlayerController::ClientCheckMatchState_Implementation()
+>>>>>>> Stashed changes
 {
 	TWeakObjectPtr<APushGameMode> GameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(this));
 	if (GameMode.IsValid())

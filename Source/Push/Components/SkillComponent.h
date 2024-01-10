@@ -19,5 +19,33 @@ protected:
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+<<<<<<< Updated upstream
 		
+=======
+public:
+	void UseSkill(char InChar);
+
+	UFUNCTION(BlueprintCallable)
+		void Execute();
+
+public:
+	TMap<char, class USkillData*> SkillMap;
+	ACharacter* Owner;
+
+public:
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<USkillData> ss;
+
+public:
+	UPROPERTY(EditAnywhere)
+		class USkillData* curSkillData;
+
+	UPROPERTY(EditAnywhere, Replicated)
+		FVector SpawnLocation;
+
+	UPROPERTY(EditAnywhere, Replicated)
+		FVector Meteor_StartLocation;
+
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+>>>>>>> Stashed changes
 };

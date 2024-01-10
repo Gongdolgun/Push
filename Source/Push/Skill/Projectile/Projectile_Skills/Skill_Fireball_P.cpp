@@ -23,6 +23,18 @@ void ASkill_Fireball_P::Tick(float DeltaSeconds)
 void ASkill_Fireball_P::FOnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+<<<<<<< Updated upstream
+=======
+	Super::FOnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+
+	IDamageable* character = Cast<IDamageable>(OtherActor);
+
+	if (character == nullptr)
+		return;
+
+	character->Hit(this, HitData);
+
+>>>>>>> Stashed changes
 	OnDestroy();
 }
 

@@ -22,7 +22,13 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Explosion Particle")
 		class UParticleSystem* Explosion;
 
+<<<<<<< Updated upstream
 private:
 	UFUNCTION()
 		void FOnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+=======
+public:
+
+	virtual void FOnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+>>>>>>> Stashed changes
 };
