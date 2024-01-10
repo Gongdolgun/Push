@@ -21,6 +21,9 @@ class PUSH_API APushGameMode : public AGameMode
 
 public:
 	APushGameMode();
+
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+	
 	virtual void Tick(float DeltaSeconds) override;
 
 	UPROPERTY(EditDefaultsOnly)
@@ -39,6 +42,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnMatchStateSet() override;
+	virtual void StartMatch() override;
 
 
 };

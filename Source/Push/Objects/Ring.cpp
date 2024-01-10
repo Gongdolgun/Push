@@ -71,7 +71,7 @@ void ARing::Tick(float DeltaTime)
 
 	for(APushCharacter* character : OverlappedCharacters)
 	{
-		character->Hit_Implementation(hitData);
+		character->Hit(this, hitData);
 
 		APlayerController* controller = Cast<APlayerController>(character->GetController());
 

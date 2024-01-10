@@ -32,9 +32,7 @@ public:
 	class ASkill* SkillActor;
 
 	//2024_01_02 서동주 Hit Interface 적용
-	//다른 Actor에서 피격 시 Hit_Implementation을 Call해서 해주세요
-	//virtual void Hit(const FHitData& InHitData) override {};
-	virtual void Hit_Implementation(const FHitData& InHitData) override;
+	virtual void Hit(AActor* InAttacker, const FHitData& InHitData) override;
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -61,7 +59,6 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
 
-
 public:
 	//모든 서버와 클라이언트에게 보여주는 Montage 실행 시 Client에서 호출하는 함수
 	UFUNCTION(Server, Reliable)
@@ -77,8 +74,36 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void SetSpawnlocationNMC(FVector InVector);
 
+	UFUNCTION(Server, Reliable)
+		void LaunchServer(FVector InLaunch);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void LaunchNMC(FVector InLaunch);
+
+	UFUNCTION(Server, Reliable)
+		void ChangeBodyColor_Server();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void ChangeBodyColor_NMC();
+
+	UFUNCTION(Server, Reliable)
+		void SetBodyColor_Server(FLinearColor InColor);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void SetBodyColor_NMC(FLinearColor InColor);
+
+	// 2024_01_05 Material Change 적용
+	void Create_DynamicMaterial();
+	void Change_Color();
+
 	//Testing!!
 	UFUNCTION(BlueprintCallable)
 		void Test();
+
+public:
+	UPROPERTY(Replicated)
+		FLinearColor BodyColor;
+
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 };
 

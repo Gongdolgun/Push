@@ -35,13 +35,10 @@ public:
 
 	//LaunchPercent: 각 축으로 날라가는 Launch 비율
 	UPROPERTY(EditAnywhere, Category = "Launch")
-		float xLaunch = 0.0;
+		float xLaunchPower = 0.0;
 
 	UPROPERTY(EditAnywhere, Category = "Launch")
-		float yLaunch = 0.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Launch")
-		float zLaunch = 0.0;
+		float zLaunchPower = 0.0;
 
 	//Effect: 피격 시 나오는 이펙트
 	UPROPERTY(EditAnywhere, Category = "Effect")
@@ -63,6 +60,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Debuff")
 		TArray<EDebuff> Debuffs;
 
+public:
+	float xLaunch;
+	float yLaunch;
+	float zLaunch;
 };
 
 UCLASS()

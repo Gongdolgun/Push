@@ -32,8 +32,8 @@ void ASkill_Fireball_P::FOnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 
 	if (character == nullptr)
 		return;
-
-	character->Hit_Implementation(HitData);
+	
+	character->Hit(this, HitData);
 
 	OnDestroy();
 }

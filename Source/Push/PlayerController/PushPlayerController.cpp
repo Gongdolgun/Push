@@ -27,6 +27,8 @@ void APushPlayerController::BeginPlay()
 	}
 
 	ClientCheckMatchState();
+
+	BodyColor = FLinearColor::MakeRandomColor();
 }
 
 void APushPlayerController::Tick(float DeltaSeconds)
@@ -169,4 +171,14 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 void APushPlayerController::OnRep_MatchState()
 {
 
+}
+
+void APushPlayerController::SetBodyColor_NMC_Implementation(FLinearColor InColor)
+{
+	BodyColor = InColor;
+}
+
+void APushPlayerController::SetBodyColor_Server_Implementation(FLinearColor InColor)
+{
+	SetBodyColor_NMC_Implementation(InColor);
 }

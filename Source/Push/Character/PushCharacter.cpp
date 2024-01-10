@@ -17,8 +17,10 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Global.h"
 #include "Components/SkillComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "Skill/SkillData.h"
+#include "PlayerController/PushPlayerController.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APushCharacter
@@ -64,7 +66,6 @@ APushCharacter::APushCharacter()
     }
 }
 
-
 // Input
 void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
@@ -84,16 +85,24 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 }
 
-void APushCharacter::Hit_Implementation(const FHitData& InHitData)
+void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 {
+    FVector direction = GetActorLocation() - InAttacker->GetActorLocation();
+    direction = direction.GetSafeNormal();
+
+    FVector launch = FVector(InHitData.xLaunchPower * direction.X, InHitData.xLaunchPower * direction.Y, InHitData.zLaunchPower);
+
+    CLog::Log(InAttacker->GetActorLocation());
+    CLog::Log(launch);
+
     if(ResourceComponent != nullptr)
     {
 		ResourceComponent->AdjustHP(-InHitData.Damage);
     }
-    if(InHitData.xLaunch + InHitData.yLaunch + InHitData.zLaunch > 0.0f)
+
+    if(launch.X + launch.Y + launch.Z > 0.0f)
     {
-        
-        //LaunchCharacter(FVector(InHitData.xLaunch, InHitData.yLaunch, InHitData.zLaunch), false, false);
+        LaunchServer(launch);
     }
 
     if(InHitData.Effect != nullptr)
@@ -118,6 +127,42 @@ void APushCharacter::Hit_Implementation(const FHitData& InHitData)
     }
 }
 
+void APushCharacter::ChangeBodyColor_Server_Implementation()
+{
+    ChangeBodyColor_NMC_Implementation();
+}
+
+void APushCharacter::ChangeBodyColor_NMC_Implementation()
+{
+    Create_DynamicMaterial();
+    Change_Color();
+}
+
+void APushCharacter::Create_DynamicMaterial()
+{
+    for (int32 i = 0; i < this->GetMesh()->GetMaterials().Num(); i++)
+    {
+        UMaterialInterface* material = this->GetMesh()->GetMaterials()[i];
+
+        this->GetMesh()->SetMaterial(i, UMaterialInstanceDynamic::Create(material, this));
+    }
+}
+
+void APushCharacter::Change_Color()
+{
+    CLog::Print("ChangeColor");
+    for(UMaterialInterface* material : this->GetMesh()->GetMaterials())
+    {
+        UMaterialInstanceDynamic* MaterialDynamic = Cast<UMaterialInstanceDynamic>(material);
+
+        if (MaterialDynamic)
+        {
+            MaterialDynamic->SetVectorParameterValue("BodyColor", BodyColor);
+        }
+    }
+
+}
+
 void APushCharacter::SetSpawnlocationRep_Implementation(FVector InVector)
 {
     SetSpawnlocationNMC_Implementation(InVector);
@@ -129,6 +174,26 @@ void APushCharacter::SetSpawnlocationNMC_Implementation(FVector InVector)
 		SkillComponent->SpawnLocation = InVector;
 }
 
+void APushCharacter::LaunchServer_Implementation(FVector InLaunch)
+{
+    LaunchNMC_Implementation(InLaunch);
+}
+
+void APushCharacter::LaunchNMC_Implementation(FVector InLaunch)
+{
+    LaunchCharacter(InLaunch, false, false);
+}
+
+void APushCharacter::SetBodyColor_Server_Implementation(FLinearColor InColor)
+{
+    SetBodyColor_NMC_Implementation(InColor);
+}
+
+void APushCharacter::SetBodyColor_NMC_Implementation(FLinearColor InColor)
+{
+    BodyColor = InColor;
+}
+
 void APushCharacter::Test()
 {
     if (SkillComponent == nullptr)
@@ -136,6 +201,13 @@ void APushCharacter::Test()
     if (SkillComponent->curSkillData == nullptr)
         return;
     SkillComponent->curSkillData->Play(this);
+}
+
+void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(APushCharacter, BodyColor);
 }
 
 void APushCharacter::PlayAnimMontageRep_Implementation(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate)
@@ -156,8 +228,6 @@ void APushCharacter::PlayAnimMontageMC_Implementation(ACharacter* InCharacter, U
 void APushCharacter::BeginPlay()
 {
     Super::BeginPlay();
-
-
 
 }
 

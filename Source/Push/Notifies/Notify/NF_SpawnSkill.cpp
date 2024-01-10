@@ -46,9 +46,4 @@ void UNF_SpawnSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	Owner->GetWorld()->SpawnActor<ASkill>(SpawnSkill, SpawnLocation, SpawnRotation, params);
-
-	//if(controller == Owner->GetWorld()->GetFirstPlayerController())
-		//SkillComponent->SpawnCallOnServer_Implementation(controller, SpawnSkill, SpawnLocation, SpawnRotation);
-
-//	SkillComponent->SpawnCallOnServer_Implementation(SpawnSkill, SpawnLocation, SpawnRotation);
 }

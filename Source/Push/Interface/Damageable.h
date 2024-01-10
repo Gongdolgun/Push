@@ -16,5 +16,5 @@ class PUSH_API IDamageable
 	GENERATED_BODY()
 
 public:
-	virtual void Hit_Implementation(const FHitData& InHitData) = 0;
+	virtual void Hit(AActor* InAttacker, const FHitData& InHitData) = 0;
 };

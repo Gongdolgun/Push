@@ -3,6 +3,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
 #include "Widgets/StoreUI.h"
+#include "Global.h"
 
 namespace MatchState
 {
@@ -11,14 +12,24 @@ namespace MatchState
 
 APushGameMode::APushGameMode()
 {
-	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태. false면 MatchState::WaitingToStart는 비활성화되어 실행되지 않는다
+	bDelayedStart = false; // true면 GameMode가 start 되기 전에 waiting 상태. false면 MatchState::WaitingToStart는 비활성화되어 실행되지 않는다
+
 }
+
+void APushGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+}
+
+
 
 void APushGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LevelStartingTime = GetWorld()->GetTimeSeconds();	
+	LevelStartingTime = GetWorld()->GetTimeSeconds();
+
 }
 
 void APushGameMode::Tick(float DeltaSeconds)
@@ -32,7 +43,7 @@ void APushGameMode::Tick(float DeltaSeconds)
 		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
 		if (CountdownTime <= 0.0f) // 대기시간이 끝나면 경기시작
 		{
-			StartMatch(); // 경기
+			this->StartMatch(); // 경기
 		}
 	}
 	else if (MatchState == MatchState::InProgress) // 경기
@@ -69,4 +80,9 @@ void APushGameMode::OnMatchStateSet()
 			SelectedPlayer->OnMatchStateSet(MatchState);
 		}
 	}
+}
+
+void APushGameMode::StartMatch()
+{
+	Super::StartMatch();
 }
