@@ -1,10 +1,10 @@
 #include "PushGameMode.h"
 #include "Character/PushCharacter.h"
-#include "GameFramework/GameStateBase.h"
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
+#include "GameInstance/PushGameInstance.h"
+#include "Utilites/CLog.h"
 #include "Widgets/StoreUI.h"
-#include "Global.h"
 
 namespace MatchState
 {
@@ -13,17 +13,9 @@ namespace MatchState
 
 APushGameMode::APushGameMode()
 {
-	bDelayedStart = false; // true면 GameMode가 start 되기 전에 waiting 상태. false면 MatchState::WaitingToStart는 비활성화되어 실행되지 않는다
+	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태. false면 MatchState::WaitingToStart는 비활성화되어 실행되지 않는다
 
 }
-
-void APushGameMode::PostLogin(APlayerController* NewPlayer)
-{
-	Super::PostLogin(NewPlayer);
-
-}
-
-
 
 void APushGameMode::BeginPlay()
 {
@@ -31,6 +23,13 @@ void APushGameMode::BeginPlay()
 
 	LevelStartingTime = GetWorld()->GetTimeSeconds();
 
+	/*UGameInstance* gameInstance = GetGameInstance();
+	UPushGameInstance* temp = gameInstance->GetSubsystem<UPushGameInstance>();
+
+	if(false == IsValid(temp))
+	{
+		temp->CreateDedicatedServerSession("127.0.0.1:7777");	
+	}*/
 }
 
 void APushGameMode::Tick(float DeltaSeconds)
@@ -41,16 +40,16 @@ void APushGameMode::Tick(float DeltaSeconds)
 	if (MatchState == MatchState::WaitingToStart) // 대기
 	{
 		// 대기시간 - 현재시간 + 게임레벨맵에 들어간 시간
-		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime;
+		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + tempTime;
 		if (CountdownTime <= 0.0f) // 대기시간이 끝나면 경기시작
 		{
-			this->StartMatch(); // 경기
+			SetMatchState(MatchState::InProgress);
 		}
 	}
 	else if (MatchState == MatchState::InProgress) // 경기
 	{
 		// 대기시간 - 현재시간 + 게임레벨맵에 들어간 시간 + 설정한 경기시간
-		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime;
+		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + tempTime;
 		if (CountdownTime <= 0.0f)
 		{
 			SetMatchState(MatchState::Result); // 결과발표
@@ -59,14 +58,14 @@ void APushGameMode::Tick(float DeltaSeconds)
 	else if (MatchState == MatchState::Result) // 결과발표
 	{
 		// 대기시간 - 현재 시간 + 게임레벨맵에 들어간 시간 + 설정한 경기시간 + 설정한 결과발표시간
-		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime;
+		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime + tempTime;
 		if (CountdownTime <= 0.0f) 
 		{
-			RestartGame(); // 경기 재시작. GameMode 내장 클래스에 정의된 함수 콜
+			tempTime = GetWorld()->GetTimeSeconds();
+			SetMatchState(MatchState::WaitingToStart); 
 		}
 	}
 
-	
 }
 
 void APushGameMode::OnMatchStateSet()
@@ -82,9 +81,4 @@ void APushGameMode::OnMatchStateSet()
 			SelectedPlayer->OnMatchStateSet(MatchState);
 		}
 	}
-}
-
-void APushGameMode::StartMatch()
-{
-	Super::StartMatch();
 }
