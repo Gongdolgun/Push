@@ -18,7 +18,11 @@ void UShopComponent::BeginPlay()
 	Super::BeginPlay();
 	Owner = Cast<ACharacter>(GetOwner());
 	PlayerController = Cast<APushPlayerController>(Owner->GetController());
-	MainHUD = Cast<AMainHUD>(PlayerController->GetHUD());
+	if(PlayerController != nullptr)
+	{
+		if(PlayerController->GetHUD() != nullptr)
+			MainHUD = Cast<AMainHUD>(PlayerController->GetHUD());
+	}
 }
 
 
@@ -38,32 +42,5 @@ void UShopComponent::OpenStoreUI()
 
 	MainUI->OpenStoreUI();
 
-	/*
-	if (Owner == nullptr || PlayerController == nullptr || MainHUD == nullptr)
-		return;
-		
-	if(bOpen == false)
-	{
-		if(MainHUD->CheckWidget("Store") == true)
-		{
-			PlayerController->SetShowMouseCursor(true);
-			MainHUD->GetWidget<UStoreUI>("Store")->RemoveFromParent();
-			MainHUD->GetWidget<UStoreUI>("Store")->AddToViewport();
-			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
-			UWidgetBlueprintLibrary::SetInputMode_GameAndUI(PlayerController);
-			bOpen = true;
-		}
-	}
-
-	else
-	{
-		if (MainHUD->CheckWidget("Store") == true)
-		{
-			PlayerController->SetShowMouseCursor(false);
-			MainHUD->GetWidget<UStoreUI>("Store")->RemoveFromParent();
-			UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
-			
-			bOpen = false;
-		}
-	}*/
+	
 }

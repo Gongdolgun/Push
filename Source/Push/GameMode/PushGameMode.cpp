@@ -1,5 +1,6 @@
 #include "PushGameMode.h"
 #include "Character/PushCharacter.h"
+#include "GameFramework/GameStateBase.h"
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
 #include "Widgets/StoreUI.h"
@@ -54,6 +55,7 @@ void APushGameMode::Tick(float DeltaSeconds)
 		}
 	}
 
+	
 }
 
 void APushGameMode::OnMatchStateSet()
