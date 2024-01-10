@@ -15,15 +15,15 @@ public:
 public:
 	virtual void BeginPlay() override;
 
-public:
-	UFUNCTION(Server, Reliable)
-		void ChangeBodyColor_Server(class APushCharacter* InCharacter, FLinearColor InColor);
+//public:
+//	UFUNCTION(Server, Reliable)
+//		void ChangeBodyColor_Server(class APushCharacter* InCharacter, FLinearColor InColor);
+//
+//	UFUNCTION(NetMulticast, Reliable)
+//		void ChangeBodyColor_NMC(class APushCharacter* InCharacter, FLinearColor InColor);
 
-	UFUNCTION(NetMulticast, Reliable)
-		void ChangeBodyColor_NMC(class APushCharacter* InCharacter, FLinearColor InColor);
-
-public:
-	TArray<FLinearColor> BodyColors;
-	uint8 index = 0;
+//public:
+//	TArray<FLinearColor> BodyColors;
+//	uint8 index = 0;
 };
 

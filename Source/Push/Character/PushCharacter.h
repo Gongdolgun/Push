@@ -81,10 +81,10 @@ public:
 		void LaunchNMC(FVector InLaunch);
 
 	UFUNCTION(Server, Reliable)
-		void ChangeBodyColor_Server();
+		void ChangeBodyColor_Server(FLinearColor InColor);
 
 	UFUNCTION(NetMulticast, Reliable)
-		void ChangeBodyColor_NMC();
+		void ChangeBodyColor_NMC(FLinearColor InColor);
 
 	UFUNCTION(Server, Reliable)
 		void SetBodyColor_Server(FLinearColor InColor);
@@ -94,16 +94,15 @@ public:
 
 	// 2024_01_05 Material Change Àû¿ë
 	void Create_DynamicMaterial();
-	void Change_Color();
+	void Change_Color(FLinearColor InColor);
 
 	//Testing!!
 	UFUNCTION(BlueprintCallable)
 		void Test();
 
 public:
-	UPROPERTY(Replicated)
-		FLinearColor BodyColor;
+	FLinearColor BodyColor;
 
-	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
+	//virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 };
 

@@ -64,6 +64,8 @@ APushCharacter::APushCharacter()
         SkillComponent->SetNetAddressable();
         SkillComponent->SetIsReplicated(true);
     }
+
+    BodyColor = FLinearColor::MakeRandomColor();
 }
 
 // Input
@@ -127,15 +129,18 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
     }
 }
 
-void APushCharacter::ChangeBodyColor_Server_Implementation()
+void APushCharacter::ChangeBodyColor_Server_Implementation(FLinearColor InColor)
 {
-    ChangeBodyColor_NMC_Implementation();
+    ChangeBodyColor_NMC_Implementation(InColor);
 }
 
-void APushCharacter::ChangeBodyColor_NMC_Implementation()
+void APushCharacter::ChangeBodyColor_NMC_Implementation(FLinearColor InColor)
 {
+    if (HasAuthority() == true)
+        return;
+
     Create_DynamicMaterial();
-    Change_Color();
+    Change_Color(InColor);
 }
 
 void APushCharacter::Create_DynamicMaterial()
@@ -148,7 +153,7 @@ void APushCharacter::Create_DynamicMaterial()
     }
 }
 
-void APushCharacter::Change_Color()
+void APushCharacter::Change_Color(FLinearColor InColor)
 {
     CLog::Print("ChangeColor");
     for(UMaterialInterface* material : this->GetMesh()->GetMaterials())
@@ -157,7 +162,7 @@ void APushCharacter::Change_Color()
 
         if (MaterialDynamic)
         {
-            MaterialDynamic->SetVectorParameterValue("BodyColor", BodyColor);
+            MaterialDynamic->SetVectorParameterValue("BodyColor", InColor);
         }
     }
 
@@ -203,12 +208,12 @@ void APushCharacter::Test()
     SkillComponent->curSkillData->Play(this);
 }
 
-void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-    DOREPLIFETIME(APushCharacter, BodyColor);
-}
+//void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+//{
+//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+//
+//    DOREPLIFETIME(APushCharacter, BodyColor);
+//}
 
 void APushCharacter::PlayAnimMontageRep_Implementation(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate)
 {
@@ -229,6 +234,7 @@ void APushCharacter::BeginPlay()
 {
     Super::BeginPlay();
 
+    ChangeBodyColor_Server_Implementation(BodyColor);
 }
 
 void APushCharacter::Tick(float DeltaSeconds)
