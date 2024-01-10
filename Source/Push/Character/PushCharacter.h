@@ -56,6 +56,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UItemComponent* ItemComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UShopComponent* ShopComponent;
+
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
 

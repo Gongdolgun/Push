@@ -19,9 +19,6 @@ protected:
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-<<<<<<< Updated upstream
-		
-=======
 public:
 	void UseSkill(char InChar);
 
@@ -47,5 +44,4 @@ public:
 		FVector Meteor_StartLocation;
 
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
->>>>>>> Stashed changes
 };

@@ -8,6 +8,7 @@
 #include "Components/MoveComponent.h"
 #include "Components/BuffComponent.h"
 #include "Components/ItemComponent.h"
+#include "Components/ShopComponent.h"
 #include "Engine/DecalActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -58,6 +59,7 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<USkillComponent>(this, &SkillComponent, "SkillComponent");
     Helpers::CreateActorComponent<UBuffComponent>(this, &BuffComponent, "BuffComponent");
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
+    Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
 	/*if (ResourceComponent != nullptr)
 	{
 		ResourceComponent->SetNetAddressable();
@@ -239,7 +241,6 @@ void APushCharacter::BeginPlay()
 {
     Super::BeginPlay();
 
-    ChangeBodyColor_Server_Implementation(BodyColor);
 }
 
 void APushCharacter::Tick(float DeltaSeconds)

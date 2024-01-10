@@ -1,4 +1,6 @@
 #include "Components/SkillComponent.h"
+#include "Net/UnrealNetwork.h"
+#include "Skill/SkillData.h"
 
 USkillComponent::USkillComponent()
 {
@@ -18,10 +20,8 @@ void USkillComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-<<<<<<< Updated upstream
 }
-=======
-}
+
 
 void USkillComponent::UseSkill(char InChar)
 {
@@ -44,5 +44,3 @@ void USkillComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME(USkillComponent, SpawnLocation);
 	DOREPLIFETIME(USkillComponent, Meteor_StartLocation);
 }
-
->>>>>>> Stashed changes
