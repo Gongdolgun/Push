@@ -20,10 +20,11 @@ void APushPlayerController::BeginPlay()
 	if (IsValid(MainHUD))
 	{
 		MainHUD->AddWidget();
-		MainHUD->CheckWidget("KDA");
-		MainHUD->CheckWidget("Store");
-		MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
-		MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
+		if (MainHUD->CheckWidget("KDA"))
+			MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
+
+		if (MainHUD->CheckWidget("Store"))
+			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	ClientCheckMatchState();
@@ -77,10 +78,12 @@ void APushPlayerController::OnMatchStateSet(FName State)
 		{
 			// TODO: HUD를 업데이트 함수
 			CLog::Print("WaitingToStart!!");
-			MainHUD->CheckWidget("Store");
-			MainHUD->CheckWidget("Resource");
-			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
-			MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);
+			if(MainHUD->CheckWidget("Store"))
+				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
+
+			if(MainHUD->CheckWidget("Resource"))
+				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);
+			
 		}
 	}
 	else if (MatchState == MatchState::InProgress) // 경기
@@ -89,10 +92,11 @@ void APushPlayerController::OnMatchStateSet(FName State)
 		{
 			// TODO: HUD를 업데이트 함수
 			CLog::Print("InProgress!!");
-			MainHUD->CheckWidget("Store");
-			MainHUD->CheckWidget("Resource");
-			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-			MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);
+			if(MainHUD->CheckWidget("Store"))
+				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
+
+			if(MainHUD->CheckWidget("Resource"))
+				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);
 		}
 	}
 	else if (MatchState == MatchState::Result) // 결과발표
@@ -101,10 +105,11 @@ void APushPlayerController::OnMatchStateSet(FName State)
 		{
 			// TODO: HUD를 업데이트 함수
 			CLog::Print("Result!!");
-			MainHUD->CheckWidget("Store");
-			MainHUD->CheckWidget("Resource");
-			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-			MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);
+			if(MainHUD->CheckWidget("Store"))
+				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
+
+			if (MainHUD->CheckWidget("Resource"))
+				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);;
 		}
 	}
 }

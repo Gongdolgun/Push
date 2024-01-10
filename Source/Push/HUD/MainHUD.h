@@ -25,7 +25,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Widgets")
 		TMap<FString, TSubclassOf<class UUserWidget>> UserWidgetClasses;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 		TMap<FString, class UUserWidget*> UserWidgets;
 
 protected:
