@@ -20,8 +20,10 @@
 #include "Components/SkillComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
+#include "Widgets/SkillSlots.h"
 #include "Skill/SkillData.h"
 #include "PlayerController/PushPlayerController.h"
+#include "Widgets/SkillSlots.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APushCharacter
@@ -92,6 +94,10 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
     PlayerInputComponent->BindAction("KD", EInputEvent::IE_Pressed, ResourceComponent, &UResourceComponent::OnKillDeathUI);
     PlayerInputComponent->BindAction("KD", EInputEvent::IE_Released, ResourceComponent, &UResourceComponent::OffKillDeathUI);
 
+    /*PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill1", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 0);
+    PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill2", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 1);
+    PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill3", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 2);
+    PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill4", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 3);*/
 }
 
 void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
