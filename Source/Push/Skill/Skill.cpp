@@ -1,6 +1,8 @@
 #include "Skill.h"
-
+<<<<<<< Updated upstream
+=======
 #include "Components/ShapeComponent.h"
+>>>>>>> Stashed changes
 #include "GameFramework/Character.h"
 
 ASkill::ASkill()
@@ -14,6 +16,8 @@ void ASkill::BeginPlay()
 	Super::BeginPlay();
 
 	Owner = Cast<ACharacter>(GetOwner());
+	
+
 }
 
 void ASkill::Tick(float DeltaTime)

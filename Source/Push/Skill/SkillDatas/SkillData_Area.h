@@ -14,14 +14,14 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Decal Class")
-		TSubclassOf<AActor> DecalClass;
+		TSubclassOf<AActor> TracePoint_Class;
 
 	UPROPERTY(VisibleAnywhere)
-		AActor* PointDecal;
+		class ATracePoint* TracePoint;
 
 	UPROPERTY(VisibleAnywhere)
-		bool bDecal;
+		bool bDecal = false;
 
 public:
-	//virtual void Play(ACharacter* InOwner) override;
+	virtual void Play(ACharacter* InOwner) override;
 };

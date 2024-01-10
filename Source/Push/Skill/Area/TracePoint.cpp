@@ -19,6 +19,9 @@ void ATracePoint::BeginPlay()
 	
 	Owner = Cast<ACharacter>(GetOwner());
 
+	if (Owner == nullptr)
+		return;
+
 }
 
 void ATracePoint::Tick(float DeltaTime)
