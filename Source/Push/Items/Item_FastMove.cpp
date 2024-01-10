@@ -22,6 +22,6 @@ void AItem_FastMove::Use()
 
 	if(!!buffComponent)
 	{
-		buffComponent->AddBuff(BuffClass);
+		buffComponent->AddBuff_Server(BuffClass);
 	}
 }

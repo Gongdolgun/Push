@@ -59,7 +59,9 @@ void ABuffInstance::Tick(float DeltaSeconds)
 		}
 		buffComponent->RemoveBuff(this);
 		OffEffect();
-		Widget->RemoveFromParent();
+
+		if (!!Widget)
+			Widget->RemoveFromParent();
 		Destroy();
 	}
 }

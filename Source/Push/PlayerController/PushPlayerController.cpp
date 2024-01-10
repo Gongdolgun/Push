@@ -129,18 +129,18 @@ void APushPlayerController::Init()
 
 void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG에서 관리할거면 삭제
 {
-	MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(GetHUD()) : MainHUD;
+	//MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(GetHUD()) : MainHUD;
 
-	if (IsValid(MainHUD) && IsValid(MainHUD->GetWidget<UResource>("Resource")) && IsValid(MainHUD->GetWidget<UResource>("Resource")->HealthBar))
-	{
-		const float HealthPercent = Health / MaxHealth;
-		MainHUD->GetWidget<UResource>("Resource")->HealthBar->SetPercent(HealthPercent);
-	}
-	else // HUD가 없다면
-	{
-		HUDHealth = Health;
-		HUDMaxHealth = MaxHealth;
-	}
+	//if (IsValid(MainHUD) && IsValid(MainHUD->GetWidget<UResource>("Resource")) && IsValid(MainHUD->GetWidget<UResource>("Resource")->HealthBar))
+	//{
+	//	const float HealthPercent = Health / MaxHealth;
+	//	MainHUD->GetWidget<UResource>("Resource")->HealthBar->SetPercent(HealthPercent);
+	//}
+	//else // HUD가 없다면
+	//{
+	//	HUDHealth = Health;
+	//	HUDMaxHealth = MaxHealth;
+	//}
 }
 
 void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기

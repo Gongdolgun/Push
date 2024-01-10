@@ -22,9 +22,16 @@ void UItemComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
+void UItemComponent::UseItem_Server_Implementation()
+{	
+	UseItem_NMC();
+}
+
 //아이템 사용
-void UItemComponent::UseItem()
+void UItemComponent::UseItem_NMC_Implementation()
 {
+	if (!Owner.IsValid())
+		return;
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
 	Item = Cast<AItemBase>(Owner->GetWorld()->SpawnActor(ItemClass, 0, 0, param));
