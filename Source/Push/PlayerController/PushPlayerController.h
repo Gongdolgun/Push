@@ -15,7 +15,7 @@ class PUSH_API APushPlayerController : public APlayerController
 public:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void OnPossess(APawn* InPawn) override; // possed된 Pawn에 접근하는 함수
-
+	
 	void OnMatchStateSet(FName State);
 
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
@@ -23,6 +23,7 @@ public:
 	void Init();
 	void SetHUDHealth(float Health, float MaxHealth);
 	void SetHUDTime();
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -47,6 +48,7 @@ private:
 	UFUNCTION()
 		void OnRep_MatchState();
 
+public:
 	float HUDHealth;
 	float HUDMaxHealth;
 

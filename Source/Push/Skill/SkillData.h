@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		float RelativeDistance = 0;
 
+	UPROPERTY(EditAnywhere)
+		FVector RelativeVector = FVector::ZeroVector;
+
 public:
 	UFUNCTION()
 	virtual void Play(ACharacter* InOwner);
