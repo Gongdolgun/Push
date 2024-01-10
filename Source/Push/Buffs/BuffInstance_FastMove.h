@@ -5,7 +5,7 @@
 #include "BuffInstance_FastMove.generated.h"
 
 UCLASS(Blueprintable)
-class PUSH_API UBuffInstance_FastMove : public UBuffInstance
+class PUSH_API ABuffInstance_FastMove : public ABuffInstance
 {
 	GENERATED_BODY()
 

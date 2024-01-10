@@ -1,5 +1,7 @@
 
 #include "Components/BuffComponent.h"
+#include "Widgets/WDG_BuffBoard.h"
+#include "GameFramework/Character.h"
 #include "Global.h"
 
 UBuffComponent::UBuffComponent()
@@ -12,6 +14,19 @@ void UBuffComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = Cast<ACharacter>(GetOwner());
+
+	if (!Owner.IsValid())
+		return;
+
+	AController* test = Owner->GetController();
+
+	APlayerController* controller = Cast<APlayerController>(test);
+
+	if (!controller)
+		return;
+
+	Widget = CreateWidget<UWDG_BuffBoard>(controller, WidgetClass, "BuffWidgetBoard");
+	Widget->AddToViewport();
 }
 
 
@@ -19,37 +34,38 @@ void UBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	//2024.01.05 이현중
-	//적용된 버프가 없으면 제거
-	if (Buffs.Num() < 1)
-		return;
-
-
-	//2024.01.05 이현중
-	//버프의 시간진행, 지속시간이 끝난 버프는 종료
-	for (UBuffInstance* buff : Buffs)
-	{
-		buff->curTime += DeltaTime;
-		if (buff->curTime > buff->LifeTime)
-		{
-			if (!buff)
-				continue;
-			buff->OffEffect();
-			Buffs.Remove(buff);
-		}
-	}
 }
 
 //2024.01.05 이현중
-//버프 자료형을 집어넣으면 그에 따른 클래스를 생성후 OnEffect를 발생
-void UBuffComponent::AddBuff(TSubclassOf<UBuffInstance> BuffClass)
+//버프 자료형을 집어넣으면 그에 따른 엑터를 생성후 OnEffect를 발생 <- 2024.01.09 기존 클래스생성에서 엑터생성으로 변경
+void UBuffComponent::AddBuff(TSubclassOf<ABuffInstance> BuffClass)
 {
-	if (!Owner)
+	if (!Owner.IsValid())
 		return;
 
-	UBuffInstance* temp = NewObject<UBuffInstance>(Owner, BuffClass);
-	temp->SetOwner(Owner);
+	FActorSpawnParameters param;
+	param.Owner = Owner.Get();
+
+	ABuffInstance* temp = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor<ABuffInstance>(BuffClass, param));
+
+	if (!temp || !Widget)
+		return;
+
 	temp->OnEffect();
+
+	Widget->AddBuff(temp->GetWidget());
 	Buffs.Add(temp);
+	
 }
+
+void UBuffComponent::RemoveBuff(ABuffInstance* removeBuff)
+{
+	if (!Widget)
+		return;
+
+	Widget->SubWidget(removeBuff->GetWidget());
+
+	Buffs.Remove(removeBuff);
+}
+
 

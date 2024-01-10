@@ -58,6 +58,11 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<USkillComponent>(this, &SkillComponent, "SkillComponent");
     Helpers::CreateActorComponent<UBuffComponent>(this, &BuffComponent, "BuffComponent");
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
+	/*if (ResourceComponent != nullptr)
+	{
+		ResourceComponent->SetNetAddressable();
+		ResourceComponent->SetIsReplicated(true);
+	}*/
 
     if(SkillComponent != nullptr)
     {
@@ -99,7 +104,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(ResourceComponent != nullptr)
     {
-		ResourceComponent->AdjustHP(-InHitData.Damage);
+		ResourceComponent->AdjustHP_Server(-InHitData.Damage);
     }
 
     if(launch.X + launch.Y + launch.Z > 0.0f)
@@ -242,4 +247,3 @@ void APushCharacter::Tick(float DeltaSeconds)
     Super::Tick(DeltaSeconds);
 
 }
-
