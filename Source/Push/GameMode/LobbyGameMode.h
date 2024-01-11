@@ -21,7 +21,7 @@ public:
 	void Tick(float DeltaSeconds) override;
 
 	void CountDown();
-	void EnterMap(); // 경기를 하는 레벨맵
+	void EnterMap();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float countdownTimer = 5.f;
@@ -29,14 +29,10 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void UpdateTimer_NMC(float InTime);
 
-	///////////////////////////////////////
-	// 서버에서 클라이언트로 현재 시간을 전송하는 RPC 함수
-	UFUNCTION(Server, Reliable)
-	void Server_SendCurrentTimeToClient(float CurrentTime);
-	/////////////////////////////////////
-
 private:
 	uint8 NumOfPlayers = 0;
 
 	FTimerHandle LobbyTimeHandle;
+
+	class ALobbyHUD* lobbyHUD;
 };

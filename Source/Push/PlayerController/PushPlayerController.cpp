@@ -156,7 +156,6 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	else if (MatchState == MatchState::Result) // 결과
 		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime;
 
-	CLog::Print(TimeLeft);
 	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
 
 	if (MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText)

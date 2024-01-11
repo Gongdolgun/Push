@@ -1,7 +1,6 @@
 #include "GameMode/LobbyGameMode.h"
 #include "GameFramework/GameState.h"
 #include "HUD/LobbyHUD.h"
-#include "PlayerController/LobbyPlayerController.h"
 #include "Utilites/CLog.h"
 #include "Widgets/LobbyCountDown.h"
 
@@ -26,6 +25,7 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 
 				//FTimerDelegate delegate;
 				//delegate.BindUObject(this, &ALobbyGameMode::EnterMapTimer);
+
 				//GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, delegate, 1.0f, true, countdownTimer);
 
 				GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, this, &ALobbyGameMode::CountDown, 1.0f, true, 0);
@@ -43,8 +43,6 @@ void ALobbyGameMode::PlayerLoginInServer_Implementation()
 void ALobbyGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	Server_SendCurrentTimeToClient(GetWorld()->GetTimeSeconds());
 }
 
 void ALobbyGameMode::CountDown()
@@ -65,19 +63,8 @@ void ALobbyGameMode::EnterMap()
 	}
 }
 
+
 void ALobbyGameMode::UpdateTimer_NMC_Implementation(float InTime)
 {
 	countdownTimer = InTime;
-}
-
-void ALobbyGameMode::Server_SendCurrentTimeToClient_Implementation(float CurrentTime)
-{
-	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-	{
-		ALobbyPlayerController* PlayerController = Cast<ALobbyPlayerController>(It->Get());
-		if (PlayerController && PlayerController->IsLocalController())
-		{
-			PlayerController->Client_ReceiveCurrentTimeFromServer(CurrentTime);
-		}
-	}
 }
