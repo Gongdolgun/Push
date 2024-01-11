@@ -33,6 +33,5 @@ private:
 	uint8 NumOfPlayers = 0;
 
 	FTimerHandle LobbyTimeHandle;
-
-	class ALobbyHUD* lobbyHUD;
+	
 };
