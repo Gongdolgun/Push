@@ -25,29 +25,30 @@ void UNF_SpawnSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 		return;
 
 	FVector SpawnLocation, RelativeSpawnLocation;
+	FRotator SpawnRotation;
 
 	TSubclassOf<ASkill> SpawnSkill = SkillComponent->curSkillData->Skill;
 
 	USkillData_Projectile* SkillData = Cast<USkillData_Projectile>(SkillComponent->curSkillData);
-	if (SkillData != nullptr)	// Projectile
+	// Projectile
+	if (SkillData != nullptr)	
 
 	{
 		SpawnLocation = Owner->GetActorLocation() + Owner->GetActorForwardVector() * SkillComponent->curSkillData->RelativeDistance;
+		SpawnRotation = Owner->GetActorForwardVector().Rotation();
 	}
 	// Area
 	else
 	{
-		RelativeSpawnLocation = SkillComponent->Meteor_StartLocation;
-		SpawnLocation = Owner->GetActorLocation() + RelativeSpawnLocation + Owner->GetActorForwardVector() * SkillComponent->curSkillData->RelativeVector;
+		SpawnLocation = SkillComponent->SpawnLocation;
+		SpawnRotation = Owner->GetActorForwardVector().Rotation();
 	}
 
-	FRotator SpawnRotation = Owner->GetActorForwardVector().Rotation();
-
+	
 	FActorSpawnParameters params;
 	params.Owner = Owner;
 	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	
 	Owner->GetWorld()->SpawnActor<ASkill>(SpawnSkill, SpawnLocation, SpawnRotation, params);
 
 	//if(controller == Owner->GetWorld()->GetFirstPlayerController())

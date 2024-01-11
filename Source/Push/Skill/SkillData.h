@@ -32,7 +32,7 @@ public:
 		float RelativeDistance = 0;
 
 	UPROPERTY(EditAnywhere)
-		FVector RelativeVector = FVector::ZeroVector;
+		FVector RelativeLocation = FVector::ZeroVector;
 
 public:
 	UFUNCTION()

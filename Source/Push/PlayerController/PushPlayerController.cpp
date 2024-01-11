@@ -27,6 +27,7 @@ void APushPlayerController::BeginPlay()
 		MainHUD->AddResourceWidget();
 	}
 
+<<<<<<< Updated upstream
 	else
 	{
 		CLog::Print("HUD Is Where");
@@ -34,6 +35,10 @@ void APushPlayerController::BeginPlay()
 	}
 
 	ServerCheckMatchState();
+=======
+	ClientCheckMatchState();
+	
+>>>>>>> Stashed changes
 }
 
 void APushPlayerController::Tick(float DeltaSeconds)

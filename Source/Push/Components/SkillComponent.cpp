@@ -1,4 +1,13 @@
 #include "Components/SkillComponent.h"
+<<<<<<< Updated upstream
+=======
+#include "GameFramework/Character.h"
+#include "Net/UnrealNetwork.h"
+#include "Skill/SkillData.h"
+#include "Skill/Skill.h"
+#include "Skill/SkillDatas/SkillData_Projectile.h"
+#include "Global.h"
+>>>>>>> Stashed changes
 
 USkillComponent::USkillComponent()
 {
@@ -11,6 +20,10 @@ void USkillComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Owner = Cast<ACharacter>(GetOwner());
+
+	if (ss != nullptr)
+		curSkillData = NewObject<USkillData>(Owner, ss);
 }
 
 
@@ -42,7 +55,6 @@ void USkillComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(USkillComponent, SpawnLocation);
-	DOREPLIFETIME(USkillComponent, Meteor_StartLocation);
 }
 
 >>>>>>> Stashed changes
