@@ -43,7 +43,8 @@ void APushGameMode::Tick(float DeltaSeconds)
 		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + tempTime;
 		if (CountdownTime <= 0.0f) // 대기시간이 끝나면 경기시작
 		{
-			SetMatchState(MatchState::InProgress);
+			StartMatch();
+			//SetMatchState(MatchState::InProgress);
 		}
 	}
 	else if (MatchState == MatchState::InProgress) // 경기
@@ -61,8 +62,9 @@ void APushGameMode::Tick(float DeltaSeconds)
 		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime + tempTime;
 		if (CountdownTime <= 0.0f) 
 		{
-			tempTime = GetWorld()->GetTimeSeconds();
-			SetMatchState(MatchState::WaitingToStart); 
+			RestartGame();
+			//tempTime = GetWorld()->GetTimeSeconds();
+			//SetMatchState(MatchState::WaitingToStart); 
 		}
 	}
 

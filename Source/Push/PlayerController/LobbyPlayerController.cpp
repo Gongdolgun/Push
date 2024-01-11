@@ -1,6 +1,7 @@
 #include "PlayerController/LobbyPlayerController.h"
 #include "Global.h"
 #include "GameMode/LobbyGameMode.h"
+#include "GameState/LobbyGameState.h"
 #include "HUD/LobbyHUD.h"
 #include "Widgets/LobbyCountDown.h"
 
@@ -17,9 +18,30 @@ void ALobbyPlayerController::BeginPlay()
 			LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetVisibility(ESlateVisibility::Visible);
 	}
 
-	GameMode = Cast<ALobbyGameMode>(UGameplayStatics::GetGameMode(this));
+	//GameMode = Cast<ALobbyGameMode>(GetWorld()->GetAuthGameMode());
+	//if (GameMode == nullptr) CLog::Log("Fail to bring GameMode World time.");
 
-	LevelStartingTime = GetWorld()->GetTimeSeconds();
+	//if(IsValid(GameMode))
+	//{
+	//	LevelStartingTime = GameMode->GetWorld()->GetTimeSeconds();
+	//	CLog::Print("Success to bring GameMode World time.");
+	//	CLog::Log("Success to bring GameMode World time.");
+	//	CLog::Print(LevelStartingTime);
+	//	CLog::Log(LevelStartingTime);
+	//}
+
+	GameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this));
+	if(GameState == nullptr) CLog::Log("Fail to bring GameState.");
+
+	if(IsValid(GameState))
+	{
+		//LevelStartingTime = GameState->CurrentServerTime;
+		//CLog::Print("Success to bring GameState time.");
+		//CLog::Log("Success to bring GameState time.");
+		//CLog::Print(LevelStartingTime);
+		//CLog::Log(LevelStartingTime);
+		CLog::Log(ServerTime);
+	}
 }
 
 void ALobbyPlayerController::Tick(float DeltaSeconds)
@@ -38,8 +60,14 @@ void ALobbyPlayerController::SetHUDCountdownTime()
 	if (LobbyHUD == nullptr) return;
 	if (LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown") == nullptr) return;
 
-	float TimeLeft = countdownTimer - GetWorld()->GetTimeSeconds() + LevelStartingTime;
+	float TimeLeft = countdownTimer - GetWorld()->GetTimeSeconds() + ServerTime;
 	LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->UpdateCountdown(TimeLeft);
+}
+
+void ALobbyPlayerController::Client_ReceiveCurrentTimeFromServer_Implementation(float CurrentTime)
+{
+	ServerTime = CurrentTime;
+	float TimeDifference = CurrentTime - ServerTime;
 }
 
 //void ALobbyPlayerController::SetHUDCountdownTime(float InTime)

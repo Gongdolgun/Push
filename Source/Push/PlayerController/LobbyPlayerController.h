@@ -19,9 +19,18 @@ public:
 	//UFUNCTION(Client, Reliable) // Client RPC
 	//	void ClientCheck();
 
+	
+	UFUNCTION(Client, Reliable) // 서버로부터 시간을 수신하는 RPC 함수
+	void Client_ReceiveCurrentTimeFromServer(float CurrentTime);
+
+	float ServerTime;
+
 private:
 	UPROPERTY()
 	class ALobbyGameMode* GameMode;
+
+	UPROPERTY()
+	class ALobbyGameState* GameState;
 
 	class ALobbyHUD* LobbyHUD;
 
