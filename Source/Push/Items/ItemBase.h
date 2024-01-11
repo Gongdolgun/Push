@@ -22,5 +22,7 @@ public:
 	
 protected:
 	TWeakObjectPtr<ACharacter> Owner;
+	UPROPERTY(EditAnywhere)
+		FString ItemName;
 };
 

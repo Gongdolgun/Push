@@ -19,7 +19,12 @@ protected:
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 public:
-	void AddBuff(TSubclassOf<ABuffInstance> BuffClass);
+	UFUNCTION(Reliable, Server)
+		void AddBuff_Server(TSubclassOf<ABuffInstance> BuffClass);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void AddBuff_NMC(TSubclassOf<ABuffInstance> BuffClass);
+
 	void RemoveBuff(ABuffInstance* removeBuff);
 
 private:
@@ -37,3 +42,4 @@ private:
 public:
 	int BuffCount = 0;
 };
+

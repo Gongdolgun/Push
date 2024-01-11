@@ -21,8 +21,12 @@ public:
 
 public:
 	//void BuyItem();
-	UFUNCTION(BlueprintCallable)
-	void UseItem();
+	UFUNCTION(BlueprintCallable, Reliable, Server)
+		void UseItem_Server();
+
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
+		void UseItem_NMC();
+
 	void DestroyItem();
 
 private:

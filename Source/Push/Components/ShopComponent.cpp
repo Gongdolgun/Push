@@ -17,6 +17,7 @@ void UShopComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = Cast<ACharacter>(GetOwner());
+
 	PlayerController = Cast<APushPlayerController>(Owner->GetController());
 	if(PlayerController != nullptr)
 	{
