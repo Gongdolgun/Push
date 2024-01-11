@@ -18,7 +18,7 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
-	virtual void Use() PURE_VIRTUAL(AItemBase::Use, ;);
+	virtual void UseItem() {};
 	
 protected:
 	TWeakObjectPtr<ACharacter> Owner;

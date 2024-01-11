@@ -5,27 +5,27 @@
 #include "ItemComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PUSH_API UItemComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	UItemComponent();
 
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
 	//void BuyItem();
 	UFUNCTION(BlueprintCallable, Reliable, Server)
-		void UseItem_Server();
+		void UseItem_Server(TSubclassOf<class AItemBase> ItemClass);
 
 	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
-		void UseItem_NMC();
+		void UseItem_NMC(TSubclassOf<class AItemBase> ItemClass);
 
 	void DestroyItem();
 
@@ -34,7 +34,5 @@ private:
 private:
 	TWeakObjectPtr<class AItemBase> Item;
 
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<AItemBase> ItemClass;
 
 };
