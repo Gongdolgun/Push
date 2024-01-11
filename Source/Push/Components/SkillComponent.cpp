@@ -1,10 +1,13 @@
 #include "Components/SkillComponent.h"
+<<<<<<< Updated upstream
+=======
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 #include "Skill/SkillData.h"
 #include "Skill/Skill.h"
 #include "Skill/SkillDatas/SkillData_Projectile.h"
 #include "Global.h"
+>>>>>>> Stashed changes
 
 USkillComponent::USkillComponent()
 {
@@ -28,8 +31,10 @@ void USkillComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+<<<<<<< Updated upstream
 }
-
+=======
+}
 
 void USkillComponent::UseSkill(char InChar)
 {
@@ -50,5 +55,6 @@ void USkillComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(USkillComponent, SpawnLocation);
-	DOREPLIFETIME(USkillComponent, Meteor_StartLocation);
 }
+
+>>>>>>> Stashed changes
