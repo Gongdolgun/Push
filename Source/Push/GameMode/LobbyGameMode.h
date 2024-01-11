@@ -3,8 +3,8 @@
 #include "GameFramework/GameMode.h"
 #include "LobbyGameMode.generated.h"
 
-/**
- * 
+/** 게임 시작 시 GameMode
+ *  
  */
 
 UCLASS()
@@ -14,4 +14,25 @@ class PUSH_API ALobbyGameMode : public AGameMode
 
 public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+	
+	UFUNCTION(Server, Reliable)
+		void PlayerLoginInServer();
+	
+	void Tick(float DeltaSeconds) override;
+
+	void CountDown();
+	void EnterMap();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float countdownTimer = 5.f;
+
+	UFUNCTION(NetMulticast, Reliable)
+		void UpdateTimer_NMC(float InTime);
+
+private:
+	uint8 NumOfPlayers = 0;
+
+	FTimerHandle LobbyTimeHandle;
+
+	class ALobbyHUD* lobbyHUD;
 };

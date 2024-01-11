@@ -1,23 +1,27 @@
 #include "Items/Item_FastMove.h"
 #include "Global.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Components/MoveComponent.h"
+#include "Buffs/BuffInstance.h"
+#include "Components/BuffComponent.h"
 
 void AItem_FastMove::BeginPlay()
 {
-	Super::BeginPlay();
+	AItemBase::BeginPlay();
 }
 
 void AItem_FastMove::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+	AItemBase::Tick(DeltaTime);
 }
 
 void AItem_FastMove::Use()
 {
-	UCharacterMovementComponent* movementComponent = Helpers::GetComponent<UCharacterMovementComponent>(Owner.Get());
-	UMoveComponent* moveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
+	if (Owner == nullptr)
+		return;
 
-	moveComponent->SetSpeedPercent(moveComponent->GetSpeedPercent() + PlusSpeedPercent);
-	moveComponent->UpdateSpeed();
+	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
+
+	if(!!buffComponent)
+	{
+		buffComponent->AddBuff_Server(BuffClass);
+	}
 }

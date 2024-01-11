@@ -35,23 +35,32 @@ public:
 		void OnLookUp(float Rate);
 
 public:
-	FORCEINLINE void SetSpeedPercent(float speed) { SpeedPercent = speed; }
+	UFUNCTION(BlueprintCallable, Reliable, Server)
+		void SetSpeedPercent_Server(float speed);
+
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
+		void SetSpeedPercent_NMC(float speed);
+
+
 	FORCEINLINE float GetSpeedPercent() { return SpeedPercent; }
 
 public:
-	UFUNCTION()
-		void UpdateSpeed();
-private:
+	UFUNCTION(BlueprintCallable, Reliable, Server)
+		void UpdateSpeed_Server();
 
-	UPROPERTY(EditAnywhere, Category = "Move_Property")
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
+		void UpdateSpeed_NMC();
+
+private:
+	UPROPERTY(EditAnywhere,Category = "Move_Property")
 		float Speed = 600;
-	UPROPERTY(EditAnywhere, Category = "Move_Property")
+	UPROPERTY(EditAnywhere,Category = "Move_Property")
 		float SpeedPercent = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
-		float MouseSenceX = 100;
+		float MouseSenceX = 45.0f;
 	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
-		float MouseSenceY = 100;
+		float MouseSenceY = 45.0f;
 
 	//2023.01.02 이현중
 	//플레이어 최대 Pitch변경값

@@ -35,15 +35,15 @@ public:
 	float LevelStartingTime = 0.0f; // 게임레벨맵에 들어간 시간
 
 	float CountdownTime = 0.0f;
+	float tempTime = 0.0f;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnMatchStateSet() override;
-<<<<<<< Updated upstream
 	virtual void PostLogin(APlayerController* NewPlayer) override;
-=======
-
-	virtual void PostLogin(APlayerController* NewPlayer) override;
-
->>>>>>> Stashed changes
+	
+private:
+	FLinearColor Colors[4] = {FLinearColor::Red, FLinearColor::Blue, FLinearColor::Green, FLinearColor::Black};
+	uint8 index = 0;
+	TArray<class APushPlayerController*> Controllers;
 };

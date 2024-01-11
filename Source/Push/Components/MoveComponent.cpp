@@ -8,6 +8,8 @@
 UMoveComponent::UMoveComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+
+	
 }
 
 void UMoveComponent::BeginPlay()
@@ -19,12 +21,13 @@ void UMoveComponent::BeginPlay()
 	//view허용값 설정
 	APlayerController* playerController = Cast<APlayerController>(Owner->GetController());
 
-	if (playerController)
+	if (!playerController)
 	{
-		playerController->PlayerCameraManager->ViewPitchMax = ViewMaxPitch;
-		playerController->PlayerCameraManager->ViewPitchMin = ViewMinPitch;
-		UpdateSpeed();
+		return;
 	}
+	playerController->PlayerCameraManager->ViewPitchMax = ViewMaxPitch;
+	playerController->PlayerCameraManager->ViewPitchMin = ViewMinPitch;
+	UpdateSpeed_Server();
 }
 
 void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -70,8 +73,31 @@ void UMoveComponent::OnLookUp(float Rate)
 	Owner->AddControllerPitchInput(Rate * MouseSenceY * GetWorld()->GetDeltaSeconds());
 }
 
-void UMoveComponent::UpdateSpeed()
+void UMoveComponent::SetSpeedPercent_NMC_Implementation(float speed)
 {
-	Helpers::GetComponent<UCharacterMovementComponent>(Owner.Get())->MaxWalkSpeed = Speed * (SpeedPercent / 100);
+	SpeedPercent = speed;
 }
+
+void UMoveComponent::SetSpeedPercent_Server_Implementation(float speed)
+{
+	SetSpeedPercent_NMC(speed);
+}
+
+void UMoveComponent::UpdateSpeed_NMC_Implementation()
+{
+	if (!Owner.IsValid())
+		return;
+
+	UCharacterMovementComponent* movementComponent = Helpers::GetComponent<UCharacterMovementComponent>(Owner.Get());
+
+	if (!movementComponent)
+		return;
+	movementComponent->MaxWalkSpeed = Speed * (SpeedPercent / 100);
+}
+
+void UMoveComponent::UpdateSpeed_Server_Implementation()
+{
+	UpdateSpeed_NMC();
+}
+
 

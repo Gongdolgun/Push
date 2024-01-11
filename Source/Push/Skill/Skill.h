@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Misc/Structures.h"
 #include "Skill.generated.h"
 
 UCLASS(Abstract)
@@ -25,6 +26,9 @@ public:
 protected:
 	class ACharacter* Owner;
 
-	
+public:
+	UPROPERTY(EditAnywhere, Category = "HitData")
+		FHitData HitData;
+
 
 };

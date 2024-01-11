@@ -4,7 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "WDG_EffectBase.generated.h"
 
-UCLASS(Abstract)
+UCLASS()
 class PUSH_API UWDG_EffectBase : public UUserWidget
 {
 	GENERATED_BODY()

@@ -10,111 +10,94 @@
 UCLASS(config = Game)
 class APushCharacter : public ACharacter, public IDamageable
 {
-    GENERATED_BODY()
+	GENERATED_BODY()
 
 public:
-    APushCharacter();
+	APushCharacter();
 
-    virtual void BeginPlay() override;
-    virtual void Tick(float DeltaSeconds) override;
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 
 protected:
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-    FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-    FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 public:
-    UPROPERTY(VisibleInstanceOnly)
-        class UWDG_EffectBase* widget;
+	UPROPERTY(VisibleInstanceOnly)
+		class UWDG_EffectBase* widget;
 
-<<<<<<< Updated upstream
-	// 2024_01_02 서동주 Hit Interface 적용
-	//다른 Actor에서 피격 시 Hit_Implementation을 Call해서 해주세요
-	virtual void Hit(const FHitData& InHitData) override {};
-	virtual void Hit_Implementation(const FHitData& InHitData) override;
+	class ASkill* SkillActor;
 
-	// 2024_01_05 Material Change 적용
-	UFUNCTION(Server, Reliable, BlueprintCallable)
-		void ServerChangeMaterial(ACharacter* Character, FLinearColor NewColor);
+	//2024_01_02 서동주 Hit Interface 적용
+	virtual void Hit(AActor* InAttacker, const FHitData& InHitData) override;
 
-	UFUNCTION(NetMulticast, Reliable, BlueprintCallable)
-		void MulticastChangeMaterial(ACharacter* Character, FLinearColor NewColor);
-
-	UFUNCTION(BlueprintCallable)
-		void Create_DynamicMaterial(class ACharacter* InCharacter);
-
-	UFUNCTION(BlueprintCallable)
-		void Change_Color(class ACharacter* InCharacter, FLinearColor InColor);
-
-private:
+public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class USpringArmComponent* CameraBoom;
-=======
-    class ASkill* SkillActor;
 
-    //2024_01_02 서동주 Hit Interface 적용
-    virtual void Hit(AActor* InAttacker, const FHitData& InHitData) override;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UCameraComponent* FollowCamera;
 
-public:
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-        class USpringArmComponent* CameraBoom;
->>>>>>> Stashed changes
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+		class UResourceComponent* ResourceComponent;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-        class UCameraComponent* FollowCamera;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		class UMoveComponent* MoveComponent;
 
-    UPROPERTY(VisibleAnywhere)
-        class UResourceComponent* ResourceComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class USkillComponent* SkillComponent;
 
-    UPROPERTY(VisibleAnywhere)
-        class UMoveComponent* MoveComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UBuffComponent* BuffComponent;
 
-<<<<<<< Updated upstream
-=======
-    UPROPERTY(EditAnywhere, BlueprintReadOnly)
-        class USkillComponent* SkillComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UItemComponent* ItemComponent;
 
-    UPROPERTY(EditAnywhere)
-        class UBuffComponent* BuffComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UShopComponent* ShopComponent;
 
-    UPROPERTY(EditAnywhere)
-        class UItemComponent* ItemComponent;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ASkill> SkillClass;
 
-    UPROPERTY(EditAnywhere)
-        TSubclassOf<class ASkill> SkillClass;
+	UPROPERTY(BlueprintReadWrite)
+		class USkillSlots* SkillSlots;
 
 public:
-    //모든 서버와 클라이언트에게 보여주는 Montage 실행 시 Client에서 호출하는 함수
-    UFUNCTION(Server, Reliable)
-        void PlayAnimMontageRep(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate);
+	//모든 서버와 클라이언트에게 보여주는 Montage 실행 시 Client에서 호출하는 함수
+	UFUNCTION(Server, Reliable)
+		void PlayAnimMontageRep(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate);
 
-    //Client에서 호출하면 안됩니다.
-    UFUNCTION(NetMulticast, Reliable)
-        void PlayAnimMontageMC(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate);
+	//Client에서 호출하면 안됩니다.
+	UFUNCTION(NetMulticast, Reliable)
+		void PlayAnimMontageMC(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate);
 
-    UFUNCTION(Server, Reliable)
-        void SetSpawnlocationRep(FVector InVector);
+	UFUNCTION(Server, Reliable)
+		void SetSpawnlocationRep(FVector InVector);
 
-    UFUNCTION(NetMulticast, Reliable)
-        void SetSpawnlocationNMC(FVector InVector);
+	UFUNCTION(NetMulticast, Reliable)
+		void SetSpawnlocationNMC(FVector InVector);
 
-    UFUNCTION(Server, Reliable)
-        void LaunchServer(FVector InLaunch);
+	UFUNCTION(Server, Reliable)
+		void LaunchServer(FVector InLaunch);
 
-    UFUNCTION(NetMulticast, Reliable)
-        void LaunchNMC(FVector InLaunch);
+	UFUNCTION(NetMulticast, Reliable)
+		void LaunchNMC(FVector InLaunch);
 
-    // 2024_01_05 Material Change 적용
-    UFUNCTION()
-        void Create_DynamicMaterial(class ACharacter* InCharacter);
+	// 2024_01_05 Material Change 적용
+	void Create_DynamicMaterial();
+	void Change_Color(FLinearColor InColor);
 
-    UFUNCTION()
-        void Change_Color(FLinearColor InColor);
+	//Testing!!
+	UFUNCTION(BlueprintCallable)
+		void Test();
 
-    //Testing!!
-    UFUNCTION(BlueprintCallable)
-        void Test();
->>>>>>> Stashed changes
+public:
+	UPROPERTY(Replicated)
+		FLinearColor BodyColor;
+
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 };
+

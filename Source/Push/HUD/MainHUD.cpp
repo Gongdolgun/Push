@@ -1,12 +1,15 @@
-#include "Push/HUD/MainHUD.h"
-#include "Push/HUD/Resource.h"
+#include "HUD/MainHUD.h"
+#include "HUD/Resource.h"
+#include "Widgets/WDG_EffectBase.h"
+#include "Widgets/StoreUI.h"
+#include "Widgets/KillDeathUI.h"
 #include "Global.h"
 
 void AMainHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AddResourceWidget();
+	//AddEffectWidget();
 }
 
 void AMainHUD::DrawHUD()
@@ -15,12 +18,28 @@ void AMainHUD::DrawHUD()
 
 }
 
-void AMainHUD::AddResourceWidget()
+void AMainHUD::AddWidget()
 {
 	TWeakObjectPtr<APlayerController> PlayerController = GetOwningPlayerController();
-	if (PlayerController.IsValid() && IsValid(ResourceWidgetClass))
+
+	if (UserWidgetClasses.Num() == 0 || !PlayerController.IsValid())
+		return;
+
+	for (TPair<FString, TSubclassOf<UUserWidget>> widgetClass : UserWidgetClasses)
 	{
-		ResourceWidget = CreateWidget<UResource>(PlayerController.Get(), ResourceWidgetClass);
-		ResourceWidget->AddToViewport(); // Viewport¿¡ µî·Ï
+		if (IsValid(widgetClass.Value))
+		{
+			UUserWidget* temp = CreateWidget<UUserWidget>(PlayerController.Get(), widgetClass.Value);
+			temp->AddToViewport(); //
+			UserWidgets.Add(widgetClass.Key, temp);
+		}
 	}
+}
+
+bool AMainHUD::CheckWidget(const FString& widgetname)
+{
+	if (false == UserWidgets.Contains(widgetname))
+		return false;
+
+	return true;
 }

@@ -1,11 +1,14 @@
 #include "Skill_Fireball_P.h"
 #include "Global.h"
 #include "Components/SphereComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Particles/ParticleSystem.h"
+#include "Character/PushCharacter.h"
 
 ASkill_Fireball_P::ASkill_Fireball_P()
 {
-
+	bReplicates = true;
 }
 
 void ASkill_Fireball_P::BeginPlay()
@@ -23,18 +26,15 @@ void ASkill_Fireball_P::Tick(float DeltaSeconds)
 void ASkill_Fireball_P::FOnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-<<<<<<< Updated upstream
-=======
 	Super::FOnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 
 	IDamageable* character = Cast<IDamageable>(OtherActor);
 
 	if (character == nullptr)
 		return;
-
+	
 	character->Hit(this, HitData);
 
->>>>>>> Stashed changes
 	OnDestroy();
 }
 
@@ -46,7 +46,8 @@ void ASkill_Fireball_P::OnDestroy()
 	// 폭발 파티클 소환, No Collision, 기존 Particle DeActive
 	if (!!Explosion)
 	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, GetActorLocation());
+		UParticleSystemComponent* particleComponent = UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Explosion, GetActorLocation());
+		particleComponent->SetIsReplicated(true);
 	}
 
 	Particle->SetActive(false);
