@@ -65,6 +65,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* SkillSlots;
 
+	UPROPERTY(BlueprintReadWrite)
+		class USkillSlots* ItemSlots;
+
 public:
 	//모든 서버와 클라이언트에게 보여주는 Montage 실행 시 Client에서 호출하는 함수
 	UFUNCTION(Server, Reliable)

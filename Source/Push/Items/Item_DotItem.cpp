@@ -2,7 +2,7 @@
 #include "Components/BuffComponent.h"
 #include "Global.h"
 
-void AItem_DotItem::Use()
+void AItem_DotItem::UseItem()
 {
 	if (Owner == nullptr)
 		return;

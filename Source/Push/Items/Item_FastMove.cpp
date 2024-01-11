@@ -13,7 +13,7 @@ void AItem_FastMove::Tick(float DeltaTime)
 	AItemBase::Tick(DeltaTime);
 }
 
-void AItem_FastMove::Use()
+void AItem_FastMove::UseItem()
 {
 	if (Owner == nullptr)
 		return;

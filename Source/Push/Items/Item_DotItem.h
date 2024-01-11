@@ -10,7 +10,7 @@ class PUSH_API AItem_DotItem : public AItemBase
 {
 	GENERATED_BODY()
 public:
-	virtual void Use()  override;
+	virtual void UseItem()  override;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "BuffClass")

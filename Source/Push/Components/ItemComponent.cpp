@@ -22,13 +22,13 @@ void UItemComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UItemComponent::UseItem_Server_Implementation()
+void UItemComponent::UseItem_Server_Implementation(TSubclassOf<AItemBase> ItemClass)
 {	
-	UseItem_NMC();
+	UseItem_NMC(ItemClass);
 }
 
 //아이템 사용
-void UItemComponent::UseItem_NMC_Implementation()
+void UItemComponent::UseItem_NMC_Implementation(TSubclassOf<AItemBase> ItemClass)
 {
 	if (!Owner.IsValid())
 		return;
@@ -39,7 +39,7 @@ void UItemComponent::UseItem_NMC_Implementation()
 	if (!Item.IsValid())
 		return;
 
-	Item->Use();
+	Item->UseItem();
 }
 
 void UItemComponent::DestroyItem()

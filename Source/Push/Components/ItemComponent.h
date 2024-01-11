@@ -22,10 +22,10 @@ public:
 public:
 	//void BuyItem();
 	UFUNCTION(BlueprintCallable, Reliable, Server)
-		void UseItem_Server();
+		void UseItem_Server(TSubclassOf<class AItemBase> ItemClass);
 
 	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
-		void UseItem_NMC();
+		void UseItem_NMC(TSubclassOf<class AItemBase> ItemClass);
 
 	void DestroyItem();
 
@@ -33,8 +33,6 @@ private:
 	TWeakObjectPtr<ACharacter> Owner;
 private:
 	TWeakObjectPtr<class AItemBase> Item;
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<AItemBase> ItemClass;
+	
 
 };
