@@ -8,6 +8,5 @@ UCLASS()
 class PUSH_API UWDG_SkillSlot : public UWDG_EffectBase
 {
 	GENERATED_BODY()
-
-
+		
 };

@@ -13,4 +13,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 		void OpenStoreUI();
 		void OpenStoreUI_Implementation();
+
+public:
+	void GetSkillSlots();
 };
