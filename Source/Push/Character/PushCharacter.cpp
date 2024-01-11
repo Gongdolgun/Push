@@ -71,8 +71,6 @@ APushCharacter::APushCharacter()
         SkillComponent->SetNetAddressable();
         SkillComponent->SetIsReplicated(true);
     }
-
-    BodyColor = FLinearColor::MakeRandomColor();
 }
 
 // Input
@@ -136,20 +134,6 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
     }
 }
 
-void APushCharacter::ChangeBodyColor_Server_Implementation(FLinearColor InColor)
-{
-    ChangeBodyColor_NMC_Implementation(InColor);
-}
-
-void APushCharacter::ChangeBodyColor_NMC_Implementation(FLinearColor InColor)
-{
-    if (HasAuthority() == true)
-        return;
-
-    Create_DynamicMaterial();
-    Change_Color(InColor);
-}
-
 void APushCharacter::Create_DynamicMaterial()
 {
     for (int32 i = 0; i < this->GetMesh()->GetMaterials().Num(); i++)
@@ -183,7 +167,7 @@ void APushCharacter::SetSpawnlocationRep_Implementation(FVector InVector)
 void APushCharacter::SetSpawnlocationNMC_Implementation(FVector InVector)
 {
 	if(SkillComponent != nullptr)
-		SkillComponent->SpawnLocation = InVector;
+		SkillComponent->SpawnLocation  = InVector;
 }
 
 void APushCharacter::LaunchServer_Implementation(FVector InLaunch)
@@ -196,16 +180,6 @@ void APushCharacter::LaunchNMC_Implementation(FVector InLaunch)
     LaunchCharacter(InLaunch, false, false);
 }
 
-void APushCharacter::SetBodyColor_Server_Implementation(FLinearColor InColor)
-{
-    SetBodyColor_NMC_Implementation(InColor);
-}
-
-void APushCharacter::SetBodyColor_NMC_Implementation(FLinearColor InColor)
-{
-    BodyColor = InColor;
-}
-
 void APushCharacter::Test()
 {
     if (SkillComponent == nullptr)
@@ -215,12 +189,12 @@ void APushCharacter::Test()
     SkillComponent->curSkillData->Play(this);
 }
 
-//void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-//{
-//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-//
-//    DOREPLIFETIME(APushCharacter, BodyColor);
-//}
+void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(APushCharacter, BodyColor);
+}
 
 void APushCharacter::PlayAnimMontageRep_Implementation(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate)
 {
@@ -241,6 +215,8 @@ void APushCharacter::BeginPlay()
 {
     Super::BeginPlay();
 
+    Create_DynamicMaterial();
+    Change_Color(BodyColor);
 }
 
 void APushCharacter::Tick(float DeltaSeconds)

@@ -40,7 +40,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnMatchStateSet() override;
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 	
-
-
+private:
+	FLinearColor Colors[4] = {FLinearColor::Red, FLinearColor::Blue, FLinearColor::Green, FLinearColor::Black};
+	uint8 index = 0;
+	TArray<class APushPlayerController*> Controllers;
 };

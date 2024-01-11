@@ -51,13 +51,4 @@ private:
 public:
 	float HUDHealth;
 	float HUDMaxHealth;
-
-public:
-	FLinearColor BodyColor;
-
-	UFUNCTION(Server, Reliable)
-		void SetBodyColor_Server(FLinearColor InColor);
-
-	UFUNCTION(NetMulticast, Reliable)
-		void SetBodyColor_NMC(FLinearColor InColor);
 };
