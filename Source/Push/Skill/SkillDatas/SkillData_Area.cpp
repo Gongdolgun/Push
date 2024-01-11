@@ -36,31 +36,18 @@ void USkillData_Area::Play(ACharacter* InOwner)
 	{
 		bDecal = true;
 
-		if (TracePoint == nullptr)
-		{
-			TracePoint = Cast<ATracePoint>(GetWorld()->SpawnActor(TracePoint_Class, &traceTransform, params));
-
-			if (TracePoint != nullptr)
-			{
-				skillComponent->SpawnLocation = TracePoint->GetActorLocation();
-				CLog::Print(skillComponent->SpawnLocation);
-				skillComponent->Meteor_StartLocation = skillComponent->SpawnLocation + RelativeVector;
-				CLog::Print(skillComponent->Meteor_StartLocation);
-				
-			}
-		}
+		TracePoint = Cast<ATracePoint>(GetWorld()->SpawnActor(TracePoint_Class, &traceTransform, params));
 	}
-
+	
 	else
 	{
 		bDecal = false;
 
-		if (TracePoint != nullptr)
-		{
-			character->SetSpawnlocationRep(skillComponent->SpawnLocation);
-			character->PlayAnimMontageRep(character, ActionMontage, PlayRate);
+		FVector StartLocation = TracePoint->GetTraceLocation() + RelativeLocation;
 
-			TracePoint->Destroy();
-		}
+		character->SetSpawnlocationRep(StartLocation);
+		character->PlayAnimMontageRep(character, ActionMontage, PlayRate);
+
+		TracePoint->Destroy();
 	}
 }

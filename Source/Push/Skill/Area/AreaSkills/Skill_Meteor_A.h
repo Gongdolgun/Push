@@ -53,6 +53,6 @@ private:
 	FVector Meteor_Direction;
 
 	UPROPERTY(EditAnywhere, Category = "Particle")
-		FVector ExplosionScale = FVector(1,1,1);
+		FVector ExplosionScale = FVector(1, 1, 1);
 
 };

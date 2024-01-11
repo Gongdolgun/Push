@@ -16,7 +16,6 @@ void AItemBase::BeginPlay()
 	Super::BeginPlay();
 
 	Owner = Cast<ACharacter>(GetOwner());
-
 }
 
 void AItemBase::Tick(float DeltaTime)

@@ -35,12 +35,21 @@ public:
 		void OnLookUp(float Rate);
 
 public:
-	FORCEINLINE void SetSpeedPercent(float speed) { SpeedPercent = speed; }
+	UFUNCTION(BlueprintCallable, Reliable, Server)
+		void SetSpeedPercent_Server(float speed);
+
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
+		void SetSpeedPercent_NMC(float speed);
+
+
 	FORCEINLINE float GetSpeedPercent() { return SpeedPercent; }
 
 public:
-	UFUNCTION(BlueprintCallable)
-		void UpdateSpeed();
+	UFUNCTION(BlueprintCallable, Reliable, Server)
+		void UpdateSpeed_Server();
+
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
+		void UpdateSpeed_NMC();
 
 private:
 	UPROPERTY(EditAnywhere,Category = "Move_Property")

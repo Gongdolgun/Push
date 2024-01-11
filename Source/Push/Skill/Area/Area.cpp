@@ -10,6 +10,8 @@ AArea::AArea()
 	Helpers::CreateComponent(this, &Particle, "Particle", Root);
 
 	Particle->bAutoActivate = false;
+	Particle->SetIsReplicated(true);
+
 }
 
 void AArea::BeginPlay()

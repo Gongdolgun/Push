@@ -62,6 +62,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
 
+	UPROPERTY(BlueprintReadWrite)
+		class USkillSlots* SkillSlots;
+
 public:
 	//모든 서버와 클라이언트에게 보여주는 Montage 실행 시 Client에서 호출하는 함수
 	UFUNCTION(Server, Reliable)
@@ -83,18 +86,6 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void LaunchNMC(FVector InLaunch);
 
-	UFUNCTION(Server, Reliable)
-		void ChangeBodyColor_Server(FLinearColor InColor);
-
-	UFUNCTION(NetMulticast, Reliable)
-		void ChangeBodyColor_NMC(FLinearColor InColor);
-
-	UFUNCTION(Server, Reliable)
-		void SetBodyColor_Server(FLinearColor InColor);
-
-	UFUNCTION(NetMulticast, Reliable)
-		void SetBodyColor_NMC(FLinearColor InColor);
-
 	// 2024_01_05 Material Change 적용
 	void Create_DynamicMaterial();
 	void Change_Color(FLinearColor InColor);
@@ -104,8 +95,9 @@ public:
 		void Test();
 
 public:
-	FLinearColor BodyColor;
+	UPROPERTY(Replicated)
+		FLinearColor BodyColor;
 
-	//virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 };
 

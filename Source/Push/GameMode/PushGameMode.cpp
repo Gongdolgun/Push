@@ -23,6 +23,8 @@ void APushGameMode::BeginPlay()
 
 	LevelStartingTime = GetWorld()->GetTimeSeconds();
 
+	
+
 	/*UGameInstance* gameInstance = GetGameInstance();
 	UPushGameInstance* temp = gameInstance->GetSubsystem<UPushGameInstance>();
 
@@ -81,4 +83,28 @@ void APushGameMode::OnMatchStateSet()
 			SelectedPlayer->OnMatchStateSet(MatchState);
 		}
 	}
+}
+
+void APushGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	APushPlayerController* controller = Cast<APushPlayerController>(NewPlayer);
+
+	if (controller == nullptr)
+		return;
+	//for(APushPlayerController* control : Controllers)
+	//{
+	//	control->ChangeBodyColor_Client_Implementation();
+	//}
+
+	APushCharacter* character = Cast<APushCharacter>(controller->GetPawn());
+
+	if (character == nullptr)
+	{
+		CLog::Log("No Character");
+		return;
+	}
+
+	character->BodyColor = Colors[index++];
 }

@@ -1,6 +1,10 @@
 #include "Components/SkillComponent.h"
+#include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 #include "Skill/SkillData.h"
+#include "Skill/Skill.h"
+#include "Skill/SkillDatas/SkillData_Projectile.h"
+#include "Global.h"
 
 USkillComponent::USkillComponent()
 {
@@ -13,6 +17,10 @@ void USkillComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Owner = Cast<ACharacter>(GetOwner());
+
+	if (ss != nullptr)
+		curSkillData = NewObject<USkillData>(Owner, ss);
 }
 
 
@@ -21,7 +29,6 @@ void USkillComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 }
-
 
 void USkillComponent::UseSkill(char InChar)
 {
@@ -42,5 +49,5 @@ void USkillComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(USkillComponent, SpawnLocation);
-	DOREPLIFETIME(USkillComponent, Meteor_StartLocation);
 }
+

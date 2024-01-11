@@ -43,5 +43,6 @@ public:
 	UPROPERTY(EditAnywhere, Replicated)
 		FVector Meteor_StartLocation;
 
+
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
