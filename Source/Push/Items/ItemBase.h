@@ -9,20 +9,22 @@ UCLASS()
 class PUSH_API AItemBase : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	AItemBase();
 
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
-	virtual void UseItem() {};
-	
-protected:
-	TWeakObjectPtr<ACharacter> Owner;
-	UPROPERTY(EditAnywhere)
-		FString ItemName;
-};
+	virtual void UseItem() PURE_VIRTUAL(AItemBase::Use, ;);
 
+public:
+	TWeakObjectPtr<ACharacter> Owner;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		FString ItemName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		UTexture2D* ItemImage;
+};
