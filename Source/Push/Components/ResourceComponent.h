@@ -36,6 +36,7 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void AdjustHP_NMC(int InValue);
 
+	void AdjustHP(int InValue);
 
 	// 2024_01_04 박성우 - Tab키 입력 시 KillDeath 위젯 띄우기
 	void OnKillDeathUI();

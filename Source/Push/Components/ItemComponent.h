@@ -5,18 +5,18 @@
 #include "ItemComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PUSH_API UItemComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	UItemComponent();
 
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
@@ -33,6 +33,6 @@ private:
 	TWeakObjectPtr<ACharacter> Owner;
 private:
 	TWeakObjectPtr<class AItemBase> Item;
-	
+
 
 };

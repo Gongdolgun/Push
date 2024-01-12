@@ -29,6 +29,8 @@ void ABuffInstance::BeginPlay()
 	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
 	if (!controller || !buffComponent)
 		return;
+	if (!controller->IsLocalController())
+		return;
 
 	//버프 위젯 생성
 	Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->BuffCount++);

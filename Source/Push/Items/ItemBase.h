@@ -18,14 +18,11 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
-	virtual void UseItem() PURE_VIRTUAL(AItemBase::Use, ;);
+	virtual void UseItem() {};
 	
-public:
+protected:
 	TWeakObjectPtr<ACharacter> Owner;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere)
 		FString ItemName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		UTexture2D* ItemImage;
 };
 

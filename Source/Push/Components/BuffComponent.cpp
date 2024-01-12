@@ -28,6 +28,7 @@ void UBuffComponent::BeginPlay()
 	Widget = CreateWidget<UWDG_BuffBoard>(controller, WidgetClass, "BuffWidgetBoard");
 	if(!!Widget)
 		Widget->AddToViewport();
+
 }
 
 
@@ -37,25 +38,17 @@ void UBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 }
 
-void UBuffComponent::AddBuff_Server_Implementation(TSubclassOf<ABuffInstance> BuffClass)
-{
-	AddBuff_NMC(BuffClass);
-}
-
-
 //2024.01.05 이현중
-//버프 자료형을 집어넣으면 그에 따른 엑터를 생성후 OnEffect를 발생 <- 2024.01.09 기존 클래스생성에서 엑터생성으로 변경
-// 2024.01.10 기존 클라이언트에서만 할당하던 Add를 서버가 사용하도록 설정
-void UBuffComponent::AddBuff_NMC_Implementation(TSubclassOf<ABuffInstance> BuffClass)
+//버프 자료형을 집어넣으면 그에 따른 엑터를 생성후 OnEffect를 호출
+void UBuffComponent::AddBuff(TSubclassOf<ABuffInstance> BuffClass)
 {
-	if (!Owner.IsValid())
+	if (!Owner.Get() || !BuffClass)
 		return;
 
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
 
-	ABuffInstance* temp = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor<ABuffInstance>(BuffClass, param));
-
+	ABuffInstance* temp = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass,0,0, param));
 	if (!temp || !Widget)
 		return;
 

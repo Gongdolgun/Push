@@ -23,5 +23,5 @@ void ABuffInstance_DotDamage::Active()
 	if (!resourceComponent)
 		return;
 
-	resourceComponent->AdjustHP_Server(-Damage);
+	resourceComponent->AdjustHP(-Damage);
 }

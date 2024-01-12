@@ -17,7 +17,6 @@ public:
 
 	virtual void UseItem()  override;
 
-
 private:
 	UPROPERTY(EditAnywhere, Category = "BuffClass")
 		TSubclassOf<class ABuffInstance> BuffClass;
