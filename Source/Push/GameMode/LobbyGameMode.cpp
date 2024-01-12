@@ -1,5 +1,6 @@
 #include "GameMode/LobbyGameMode.h"
 #include "GameFramework/GameState.h"
+#include "GameState/LobbyGameState.h"
 #include "HUD/LobbyHUD.h"
 #include "Utilites/CLog.h"
 #include "Widgets/LobbyCountDown.h"
@@ -28,6 +29,17 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 			}
 		}
 	}
+
+	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
+	lobbyGameState->PlayerConnection();
+}
+
+void ALobbyGameMode::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
+
+	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
+	lobbyGameState->PlayerConnection();
 }
 
 void ALobbyGameMode::PlayerLoginInServer_Implementation()
@@ -57,7 +69,6 @@ void ALobbyGameMode::EnterMap()
 		CLog::Log("When 'Num of Players = 3', Dedicated Server entered TestLevelMap!!");
 	}
 }
-
 
 void ALobbyGameMode::UpdateTimer_NMC_Implementation(float InTime)
 {

@@ -27,10 +27,6 @@ void ALobbyPlayerController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	SetHUDCountdownTime();
-	/*if(IsValid(GameMode))
-	{
-		SetHUDCountdownTime(GameMode->countdownTimer);		
-	}*/
 }
 
 void ALobbyPlayerController::SetHUDCountdownTime()
@@ -40,16 +36,9 @@ void ALobbyPlayerController::SetHUDCountdownTime()
 
 	float TimeLeft = countdownTimer - GetWorld()->GetTimeSeconds() + LevelStartingTime;
 	LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->UpdateCountdown(TimeLeft);
+	
 }
 
-//void ALobbyPlayerController::SetHUDCountdownTime(float InTime)
-//{
-//	if (LobbyHUD == nullptr) return;
-//	if (LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown") == nullptr) return;
-//
-//	LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->UpdateCountdown(InTime);
-//}
-//
 //void ALobbyPlayerController::ClientCheck_Implementation()
 //{
 //	if (GameMode == nullptr) return;
