@@ -6,6 +6,7 @@
 void AItem_FastMove::BeginPlay()
 {
 	AItemBase::BeginPlay();
+
 }
 
 void AItem_FastMove::Tick(float DeltaTime)
@@ -13,15 +14,15 @@ void AItem_FastMove::Tick(float DeltaTime)
 	AItemBase::Tick(DeltaTime);
 }
 
-void AItem_FastMove::Use()
+void AItem_FastMove::UseItem()
 {
-	if (Owner == nullptr)
+	if (!Owner.IsValid())
 		return;
 
 	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
 
 	if(!!buffComponent)
 	{
-		buffComponent->AddBuff_Server(BuffClass);
+		buffComponent->AddBuff(BuffClass);	
 	}
 }

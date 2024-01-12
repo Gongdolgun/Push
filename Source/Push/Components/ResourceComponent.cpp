@@ -43,6 +43,11 @@ void UResourceComponent::AdjustHP_NMC_Implementation(int InValue)
 	HP = FMath::Clamp(HP + InValue, 0.0f, MaxHP);
 }
 
+void UResourceComponent::AdjustHP(int InValue)
+{
+	HP = FMath::Clamp(HP + InValue, 0.0f, MaxHP);
+}
+
 void UResourceComponent::OnKillDeathUI()
 {
 	TWeakObjectPtr<APushCharacter> Owner = Cast<APushCharacter>(GetOwner());

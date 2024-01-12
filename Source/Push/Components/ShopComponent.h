@@ -27,8 +27,17 @@ private:
 	bool bOpen = false;
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillDatas")
 		TArray<TSubclassOf<class USkillData>> SkillDatas;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemDatas")
+		TArray<TSubclassOf<class AItemBase>> ItemDatas;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "BoughtSkills")
+		TArray<TSubclassOf<class USkillData>> BoughtSkills;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "BoughtItems")
+		TArray<TSubclassOf<class USkillData>> BoughtItems;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class UMainUI* MainUI;
