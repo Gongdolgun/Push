@@ -2,7 +2,13 @@
 #include "Components/BuffComponent.h"
 #include "Global.h"
 
-void AItem_DotItem::Use()
+void AItem_DotItem::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
+
+void AItem_DotItem::UseItem()
 {
 	if (Owner == nullptr)
 		return;
@@ -23,5 +29,6 @@ void AItem_DotItem::Use()
 		return;
 
 	CLog::Log("DebugTest");
-	buffComponent->AddBuff_Server(BuffClass);
+	buffComponent->AddBuff(BuffClass);
 }
+

@@ -23,7 +23,7 @@ public:
 	virtual void OnSkillPressed() override;
 	virtual void OnSkillClicked() override;
 
-	virtual void OnDestroy() {};
+	virtual void OnDestroy(FVector InLocation) {};
 
 protected:
 	UPROPERTY(VisibleAnywhere)

@@ -7,10 +7,13 @@
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Skill/SkillData.h"
 #include "Skill/Area/PointDecal.h"
 
 ASkill_Meteor_A::ASkill_Meteor_A()
 {
+    bReplicates = true;
+
     Helpers::CreateComponent(this, &SphereComponent, "Collision", Root);
     SphereComponent->SetSphereRadius(128.0f);
 
@@ -22,10 +25,13 @@ ASkill_Meteor_A::ASkill_Meteor_A()
 
 void ASkill_Meteor_A::BeginPlay()
 {
+
     Super::BeginPlay();
 
+    USkillComponent* skillComponent = Helpers::GetComponent<USkillComponent>(Owner);
     Particle->SetVisibility(true);
     Particle->Activate(true);
+    ProjectileComponent->Activate(true);
 
     SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::ASkill_Meteor_A::OnComponentBeginOverlap);
 
@@ -49,35 +55,41 @@ void ASkill_Meteor_A::OnSkillClicked()
 {
     Super::OnSkillClicked();
 
-    //FString message = FString::Printf(TEXT("DecalTime : %f, InterpSpeed : %f"), DecalTime, InterpSpeed);
-
     USkillComponent* skillComponent = Helpers::GetComponent<USkillComponent>(Owner);
 
-    if (skillComponent != nullptr)
+    if (skillComponent == nullptr)
+    {
         return;
+    }
+
+    FVector Meteor_Location = skillComponent->SpawnLocation - skillComponent->curSkillData->RelativeLocation;
 
     // Meteor Direction
-    // skillComponent->SpawnLocation가 PointDecal의 위치이다.
-    // RelativeLocation은 메테오를 Spawn 시킬 위치 조절용
+    FVector direction = (skillComponent->SpawnLocation - Meteor_Location).GetSafeNormal();
+    ProjectileComponent->Velocity = ProjectileComponent->InitialSpeed * (-direction);
+    //Projectile_Server_Implementation(direction);
 
 
-    Meteor_Location = skillComponent->Meteor_StartLocation;
-    Meteor_Direction = Meteor_Location - skillComponent->SpawnLocation;
-    ProjectileComponent->Velocity = ProjectileComponent->InitialSpeed * (Meteor_Direction.GetSafeNormal());
+    FHitResult HitResult;
+    TArray<AActor*> ignores;
+    ignores.Add(Owner);
 
-    FString VectorAsString = Meteor_Location.ToString();
-    FString message = FString::Printf(TEXT("Meteor Location : %s "), *VectorAsString);
-    CLog::Print(message);
+    // Meteor Trace
+    UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), skillComponent->SpawnLocation, Meteor_Location,
+        ETraceTypeQuery::TraceTypeQuery1, false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
+
+
 
     // 떨어지는 시간 구하기
-    float falling_Distance = FVector::Dist(Meteor_Location, skillComponent->SpawnLocation);
+    float falling_Distance = FVector::Dist(skillComponent->SpawnLocation, Meteor_Location);
     float falling_Speed = ProjectileComponent->Velocity.Size();
 
     float fallingTime = falling_Distance / falling_Speed;
 
     // Point Decal Spawn
     FTransform decalTransform;
-    decalTransform.SetLocation(skillComponent->SpawnLocation);
+    FVector CollisionLocation = Meteor_Location;
+    decalTransform.SetLocation(CollisionLocation);
 
     APointDecal* DeferredDecal = Cast<APointDecal>(
         Owner->GetWorld()->SpawnActorDeferred<APointDecal>(Decal_Class, decalTransform));
@@ -89,21 +101,33 @@ void ASkill_Meteor_A::OnSkillClicked()
     }
 
 
+
 }
 
 void ASkill_Meteor_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    IDamageable* character = Cast<IDamageable>(OtherActor);
 
-    OnDestroy();
+    IDamageable* character = Cast<IDamageable>(OtherActor);
+    USkillComponent* skillComponent = Helpers::GetComponent<USkillComponent>(Owner);
+
+    if (skillComponent == nullptr)
+    {
+        return;
+    }
+
+    FVector CollisionLocation = skillComponent->SpawnLocation - skillComponent->curSkillData->RelativeLocation;
+
+    OnDestroy(CollisionLocation);
 
     // 땅에 닿을 때, 캐릭터가 아니여야함
     if (!Cast<APawn>(OtherActor))
     {
-        FVector start = SweepResult.ImpactNormal;
-        FVector end = SweepResult.ImpactNormal;
+        FVector start = CollisionLocation;
+        FVector end = CollisionLocation;
         float radius = 150.0f;
+
+        //CLog::Print(start);
 
         // 데미지를 줄 Pawn만 추적
         FHitResult Particle_HitResult;
@@ -131,22 +155,20 @@ void ASkill_Meteor_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCom
 
 }
 
-void ASkill_Meteor_A::OnDestroy()
+void ASkill_Meteor_A::OnDestroy(FVector InLocation)
 {
-    Super::OnDestroy();
+    Super::OnDestroy(InLocation);
 
     // 폭발 파티클 소환
     if (Explosion)
     {
         FTransform explosionTramsform;
-        explosionTramsform.SetLocation(DecalLocation);
+        explosionTramsform.SetLocation(InLocation);
         explosionTramsform.SetScale3D(ExplosionScale);
         UGameplayStatics::SpawnEmitterAtLocation(Owner->GetWorld(), Explosion, explosionTramsform);
 
         Particle->SetIsReplicated(true);
         Particle->SetActive(false);
     }
-
-
 
 }
