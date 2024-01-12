@@ -32,7 +32,7 @@ void ALobbyGameState::PlayerConnection()
 
 void ALobbyGameState::OnRep_MatchStartCountdown() 
 {
-	UpdateMatchStartCountdownWidget();
+	//UpdateMatchStartCountdownWidget();
 
 	if (MatchStartCountdown >= 5)
 	{
