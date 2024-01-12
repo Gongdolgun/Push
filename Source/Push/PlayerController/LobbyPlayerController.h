@@ -20,7 +20,7 @@ public:
 
 private:
 	UPROPERTY()
-	class ALobbyGameMode* GameMode;
+	class ALobbyGameState* GameState;
 
 	class ALobbyHUD* LobbyHUD;
 

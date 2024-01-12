@@ -1,6 +1,6 @@
 #include "PlayerController/LobbyPlayerController.h"
 #include "Global.h"
-#include "GameMode/LobbyGameMode.h"
+#include "GameState/LobbyGameState.h"
 #include "HUD/LobbyHUD.h"
 #include "Widgets/LobbyCountDown.h"
 
@@ -16,8 +16,8 @@ void ALobbyPlayerController::BeginPlay()
 		if(LobbyHUD->CheckWidget("LobbyCountDown"))
 			LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetVisibility(ESlateVisibility::Visible);
 	}
-
-	GameMode = Cast<ALobbyGameMode>(UGameplayStatics::GetGameMode(this));
+	
+	GameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this));
 
 	LevelStartingTime = GetWorld()->GetTimeSeconds();
 }
@@ -26,7 +26,7 @@ void ALobbyPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	SetHUDCountdownTime();
+	//SetHUDCountdownTime(); // LobbyHUD의 함수 UpdateWidget()으로 '입장한 플레이어 & 시간' 업데이트 
 }
 
 void ALobbyPlayerController::SetHUDCountdownTime()
@@ -35,17 +35,6 @@ void ALobbyPlayerController::SetHUDCountdownTime()
 	if (LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown") == nullptr) return;
 
 	float TimeLeft = countdownTimer - GetWorld()->GetTimeSeconds() + LevelStartingTime;
-	LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->UpdateCountdown(TimeLeft);
-	
-}
+	LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->UpdateWidget(GameState->MatchStartCountdown);
 
-//void ALobbyPlayerController::ClientCheck_Implementation()
-//{
-//	if (GameMode == nullptr) return;
-//
-//	if (IsValid(GameMode))
-//	{
-//		countdownTimer = GameMode->countdownTimer;
-//		LevelStartingTime = GameMode->LevelStartingTime;
-//	}
-//}
+}
