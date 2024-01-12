@@ -23,11 +23,6 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 			{
 				CLog::Log("Num of Players = 3"); 
 
-				//FTimerDelegate delegate;
-				//delegate.BindUObject(this, &ALobbyGameMode::EnterMapTimer);
-
-				//GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, delegate, 1.0f, true, countdownTimer);
-
 				GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, this, &ALobbyGameMode::CountDown, 1.0f, true, 0);
 				
 			}

@@ -30,6 +30,7 @@ void USkillComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 }
 
+
 void USkillComponent::UseSkill(char InChar)
 {
 	if (!SkillMap.Contains(InChar))
@@ -50,4 +51,3 @@ void USkillComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
 	DOREPLIFETIME(USkillComponent, SpawnLocation);
 }
-

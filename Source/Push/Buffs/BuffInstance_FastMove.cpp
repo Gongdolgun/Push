@@ -10,7 +10,7 @@ void ABuffInstance_FastMove::OnEffect()
 	UMoveComponent* moveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
 	movementComponent = Helpers::GetComponent<UCharacterMovementComponent>(Owner.Get());
 
-	if (!moveComponent)
+	if (!moveComponent || !movementComponent)
 		return;
 
 	//속도 상승
@@ -20,8 +20,6 @@ void ABuffInstance_FastMove::OnEffect()
 
 void ABuffInstance_FastMove::OffEffect()
 {
-
-
 	UMoveComponent* moveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
 
 	if (!moveComponent)
@@ -29,10 +27,7 @@ void ABuffInstance_FastMove::OffEffect()
 
 	//속도 감속
 	moveComponent->SetSpeedPercent_Server(moveComponent->GetSpeedPercent() - PlusSpeedPercent);
-	CLog::Print("offEffect");
 	moveComponent->UpdateSpeed_Server();
-
-	ConditionalBeginDestroy();
 
 	Super::OffEffect();
 }
@@ -41,5 +36,4 @@ void ABuffInstance_FastMove::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	CLog::Print(movementComponent->MaxWalkSpeed);
 }
