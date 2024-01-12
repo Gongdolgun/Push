@@ -115,7 +115,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(launch.X + launch.Y + launch.Z > 0.0f)
     {
-        LaunchServer(launch);
+    	LaunchServer(launch);
     }
 
     if(InHitData.Effect != nullptr)
@@ -165,17 +165,6 @@ void APushCharacter::Change_Color(FLinearColor InColor)
 
 }
 
-void APushCharacter::SetSpawnlocationRep_Implementation(FVector InVector)
-{
-    SetSpawnlocationNMC_Implementation(InVector);
-}
-
-void APushCharacter::SetSpawnlocationNMC_Implementation(FVector InVector)
-{
-	if(SkillComponent != nullptr)
-		SkillComponent->SpawnLocation  = InVector;
-}
-
 void APushCharacter::LaunchServer_Implementation(FVector InLaunch)
 {
     LaunchNMC_Implementation(InLaunch);
@@ -201,21 +190,6 @@ void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
     DOREPLIFETIME(APushCharacter, BodyColor);
 }
-
-void APushCharacter::PlayAnimMontageRep_Implementation(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate)
-{
-    PlayAnimMontageMC(InCharacter, InMontage, PlayRate);
-}
-
-
-void APushCharacter::PlayAnimMontageMC_Implementation(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate)
-{
-    if (InCharacter == nullptr || InMontage == nullptr)
-        return;
-
-    InCharacter->PlayAnimMontage(InMontage, PlayRate);
-}
-
 
 void APushCharacter::BeginPlay()
 {

@@ -19,18 +19,14 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
-	void UseSkill(char InChar);
+	UFUNCTION(BlueprintCallable)
+		void UseSkill(TSubclassOf<class USkillData> SkillData);
 
 	UFUNCTION(BlueprintCallable)
 		void Execute();
 
 public:
-	TMap<char, class USkillData*> SkillMap;
 	ACharacter* Owner;
-
-public:
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<USkillData> ss;
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -39,10 +35,13 @@ public:
 	UPROPERTY(EditAnywhere, Replicated)
 		FVector SpawnLocation;
 
-	UPROPERTY(EditAnywhere, Replicated)
-		FVector Meteor_StartLocation;
-
 
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+public:
+	UFUNCTION(Server, Reliable)
+		void SetCurSkillData_Server(TSubclassOf<class USkillData> SkillData);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void SetCurSkillData_NMC(TSubclassOf<class USkillData> SkillData);
 };

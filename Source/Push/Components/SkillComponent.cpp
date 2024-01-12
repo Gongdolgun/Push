@@ -19,8 +19,7 @@ void USkillComponent::BeginPlay()
 
 	Owner = Cast<ACharacter>(GetOwner());
 
-	if (ss != nullptr)
-		curSkillData = NewObject<USkillData>(Owner, ss);
+	
 }
 
 
@@ -31,18 +30,20 @@ void USkillComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 }
 
 
-void USkillComponent::UseSkill(char InChar)
+void USkillComponent::UseSkill(TSubclassOf<USkillData> SkillData)
 {
-	if (!SkillMap.Contains(InChar))
-		return;
-
-	// curSkillData = SkillMap[InChar];
-	Execute();
+	if (SkillData != nullptr)
+	{
+		SetCurSkillData_Server(SkillData);
+	}
 }
 
 void USkillComponent::Execute()
 {
-	curSkillData->Play(Owner);
+	if(curSkillData != nullptr)
+	{
+		curSkillData->Play(Owner);
+	}
 }
 
 void USkillComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -50,4 +51,20 @@ void USkillComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(USkillComponent, SpawnLocation);
+}
+
+void USkillComponent::SetCurSkillData_Server_Implementation(TSubclassOf<class USkillData> SkillData)
+{
+	SetCurSkillData_NMC(SkillData);
+}
+
+void USkillComponent::SetCurSkillData_NMC_Implementation(TSubclassOf<class USkillData> SkillData)
+{
+	if(SkillData != nullptr)
+	{
+		if(curSkillData == nullptr)
+			curSkillData = NewObject<USkillData>(Owner, SkillData);
+	}
+
+	Execute();
 }
