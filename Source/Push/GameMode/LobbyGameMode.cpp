@@ -1,5 +1,6 @@
 #include "GameMode/LobbyGameMode.h"
 #include "GameFramework/GameState.h"
+#include "GameState/LobbyGameState.h"
 #include "HUD/LobbyHUD.h"
 #include "Utilites/CLog.h"
 #include "Widgets/LobbyCountDown.h"
@@ -28,6 +29,9 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 			}
 		}
 	}
+
+	ALobbyGameState* gameState = GetGameState<ALobbyGameState>();
+	gameState->SetNumofPlayers_NMC(NumOfPlayers);
 }
 
 void ALobbyGameMode::PlayerLoginInServer_Implementation()
