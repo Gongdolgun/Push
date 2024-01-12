@@ -13,7 +13,7 @@ void ULobbyCountDown::UpdateCountdown(float InTime)
 
 void ULobbyCountDown::UpdateWidget(int currTime)
 {
-	if (currTime == 0)
+	if(currTime == 0)
 	{
 		RemoveFromParent();
 	}

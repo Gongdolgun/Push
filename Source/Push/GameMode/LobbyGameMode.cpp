@@ -30,8 +30,16 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		}
 	}
 
-	ALobbyGameState* gameState = GetGameState<ALobbyGameState>();
-	gameState->SetNumofPlayers_NMC(NumOfPlayers);
+	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
+	lobbyGameState->PlayerConnection();
+}
+
+void ALobbyGameMode::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
+
+	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
+	lobbyGameState->PlayerConnection();
 }
 
 void ALobbyGameMode::PlayerLoginInServer_Implementation()
@@ -61,7 +69,6 @@ void ALobbyGameMode::EnterMap()
 		CLog::Log("When 'Num of Players = 3', Dedicated Server entered TestLevelMap!!");
 	}
 }
-
 
 void ALobbyGameMode::UpdateTimer_NMC_Implementation(float InTime)
 {

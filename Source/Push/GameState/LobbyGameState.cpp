@@ -4,8 +4,6 @@
 #include "HUD/LobbyHUD.h"
 #include "Widgets/LobbyCountDown.h"
 #include "Kismet/GameplayStatics.h"
-#include "Character/PushCharacter.h"
-#include "PlayerController/LobbyPlayerController.h"
 
 void ALobbyGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -29,18 +27,6 @@ void ALobbyGameState::PlayerConnection()
 			MatchStartCountdown = 5;
 		}
 	}
-}
-
-void ALobbyGameState::SetNumofPlayers_NMC_Implementation(int InNum)
-{
-	currentNumOfPlayers = InNum;
-
-	APushCharacter* character = Cast<APushCharacter>(GetOwner());
-
-	if (character == nullptr)
-		return;
-
-	ALobbyPlayerController* controller = Cast<ALobbyPlayerController>(character->GetController());
 }
 
 void ALobbyGameState::MatchCountDown()

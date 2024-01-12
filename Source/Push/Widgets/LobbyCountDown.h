@@ -4,7 +4,7 @@
 #include "LobbyCountDown.generated.h"
 
 /**
- *
+ * 
  */
 UCLASS(Blueprintable)
 class PUSH_API ULobbyCountDown : public UUserWidget
@@ -16,23 +16,23 @@ public:
 
 
 	UPROPERTY(meta = (BindWidget))
-		class UTextBlock* CountdownNum; // 5초 카운트 다운
+	class UTextBlock* CountdownNum; // 5초 카운트 다운
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-		class UTextBlock* countDown; // 카운트 다운
+	class UTextBlock* countDown; // 카운트 다운
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-		class UTextBlock* playerAmount; // 입장 플레이어
+	class UTextBlock* playerAmount; // 입장 플레이어
 	UPROPERTY(BlueprintReadOnly)
-		class ALobbyGameState* lobbyGameState;
+	class ALobbyGameState* lobbyGameState;
 
 	UFUNCTION()
-		void UpdateWidget(int currTime);
+	void UpdateWidget(int currTime);
 
 
 	UFUNCTION()
-		UTextBlock* GetPlayerAmountText();
+	UTextBlock* GetPlayerAmountText();
 
 	UFUNCTION()
-		UTextBlock* GetCountDownText();
+	UTextBlock* GetCountDownText();
 
 };
