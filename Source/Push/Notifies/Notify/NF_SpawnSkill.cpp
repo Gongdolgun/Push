@@ -19,7 +19,7 @@ void UNF_SpawnSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 	if (Owner == nullptr || Owner->HasAuthority() == true)
 		return;
 
-	USkillComponent* SkillComponent =  Helpers::GetComponent<USkillComponent>(Owner);
+	USkillComponent* SkillComponent = Helpers::GetComponent<USkillComponent>(Owner);
 
 	if (SkillComponent == nullptr)
 		return;
@@ -31,7 +31,7 @@ void UNF_SpawnSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 
 	USkillData_Projectile* SkillData = Cast<USkillData_Projectile>(SkillComponent->curSkillData);
 	// Projectile
-	if (SkillData != nullptr)	
+	if (SkillData != nullptr)
 
 	{
 		SpawnLocation = Owner->GetActorLocation() + Owner->GetActorForwardVector() * SkillComponent->curSkillData->RelativeDistance;
@@ -44,7 +44,7 @@ void UNF_SpawnSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 		SpawnRotation = Owner->GetActorForwardVector().Rotation();
 	}
 
-	
+
 	FActorSpawnParameters params;
 	params.Owner = Owner;
 	params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
