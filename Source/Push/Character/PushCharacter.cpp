@@ -18,6 +18,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Global.h"
 #include "Components/SkillComponent.h"
+#include "Components/StateComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "Widgets/SkillSlots.h"
@@ -62,6 +63,9 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UBuffComponent>(this, &BuffComponent, "BuffComponent");
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
+    Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
+
+
 	/*if (ResourceComponent != nullptr)
 	{
 		ResourceComponent->SetNetAddressable();

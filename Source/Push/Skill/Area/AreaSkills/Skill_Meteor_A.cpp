@@ -67,8 +67,6 @@ void ASkill_Meteor_A::OnSkillClicked()
     // Meteor Direction
     FVector direction = (skillComponent->SpawnLocation - Meteor_Location).GetSafeNormal();
     ProjectileComponent->Velocity = ProjectileComponent->InitialSpeed * (-direction);
-    //Projectile_Server_Implementation(direction);
-
 
     FHitResult HitResult;
     TArray<AActor*> ignores;
@@ -77,8 +75,6 @@ void ASkill_Meteor_A::OnSkillClicked()
     // Meteor Trace
     UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), skillComponent->SpawnLocation, Meteor_Location,
         ETraceTypeQuery::TraceTypeQuery1, false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
-
-
 
     // 떨어지는 시간 구하기
     float falling_Distance = FVector::Dist(skillComponent->SpawnLocation, Meteor_Location);
@@ -107,22 +103,18 @@ void ASkill_Meteor_A::OnSkillClicked()
 void ASkill_Meteor_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
-    IDamageable* character = Cast<IDamageable>(OtherActor);
     USkillComponent* skillComponent = Helpers::GetComponent<USkillComponent>(Owner);
 
     if (skillComponent == nullptr)
-    {
         return;
-    }
 
     FVector CollisionLocation = skillComponent->SpawnLocation - skillComponent->curSkillData->RelativeLocation;
-
-    OnDestroy(CollisionLocation);
 
     // 땅에 닿을 때, 캐릭터가 아니여야함
     if (!Cast<APawn>(OtherActor))
     {
+        OnDestroy(CollisionLocation);
+
         FVector start = CollisionLocation;
         FVector end = CollisionLocation;
         float radius = 150.0f;
@@ -130,7 +122,7 @@ void ASkill_Meteor_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCom
         //CLog::Print(start);
 
         // 데미지를 줄 Pawn만 추적
-        FHitResult Particle_HitResult;
+        FHitResult HitResult;
         TArray<TEnumAsByte<EObjectTypeQuery>> ObjectType;
         ObjectType.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
 
@@ -138,17 +130,20 @@ void ASkill_Meteor_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCom
         ignores.Add(Owner);
 
         UKismetSystemLibrary::SphereTraceSingleForObjects(Owner->GetWorld(), start, end, radius, ObjectType,
-            false, ignores, DrawDebug_Particle, Particle_HitResult, true);
+            false, ignores, DrawDebug_Particle, HitResult, true);
 
-        if (Particle_HitResult.bBlockingHit)
+        if (HitResult.bBlockingHit)//&& character != nullptr)
         {
-            // TODO : Hit Interface 데미지 처리
-            if (character == nullptr)
-                return;
+            IDamageable* character = Cast<IDamageable>(HitResult.GetActor());
 
+            if (character == nullptr)
+            {
+                CLog::Print("Character Interface Null");
+            }
+
+            // TODO : Hit Interface 데미지 처리
             CLog::Print("Meteor Hit");
             character->Hit(this, HitData);
-
         }
     }
 
