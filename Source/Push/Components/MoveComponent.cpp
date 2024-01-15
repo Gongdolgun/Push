@@ -54,7 +54,7 @@ void UMoveComponent::OnMoveForward(float InAxis)
 
 void UMoveComponent::OnMoveRight(float InAxis)
 {
-	if (bCanMove == false)
+	if (bCanMove == false || !Owner.IsValid())
 		return;
 
 	//2023.12.28 이현중
@@ -71,11 +71,15 @@ void UMoveComponent::OnMoveRight(float InAxis)
 // OnTurnAt, OnLookUp 마우스에 따른 시점 이동
 void UMoveComponent::OnTurnAt(float Rate)
 {
+	if (!Owner.IsValid())
+		return;
 	Owner->AddControllerYawInput(Rate * MouseSenceX * GetWorld()->GetDeltaSeconds());
 }
 
 void UMoveComponent::OnLookUp(float Rate)
 {
+	if (!Owner.IsValid())
+		return;
 	Owner->AddControllerPitchInput(Rate * MouseSenceY * GetWorld()->GetDeltaSeconds());
 }
 
