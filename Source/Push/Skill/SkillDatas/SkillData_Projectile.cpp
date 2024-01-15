@@ -22,5 +22,5 @@ void USkillData_Projectile::Play(ACharacter* InOwner)
 	skillComponent->SpawnLocation = character->GetActorLocation();
 	// character->SetSpawnlocationRep(skillComponent->SpawnLocation);
 
-	character->PlayAnimMontage(ActionMontage, PlayRate);
+	character->PlayAnimMontage(Product.ActionMontage, Product.PlayRate);
 }

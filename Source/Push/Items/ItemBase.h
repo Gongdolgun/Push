@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Misc/Structures.h"
 #include "ItemBase.generated.h"
 
 UCLASS()
@@ -22,9 +23,13 @@ public:
 
 public:
 	TWeakObjectPtr<ACharacter> Owner;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FProduct Product;
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		FString ItemName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		UTexture2D* ItemImage;
+		UTexture2D* ItemImage;*/
 };

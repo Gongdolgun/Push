@@ -4,6 +4,32 @@
 #include "Enums.h"
 #include "Structures.generated.h"
 
+USTRUCT(BlueprintType)
+struct FProduct
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UTexture2D* Image;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Price;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool isBought;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UAnimMontage* ActionMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float PlayRate = 1;
+
+};
+
 USTRUCT()
 struct FProjectileData
 {

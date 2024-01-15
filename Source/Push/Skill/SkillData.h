@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Misc/Structures.h"
 #include "SkillData.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
@@ -13,7 +14,10 @@ public:
 	virtual void BeginPlay();
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FProduct Product;
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		FString SkillName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -23,7 +27,7 @@ public:
 		class UAnimMontage* ActionMontage;
 
 	UPROPERTY(EditAnywhere)
-		float PlayRate = 1.0f;
+		float PlayRate = 1.0f;*/
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> Skill;

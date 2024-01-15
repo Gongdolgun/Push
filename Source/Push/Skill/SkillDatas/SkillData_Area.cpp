@@ -46,7 +46,7 @@ void USkillData_Area::Play(ACharacter* InOwner)
 		FVector StartLocation = TracePoint->GetTraceLocation() + RelativeLocation;
 
 		skillComponent->SpawnLocation = StartLocation;
-		character->PlayAnimMontage(ActionMontage, PlayRate);
+		character->PlayAnimMontage(Product.ActionMontage, Product.PlayRate);
 
 		TracePoint->Destroy();
 	}

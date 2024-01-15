@@ -29,9 +29,13 @@ public:
 	ACharacter* Owner;
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 		class USkillData* curSkillData;
 
+	UPROPERTY(VisibleAnywhere)
+		class USkillData* prevSkillData;
+
+public:
 	UPROPERTY(EditAnywhere, Replicated)
 		FVector SpawnLocation;
 

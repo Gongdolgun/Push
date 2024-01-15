@@ -62,8 +62,11 @@ void USkillComponent::SetCurSkillData_NMC_Implementation(TSubclassOf<class USkil
 {
 	if(SkillData != nullptr)
 	{
-		if(curSkillData == nullptr)
-			curSkillData = NewObject<USkillData>(Owner, SkillData);
+		prevSkillData = curSkillData;
+		curSkillData = NewObject<USkillData>(Owner, SkillData);
+
+		if(prevSkillData != nullptr && prevSkillData->IsA(SkillData))
+			curSkillData = prevSkillData;
 	}
 
 	Execute();
