@@ -22,16 +22,6 @@ void APushGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	LevelStartingTime = GetWorld()->GetTimeSeconds();
-
-	
-
-	/*UGameInstance* gameInstance = GetGameInstance();
-	UPushGameInstance* temp = gameInstance->GetSubsystem<UPushGameInstance>();
-
-	if(false == IsValid(temp))
-	{
-		temp->CreateDedicatedServerSession("127.0.0.1:7777");	
-	}*/
 }
 
 void APushGameMode::Tick(float DeltaSeconds)

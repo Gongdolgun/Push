@@ -9,6 +9,7 @@ void ALobbyGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME(ALobbyGameState, currentNumOfPlayers);
 	DOREPLIFETIME(ALobbyGameState, MatchStartCountdown);
 }
 
@@ -29,20 +30,9 @@ void ALobbyGameState::PlayerConnection()
 	}
 }
 
-void ALobbyGameState::MatchCountDown()
+void ALobbyGameState::OnRep_MatchStartCountdown() 
 {
-	GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, this, &ALobbyGameState::CountDown, 1.0f, true, 0);
-
-}
-void ALobbyGameState::CountDown()
-{
-
-	MatchStartCountdown -= 1;
-}
-
-void ALobbyGameState::OnRep_MatchStartCountdown()
-{
-	UpdateMatchStartCountdownWidget();
+	//UpdateMatchStartCountdownWidget();
 
 	if (MatchStartCountdown >= 5)
 	{
@@ -55,16 +45,19 @@ void ALobbyGameState::OnRep_MatchStartCountdown()
 	}
 }
 
+void ALobbyGameState::MatchCountDown()
+{
+	GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, this, &ALobbyGameState::CountDown, 1.0f, true, 0);
+
+}
+void ALobbyGameState::CountDown()
+{
+	MatchStartCountdown -= 1;
+
+}
+
 void ALobbyGameState::UpdateMatchStartCountdownWidget()
 {
-	/*UUserWidget* MyWidgetObject = NewObject<UUserWidget>(this, UUswer::StaticClass());
-
-	if (MyWidgetObject != nullptr && MyWidgetObject->WidgetTree != nullptr)
-	{
-		ULobbyCountDown* FoundWidget = MyWidgetObject->WidgetTree->FindWidget<UUserWidget>(FName(TEXT("ULobbyCountDown")));
-		FoundWidget->UpdateWidget();
-	}*/
-
 	ALobbyHUD* lobbyHUD = Cast<ALobbyHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 	if (lobbyHUD == nullptr) return;
 	if (false == lobbyHUD->CheckWidget("LobbyCountDown")) return;

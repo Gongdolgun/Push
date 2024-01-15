@@ -15,15 +15,9 @@ public:
 
 	void SetHUDCountdownTime();
 
-	//UFUNCTION(Client, Reliable) // Client RPC
-	//	void ClientCheck();
-
 private:
 	UPROPERTY()
-	class ALobbyGameMode* GameMode;
+	class ALobbyGameState* GameState;
 
 	class ALobbyHUD* LobbyHUD;
-
-	float countdownTimer = 5.f;
-	float LevelStartingTime;
 };
