@@ -71,11 +71,6 @@ void APushPlayerController::ClientCheckMatchState_Implementation()
 		ResultTime = GameState->ResultTime;
 		LevelStartingTime = GameState->LevelStartingTime;
 
-		CLog::Print(MatchTime);
-		CLog::Print(WarmupTime);
-		CLog::Print(ResultTime);
-		CLog::Print(LevelStartingTime);
-
 		OnMatchStateSet(MatchState);
 	}
 }
@@ -84,7 +79,7 @@ void APushPlayerController::OnMatchStateSet(FName State)
 {
 	MatchState = State;  // GameMode에서 건내받는 FName State으로 MatchState 설정
 
-	if (MatchState == MatchState::WaitingToStart) // 대기
+	if (MatchState == MatchState::InProgress) // 대기
 	{
 		if (false == HasAuthority())
 		{
@@ -98,7 +93,7 @@ void APushPlayerController::OnMatchStateSet(FName State)
 			
 		}
 	}
-	else if (MatchState == MatchState::InProgress) // 경기
+	else if (MatchState == MatchState::Round) // 경기
 	{
 		if (false == HasAuthority())
 		{
@@ -148,22 +143,18 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	if (MainHUD->GetWidget<UResource>("Resource") == nullptr) return;
 
 	float TimeLeft = 0.0f;
-	if (MatchState == MatchState::WaitingToStart) // 대기
+	if (MatchState == MatchState::InProgress) // 대기
 	{
 		TimeLeft = WarmupTime + LevelStartingTime + tempTime - GetWorld()->GetTimeSeconds();
-		//CLog::Print(WarmupTime);
 	}
-	else if (MatchState == MatchState::InProgress) // 경기
+	else if (MatchState == MatchState::Round) // 경기
 	{
-		TimeLeft = LevelStartingTime + MatchTime + tempTime - GetWorld()->GetTimeSeconds();
-		//CLog::Print(MatchTime);
+		TimeLeft = WarmupTime + LevelStartingTime + MatchTime + tempTime - GetWorld()->GetTimeSeconds();
 	}
 	else if (MatchState == MatchState::Result) // 결과
 	{
-		TimeLeft = LevelStartingTime + ResultTime + tempTime - GetWorld()->GetTimeSeconds();
-		//CLog::Print(ResultTime);
+		TimeLeft = WarmupTime + LevelStartingTime + MatchTime + ResultTime + tempTime - GetWorld()->GetTimeSeconds();
 	}
-	
 
 	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
 
@@ -184,9 +175,12 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 
 void APushPlayerController::OnRep_MatchState()
 {
-	tempTime = GetWorld()->GetTimeSeconds();
+	if (MatchState == MatchState::InProgress)
+	{
+		tempTime = GetWorld()->GetTimeSeconds();
+	}
 
-	if (MatchState == MatchState::WaitingToStart) // 대기
+	if (MatchState == MatchState::InProgress) // 대기
 	{
 		if (false == HasAuthority())
 		{
@@ -200,7 +194,7 @@ void APushPlayerController::OnRep_MatchState()
 
 		}
 	}
-	else if (MatchState == MatchState::InProgress) // 경기
+	else if (MatchState == MatchState::Round) // 경기
 	{
 		if (false == HasAuthority())
 		{

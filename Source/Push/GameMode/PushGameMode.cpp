@@ -20,7 +20,7 @@ namespace MatchState
 
 APushGameMode::APushGameMode()
 {
-	bDelayedStart = false;
+	bDelayedStart = true; // 캐릭터가 시작부터 끝까지 계속 스폰되어 있어야하므로 MatchState::WaitingToStart를 없애고 bDelayedStart = true로 변경하였다.
 	
 }
 
@@ -49,16 +49,16 @@ void APushGameMode::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	//** '대기시간 > 경기시간 > 결과시간'을 반복
-	if (MatchState == MatchState::WaitingToStart) // 대기
+	if (MatchState == MatchState::InProgress) // 대기
 	{
 		// 대기시간 - 현재시간 + 게임레벨맵에 들어간 시간
 		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + tempTime;
 		if (CountdownTime <= 0.0f) // 대기시간이 끝나면 경기시작
 		{
-			SetMatchState(MatchState::InProgress);
+			SetMatchState(MatchState::Round);
 		}
 	}
-	else if (MatchState == MatchState::InProgress) // 경기
+	else if (MatchState == MatchState::Round) // 경기
 	{
 		// 대기시간 - 현재시간 + 게임레벨맵에 들어간 시간 + 설정한 경기시간
 		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + tempTime;
@@ -74,7 +74,7 @@ void APushGameMode::Tick(float DeltaSeconds)
 		if (CountdownTime <= 0.0f) 
 		{
 			tempTime = GetWorld()->GetTimeSeconds();
-			SetMatchState(MatchState::WaitingToStart);
+			SetMatchState(MatchState::InProgress);
 		}
 	}
 
