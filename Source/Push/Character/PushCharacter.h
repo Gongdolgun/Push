@@ -59,30 +59,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UShopComponent* ShopComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UStateComponent* StateComponent;
+
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
 
-	UPROPERTY(BlueprintReadWrite)
-		class USkillSlots* SkillSlots;
+	/*UPROPERTY(BlueprintReadWrite)
+		class USkillSlots* SkillSlots;*/
 
-	UPROPERTY(BlueprintReadWrite)
-		class USkillSlots* ItemSlots;
+	/*UPROPERTY(BlueprintReadWrite)
+		class USkillSlots* ItemSlots;*/
 
 public:
-	//모든 서버와 클라이언트에게 보여주는 Montage 실행 시 Client에서 호출하는 함수
-	UFUNCTION(Server, Reliable)
-		void PlayAnimMontageRep(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate);
-
-	//Client에서 호출하면 안됩니다.
-	UFUNCTION(NetMulticast, Reliable)
-		void PlayAnimMontageMC(ACharacter* InCharacter, UAnimMontage* InMontage, const float PlayRate);
-
-	UFUNCTION(Server, Reliable)
-		void SetSpawnlocationRep(FVector InVector);
-
-	UFUNCTION(NetMulticast, Reliable)
-		void SetSpawnlocationNMC(FVector InVector);
-
 	UFUNCTION(Server, Reliable)
 		void LaunchServer(FVector InLaunch);
 

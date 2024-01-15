@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Misc/Enums.h"
 #include "MoveComponent.generated.h"
 
 
@@ -18,6 +19,17 @@ protected:
 
 public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+public:
+	// 2024_01_12_문인수
+	// Moving
+	FORCEINLINE bool CanMove() { return bCanMove; }
+	FORCEINLINE void Move() { bCanMove = true; }
+	FORCEINLINE void Stop() { bCanMove = false; }
+
+private:
+	bool bCanMove = true;
+
 
 public:
 	//2023.01.02 이현중
@@ -73,4 +85,5 @@ private:
 
 private:
 	TWeakObjectPtr<ACharacter> Owner;
+
 };

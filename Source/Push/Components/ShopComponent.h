@@ -37,7 +37,16 @@ public:
 		TArray<TSubclassOf<class USkillData>> BoughtSkills;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "BoughtItems")
-		TArray<TSubclassOf<class USkillData>> BoughtItems;
+		TArray<TSubclassOf<class AItemBase>> BoughtItems;
+
+	UPROPERTY(BlueprintReadWrite)
+		class USkillSlots* SkillSlots;
+
+	UPROPERTY(BlueprintReadWrite)
+		class USkillSlots* ItemSlots;
+
+	UPROPERTY(BlueprintReadWrite)
+		class UInventory* Inventory;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class UMainUI* MainUI;

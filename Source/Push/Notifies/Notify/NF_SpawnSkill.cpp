@@ -27,6 +27,11 @@ void UNF_SpawnSkill::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase*
 	FVector SpawnLocation, RelativeSpawnLocation;
 	FRotator SpawnRotation;
 
+	if (SkillComponent->curSkillData == nullptr)
+	{
+		return;
+	}
+
 	TSubclassOf<ASkill> SpawnSkill = SkillComponent->curSkillData->Skill;
 
 	USkillData_Projectile* SkillData = Cast<USkillData_Projectile>(SkillComponent->curSkillData);

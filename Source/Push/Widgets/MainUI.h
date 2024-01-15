@@ -14,6 +14,14 @@ public:
 		void OpenStoreUI();
 		void OpenStoreUI_Implementation();
 
+	UFUNCTION(BlueprintNativeEvent)
+		void OpenLeaderBoard();
+		void OpenLeaderBoard_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent)
+		void OffLeaderBoard();
+	void OffLeaderBoard_Implementation();
+
 public:
 	void GetSkillSlots();
 };
