@@ -8,6 +8,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/ResourceComponent.h"
 #include "Components/TextBlock.h"
+#include "GameState/PushGameState.h"
 #include "Widgets/KillDeathUI.h"
 #include "Widgets/StoreUI.h"
 
@@ -60,15 +61,15 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 
 void APushPlayerController::ClientCheckMatchState_Implementation()
 {
-	GameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(this));
-	if (IsValid(GameMode))
+	GameState = Cast<APushGameState>(UGameplayStatics::GetGameState(this));
+	if (IsValid(GameState))
 	{
-		// PushGameMode.h의 값을 가져다가 넣어준다.
-		MatchState = GameMode->GetMatchState();
-		WarmupTime = GameMode->WarmupTime;
-		MatchTime = GameMode->MatchTime;
-		ResultTime = GameMode->ResultTime;
-		LevelStartingTime = GameMode->LevelStartingTime;
+		// PushGameState.h의 값을 가져다가 넣어준다.
+		MatchState = GameState->GetMatchState();
+		WarmupTime = GameState->WarmupTime;
+		MatchTime = GameState->MatchTime;
+		ResultTime = GameState->ResultTime;
+		LevelStartingTime = GameState->LevelStartingTime;
 
 		CLog::Print(MatchTime);
 		CLog::Print(WarmupTime);
@@ -88,12 +89,12 @@ void APushPlayerController::OnMatchStateSet(FName State)
 		if (false == HasAuthority())
 		{
 			// TODO: HUD를 업데이트 함수
-			CLog::Print("WaitingToStart!!");
-			if(MainHUD->CheckWidget("Store"))
+			//CLog::Print("WaitingToStart!!");
+			/*if(MainHUD->CheckWidget("Store"))
 				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
 
 			if(MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);
+				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
 			
 		}
 	}
@@ -102,12 +103,12 @@ void APushPlayerController::OnMatchStateSet(FName State)
 		if (false == HasAuthority())
 		{
 			// TODO: HUD를 업데이트 함수
-			CLog::Print("InProgress!!");
-			if(MainHUD->CheckWidget("Store"))
+			//CLog::Print("InProgress!!");
+			/*if(MainHUD->CheckWidget("Store"))
 				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
 
 			if(MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);
+				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);*/
 		}
 	}
 	else if (MatchState == MatchState::Result) // 결과발표
@@ -115,12 +116,12 @@ void APushPlayerController::OnMatchStateSet(FName State)
 		if (false == HasAuthority())
 		{
 			// TODO: HUD를 업데이트 함수
-			CLog::Print("Result!!");
-			if(MainHUD->CheckWidget("Store"))
+			//CLog::Print("Result!!");
+			/*if(MainHUD->CheckWidget("Store"))
 				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
 
 			if (MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);;
+				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);;*/
 		}
 	}
 }
@@ -149,18 +150,18 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	float TimeLeft = 0.0f;
 	if (MatchState == MatchState::WaitingToStart) // 대기
 	{
-		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + tempTime;
-		CLog::Print(WarmupTime);
+		TimeLeft = WarmupTime + LevelStartingTime + tempTime - GetWorld()->GetTimeSeconds();
+		//CLog::Print(WarmupTime);
 	}
 	else if (MatchState == MatchState::InProgress) // 경기
 	{
-		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + 10.0f + tempTime;
-		CLog::Print(MatchTime);
+		TimeLeft = LevelStartingTime + MatchTime + tempTime - GetWorld()->GetTimeSeconds();
+		//CLog::Print(MatchTime);
 	}
 	else if (MatchState == MatchState::Result) // 결과
 	{
-		TimeLeft = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + 5.0f + tempTime;
-		CLog::Print(ResultTime);
+		TimeLeft = LevelStartingTime + ResultTime + tempTime - GetWorld()->GetTimeSeconds();
+		//CLog::Print(ResultTime);
 	}
 	
 
@@ -184,21 +185,18 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 void APushPlayerController::OnRep_MatchState()
 {
 	tempTime = GetWorld()->GetTimeSeconds();
-	CLog::Print("-------------------------------");
-	CLog::Print(tempTime);
-	CLog::Print("------------------------------");
 
 	if (MatchState == MatchState::WaitingToStart) // 대기
 	{
 		if (false == HasAuthority())
 		{
 			// TODO: HUD를 업데이트 함수
-			CLog::Print("WaitingToStart!!");
-			if (MainHUD->CheckWidget("Store"))
+			//CLog::Print("WaitingToStart!!");
+			/*if (MainHUD->CheckWidget("Store"))
 				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
 
 			if (MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);
+				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
 
 		}
 	}
@@ -207,12 +205,12 @@ void APushPlayerController::OnRep_MatchState()
 		if (false == HasAuthority())
 		{
 			// TODO: HUD를 업데이트 함수
-			CLog::Print("InProgress!!");
-			if (MainHUD->CheckWidget("Store"))
+			//CLog::Print("InProgress!!");
+			/*if (MainHUD->CheckWidget("Store"))
 				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
 
 			if (MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);
+				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);*/
 		}
 	}
 	else if (MatchState == MatchState::Result) // 결과발표
@@ -220,12 +218,12 @@ void APushPlayerController::OnRep_MatchState()
 		if (false == HasAuthority())
 		{
 			// TODO: HUD를 업데이트 함수
-			CLog::Print("Result!!");
-			if (MainHUD->CheckWidget("Store"))
+			//CLog::Print("Result!!");
+			/*if (MainHUD->CheckWidget("Store"))
 				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
 
 			if (MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);;
+				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
 		}
 	}
 }

@@ -29,8 +29,4 @@ public:
 
 	FTimerHandle LobbyTimeHandle;
 
-
-	UFUNCTION()
-	void UpdateMatchStartCountdownWidget(); // lobbyHUD->위젯에 시간 카운팅 변수를 넘겨 '현재 플레이어 수 & 시간 카운팅'을 업데이트하는 함수
-
 };

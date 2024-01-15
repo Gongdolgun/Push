@@ -3,9 +3,15 @@
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
 #include "GameInstance/PushGameInstance.h"
+#include "GameState/PushGameState.h"
 #include "Net/UnrealNetwork.h"
 #include "Utilites/CLog.h"
 #include "Widgets/StoreUI.h"
+
+namespace MatchState
+{
+	const FName Round = FName("Round"); 
+}
 
 namespace MatchState
 {
@@ -14,15 +20,28 @@ namespace MatchState
 
 APushGameMode::APushGameMode()
 {
-	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태. false면 MatchState::WaitingToStart는 비활성화되어 실행되지 않는다
-
+	bDelayedStart = false;
+	
 }
 
 void APushGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//LevelStartingTime = GetWorld()->GetTimeSeconds();
+	LevelStartingTime = GetWorld()->GetTimeSeconds();
+
+	APushGameState* pushGameState = Cast<APushGameState>(GameState);
+
+	if(pushGameState == nullptr){ // 예외처리
+		CLog::Log("pushGameState == nullptr !!");
+		return;
+	}
+
+	// GameState에 시간동기화
+	if (IsValid(pushGameState))
+	{
+		pushGameState->SetTime(WarmupTime, MatchTime, ResultTime, LevelStartingTime);
+	}
 }
 
 void APushGameMode::Tick(float DeltaSeconds)
@@ -55,20 +74,10 @@ void APushGameMode::Tick(float DeltaSeconds)
 		if (CountdownTime <= 0.0f) 
 		{
 			tempTime = GetWorld()->GetTimeSeconds();
-			SetMatchState(MatchState::WaitingToStart); 
+			SetMatchState(MatchState::WaitingToStart);
 		}
 	}
 
-}
-
-void APushGameMode::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(APushGameMode, WarmupTime);
-	DOREPLIFETIME(APushGameMode, MatchTime);
-	DOREPLIFETIME(APushGameMode, ResultTime);
-	DOREPLIFETIME(APushGameMode, LevelStartingTime);
 }
 
 void APushGameMode::OnMatchStateSet()
@@ -89,35 +98,11 @@ void APushGameMode::OnMatchStateSet()
 void APushGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-
-	PlayerLoginInServer_Implementation();
-
-	if (false == IsValid(NewPlayer)) return;
-
-	if (HasAuthority())
-	{
-		TWeakObjectPtr<UGameInstance> GameInstance = GetGameInstance();
-		if (GameInstance.IsValid())
-		{
-			if (NumOfPlayers == 1) CLog::Log("Num of Players = 1");
-			else if (NumOfPlayers == 2) CLog::Log("Num of Players = 2");
-			else if (NumOfPlayers == 3)
-			{
-				CLog::Log("Num of Players = 3");
-				
-				LevelStartingTime = GetWorld()->GetTimeSeconds();
-			}
-		}
-	}
-
+	
 	APushPlayerController* controller = Cast<APushPlayerController>(NewPlayer);
 
 	if (controller == nullptr)
 		return;
-	//for(APushPlayerController* control : Controllers)
-	//{
-	//	control->ChangeBodyColor_Client_Implementation();
-	//}
 
 	APushCharacter* character = Cast<APushCharacter>(controller->GetPawn());
 
@@ -128,9 +113,4 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 
 	character->BodyColor = Colors[index++];
-}
-
-void APushGameMode::PlayerLoginInServer_Implementation()
-{
-	NumOfPlayers++;
 }
