@@ -3,6 +3,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
 #include "GameInstance/PushGameInstance.h"
+#include "Net/UnrealNetwork.h"
 #include "Utilites/CLog.h"
 #include "Widgets/StoreUI.h"
 
@@ -21,7 +22,7 @@ void APushGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LevelStartingTime = GetWorld()->GetTimeSeconds();
+	//LevelStartingTime = GetWorld()->GetTimeSeconds();
 }
 
 void APushGameMode::Tick(float DeltaSeconds)
@@ -60,6 +61,16 @@ void APushGameMode::Tick(float DeltaSeconds)
 
 }
 
+void APushGameMode::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(APushGameMode, WarmupTime);
+	DOREPLIFETIME(APushGameMode, MatchTime);
+	DOREPLIFETIME(APushGameMode, ResultTime);
+	DOREPLIFETIME(APushGameMode, LevelStartingTime);
+}
+
 void APushGameMode::OnMatchStateSet()
 {
 	Super::OnMatchStateSet();
@@ -79,6 +90,26 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
+	PlayerLoginInServer_Implementation();
+
+	if (false == IsValid(NewPlayer)) return;
+
+	if (HasAuthority())
+	{
+		TWeakObjectPtr<UGameInstance> GameInstance = GetGameInstance();
+		if (GameInstance.IsValid())
+		{
+			if (NumOfPlayers == 1) CLog::Log("Num of Players = 1");
+			else if (NumOfPlayers == 2) CLog::Log("Num of Players = 2");
+			else if (NumOfPlayers == 3)
+			{
+				CLog::Log("Num of Players = 3");
+				
+				LevelStartingTime = GetWorld()->GetTimeSeconds();
+			}
+		}
+	}
+
 	APushPlayerController* controller = Cast<APushPlayerController>(NewPlayer);
 
 	if (controller == nullptr)
@@ -97,4 +128,9 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 
 	character->BodyColor = Colors[index++];
+}
+
+void APushGameMode::PlayerLoginInServer_Implementation()
+{
+	NumOfPlayers++;
 }

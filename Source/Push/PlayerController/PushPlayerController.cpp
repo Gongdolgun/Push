@@ -70,6 +70,11 @@ void APushPlayerController::ClientCheckMatchState_Implementation()
 		ResultTime = GameMode->ResultTime;
 		LevelStartingTime = GameMode->LevelStartingTime;
 
+		CLog::Print(MatchTime);
+		CLog::Print(WarmupTime);
+		CLog::Print(ResultTime);
+		CLog::Print(LevelStartingTime);
+
 		OnMatchStateSet(MatchState);
 	}
 }

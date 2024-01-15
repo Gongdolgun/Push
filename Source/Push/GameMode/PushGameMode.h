@@ -22,16 +22,18 @@ class PUSH_API APushGameMode : public AGameMode
 public:
 	APushGameMode();
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Replicated)
 		float WarmupTime = 5.0f; // 대기시간 
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Replicated)
 		float MatchTime = 30.0f; // 경기시간
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Replicated)
 		float ResultTime = 5.0f; // 결과발표시간
 
+	UPROPERTY(EditDefaultsOnly, Replicated)
 	float LevelStartingTime = 0.0f; // 게임레벨맵에 들어간 시간
 
 	float CountdownTime = 0.0f;
@@ -41,8 +43,14 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void OnMatchStateSet() override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
-	
+
+	UFUNCTION(Server, Reliable)
+	void PlayerLoginInServer();
+
 private:
+	uint8 NumOfPlayers = 0;
+
+
 	FLinearColor Colors[4] = {FLinearColor::Red, FLinearColor::Blue, FLinearColor::Green, FLinearColor::Black};
 	uint8 index = 0;
 	TArray<class APushPlayerController*> Controllers;

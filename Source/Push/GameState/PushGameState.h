@@ -12,6 +12,8 @@ class PUSH_API APushGameState : public AGameState
 public:
 	APushGameState();
 	virtual void BeginPlay() override;
-	
+	void PlayerConnection();
+
+	int currentNumOfPlayers;
 };
 

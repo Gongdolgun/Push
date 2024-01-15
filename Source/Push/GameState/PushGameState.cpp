@@ -13,3 +13,14 @@ void APushGameState::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+void APushGameState::PlayerConnection()
+{
+	currentNumOfPlayers = PlayerArray.Num();
+	GetGameTimeSinceCreation()
+
+	if (currentNumOfPlayers >= 3)
+	{
+		
+	}
+}
