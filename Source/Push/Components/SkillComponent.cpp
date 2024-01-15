@@ -60,14 +60,22 @@ void USkillComponent::SetCurSkillData_Server_Implementation(TSubclassOf<class US
 
 void USkillComponent::SetCurSkillData_NMC_Implementation(TSubclassOf<class USkillData> SkillData)
 {
-	if(SkillData != nullptr)
+	if (SkillData != nullptr)
 	{
 		prevSkillData = curSkillData;
 		curSkillData = NewObject<USkillData>(Owner, SkillData);
 
-		if(prevSkillData != nullptr && prevSkillData->IsA(SkillData))
+		if (prevSkillData != nullptr && prevSkillData->IsA(SkillData))
+		{
 			curSkillData = prevSkillData;
+		}
+
+		else
+		{
+			prevSkillData->Destroy_TracePoint();
+		}
 	}
 
 	Execute();
 }
+

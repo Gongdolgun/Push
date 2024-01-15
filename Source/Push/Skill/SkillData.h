@@ -17,18 +17,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FProduct Product;
 
-	/*UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		FString SkillName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		class UTexture2D* SkillTexture;
-
-	UPROPERTY(EditAnywhere)
-		class UAnimMontage* ActionMontage;
-
-	UPROPERTY(EditAnywhere)
-		float PlayRate = 1.0f;*/
-
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> Skill;
 
@@ -41,5 +29,6 @@ public:
 public:
 	UFUNCTION()
 	virtual void Play(ACharacter* InOwner);
-	
+
+	virtual void Destroy_TracePoint();
 };

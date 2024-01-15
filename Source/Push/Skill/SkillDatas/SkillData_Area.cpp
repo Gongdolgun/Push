@@ -10,6 +10,13 @@ void USkillData_Area::BeginPlay()
 
 }
 
+void USkillData_Area::Destroy_TracePoint()
+{
+	Super::Destroy_TracePoint();
+
+	TracePoint->Destroy();
+}
+
 void USkillData_Area::Play(ACharacter* InOwner)
 {
 	Super::Play(InOwner);

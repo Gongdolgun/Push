@@ -22,6 +22,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		bool bDecal = false;
 
+	virtual void Destroy_TracePoint() override;
+
 public:
 	virtual void Play(ACharacter* InOwner) override;
 };

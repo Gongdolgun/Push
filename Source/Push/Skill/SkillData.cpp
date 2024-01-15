@@ -13,3 +13,7 @@ void USkillData::Play(ACharacter* InOwner)
 
 }
 
+void USkillData::Destroy_TracePoint()
+{
+}
+
