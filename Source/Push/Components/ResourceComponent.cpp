@@ -4,6 +4,7 @@
 #include "HUD/MainHUD.h"
 #include "Widgets/KillDeathUI.h"
 #include "Net/UnrealNetwork.h"
+#include "Widgets/MainUI.h"
 
 UResourceComponent::UResourceComponent()
 {
@@ -59,8 +60,13 @@ void UResourceComponent::OnKillDeathUI()
 
 	if (false == IsValid(MainHUD)) return;
 
-	if(MainHUD->CheckWidget("KDA"))
-		MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Visible);
+	//if(MainHUD->CheckWidget("KDA"))
+	//	MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Visible);
+
+	if (MainHUD->CheckWidget("Main"))
+	{
+		MainHUD->GetWidget<UMainUI>("Main")->OpenLeaderBoard();
+	}
 }
 
 void UResourceComponent::OffKillDeathUI()
@@ -74,8 +80,13 @@ void UResourceComponent::OffKillDeathUI()
 
 	if (false == IsValid(MainHUD)) return;
 
-	if (MainHUD->CheckWidget("KDA"))
-		MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
+	//if (MainHUD->CheckWidget("KDA"))
+	//	MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
+
+	if (MainHUD->CheckWidget("Main"))
+	{
+		MainHUD->GetWidget<UMainUI>("Main")->OffLeaderBoard();
+	}
 }
 
 void UResourceComponent::BeginPlay()

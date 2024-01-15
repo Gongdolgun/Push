@@ -15,6 +15,8 @@ public:
 public:
 	virtual void BeginPlay() override;
 
+	int32 NumOfPlayer = 0;
+
 //public:
 //	UFUNCTION(Server, Reliable)
 //		void ChangeBodyColor_Server(class APushCharacter* InCharacter, FLinearColor InColor);

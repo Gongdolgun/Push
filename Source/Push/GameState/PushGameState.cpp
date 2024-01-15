@@ -15,6 +15,9 @@ void APushGameState::BeginPlay()
 {
 	Super::BeginPlay();
 
+	CLog::Print("11");
+	CLog::Print(PlayerArray.Num());
+
 	//if (HasAuthority() == false)
 	//	return;
 
