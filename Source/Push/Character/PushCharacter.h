@@ -62,11 +62,11 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
 
-	UPROPERTY(BlueprintReadWrite)
-		class USkillSlots* SkillSlots;
+	/*UPROPERTY(BlueprintReadWrite)
+		class USkillSlots* SkillSlots;*/
 
-	UPROPERTY(BlueprintReadWrite)
-		class USkillSlots* ItemSlots;
+	/*UPROPERTY(BlueprintReadWrite)
+		class USkillSlots* ItemSlots;*/
 
 public:
 	UFUNCTION(Server, Reliable)
