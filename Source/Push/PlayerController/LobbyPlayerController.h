@@ -14,7 +14,6 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	void SetHUDCountdownTime();
-	//void SetHUDCountdownTime(float InTime);
 
 	//UFUNCTION(Client, Reliable) // Client RPC
 	//	void ClientCheck();
