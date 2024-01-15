@@ -12,4 +12,3 @@ void USkillData::Play(ACharacter* InOwner)
 {
 
 }
-

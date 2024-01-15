@@ -26,10 +26,4 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FProduct Product;
-
-	/*UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		FString ItemName;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		UTexture2D* ItemImage;*/
 };
