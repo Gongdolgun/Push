@@ -3,8 +3,15 @@
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
 #include "GameInstance/PushGameInstance.h"
+#include "GameState/PushGameState.h"
+#include "Net/UnrealNetwork.h"
 #include "Utilites/CLog.h"
 #include "Widgets/StoreUI.h"
+
+namespace MatchState
+{
+	const FName Round = FName("Round"); 
+}
 
 namespace MatchState
 {
@@ -13,8 +20,8 @@ namespace MatchState
 
 APushGameMode::APushGameMode()
 {
-	bDelayedStart = true; // true면 GameMode가 start 되기 전에 waiting 상태. false면 MatchState::WaitingToStart는 비활성화되어 실행되지 않는다
-
+	bDelayedStart = true; // 캐릭터가 시작부터 끝까지 계속 스폰되어 있어야하므로 MatchState::WaitingToStart를 없애고 bDelayedStart = true로 변경하였다.
+	
 }
 
 void APushGameMode::BeginPlay()
@@ -22,6 +29,19 @@ void APushGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	LevelStartingTime = GetWorld()->GetTimeSeconds();
+
+	APushGameState* pushGameState = Cast<APushGameState>(GameState);
+
+	if(pushGameState == nullptr){ // 예외처리
+		CLog::Log("pushGameState == nullptr !!");
+		return;
+	}
+
+	// GameState에 시간동기화
+	if (IsValid(pushGameState))
+	{
+		pushGameState->SetTime(WarmupTime, MatchTime, ResultTime, LevelStartingTime);
+	}
 }
 
 void APushGameMode::Tick(float DeltaSeconds)
@@ -29,16 +49,16 @@ void APushGameMode::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	//** '대기시간 > 경기시간 > 결과시간'을 반복
-	if (MatchState == MatchState::WaitingToStart) // 대기
+	if (MatchState == MatchState::InProgress) // 대기
 	{
 		// 대기시간 - 현재시간 + 게임레벨맵에 들어간 시간
 		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + tempTime;
 		if (CountdownTime <= 0.0f) // 대기시간이 끝나면 경기시작
 		{
-			SetMatchState(MatchState::InProgress);
+			SetMatchState(MatchState::Round);
 		}
 	}
-	else if (MatchState == MatchState::InProgress) // 경기
+	else if (MatchState == MatchState::Round) // 경기
 	{
 		// 대기시간 - 현재시간 + 게임레벨맵에 들어간 시간 + 설정한 경기시간
 		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + tempTime;
@@ -54,7 +74,7 @@ void APushGameMode::Tick(float DeltaSeconds)
 		if (CountdownTime <= 0.0f) 
 		{
 			tempTime = GetWorld()->GetTimeSeconds();
-			SetMatchState(MatchState::WaitingToStart); 
+			SetMatchState(MatchState::InProgress);
 		}
 	}
 
@@ -78,15 +98,11 @@ void APushGameMode::OnMatchStateSet()
 void APushGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-
+	
 	APushPlayerController* controller = Cast<APushPlayerController>(NewPlayer);
 
 	if (controller == nullptr)
 		return;
-	//for(APushPlayerController* control : Controllers)
-	//{
-	//	control->ChangeBodyColor_Client_Implementation();
-	//}
 
 	APushCharacter* character = Cast<APushCharacter>(controller->GetPawn());
 

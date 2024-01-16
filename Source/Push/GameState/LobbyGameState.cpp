@@ -32,8 +32,6 @@ void ALobbyGameState::PlayerConnection()
 
 void ALobbyGameState::OnRep_MatchStartCountdown() 
 {
-	//UpdateMatchStartCountdownWidget();
-
 	if (MatchStartCountdown >= 5)
 	{
 		MatchCountDown();
@@ -54,13 +52,4 @@ void ALobbyGameState::CountDown()
 {
 	MatchStartCountdown -= 1;
 
-}
-
-void ALobbyGameState::UpdateMatchStartCountdownWidget()
-{
-	ALobbyHUD* lobbyHUD = Cast<ALobbyHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
-	if (lobbyHUD == nullptr) return;
-	if (false == lobbyHUD->CheckWidget("LobbyCountDown")) return;
-
-	lobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->UpdateWidget(MatchStartCountdown);
 }

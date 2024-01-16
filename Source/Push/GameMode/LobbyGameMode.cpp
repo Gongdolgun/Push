@@ -1,7 +1,6 @@
 #include "GameMode/LobbyGameMode.h"
 #include "GameFramework/GameState.h"
 #include "GameState/LobbyGameState.h"
-#include "HUD/LobbyHUD.h"
 #include "Utilites/CLog.h"
 #include "Widgets/LobbyCountDown.h"
 
@@ -68,9 +67,4 @@ void ALobbyGameMode::EnterMap()
 		World->ServerTravel(FString("/Game/SW/Maps/TestLevelMap"));
 		CLog::Log("When 'Num of Players = 3', Dedicated Server entered TestLevelMap!!");
 	}
-}
-
-void ALobbyGameMode::UpdateTimer_NMC_Implementation(float InTime)
-{
-	countdownTimer = InTime;
 }

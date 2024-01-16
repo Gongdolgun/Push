@@ -30,7 +30,7 @@ protected:
 
 private:
 	UPROPERTY()
-	class APushGameMode* GameMode;
+	class APushGameState* GameState;
 	UPROPERTY()
 	class AMainHUD* MainHUD;
 	UPROPERTY()

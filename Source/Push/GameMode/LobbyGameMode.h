@@ -27,9 +27,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float countdownTimer = 5.f;
 
-	UFUNCTION(NetMulticast, Reliable)
-		void UpdateTimer_NMC(float InTime);
-
 private:
 	uint8 NumOfPlayers = 0;
 

@@ -11,6 +11,11 @@
 
 namespace MatchState
 {
+	extern PUSH_API const FName Round; // 경기시간
+}
+
+namespace MatchState
+{
 	extern PUSH_API const FName Result; // 결과발표
 }
 
@@ -24,13 +29,11 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	UPROPERTY(EditDefaultsOnly)
-		float WarmupTime = 5.0f; // 대기시간 
-
+	float WarmupTime = 5.0f; // 대기시간 
 	UPROPERTY(EditDefaultsOnly)
-		float MatchTime = 30.0f; // 경기시간
-
+	float MatchTime = 30.0f; // 경기시간
 	UPROPERTY(EditDefaultsOnly)
-		float ResultTime = 5.0f; // 결과발표시간
+	float ResultTime = 5.0f; // 결과발표시간
 
 	float LevelStartingTime = 0.0f; // 게임레벨맵에 들어간 시간
 
