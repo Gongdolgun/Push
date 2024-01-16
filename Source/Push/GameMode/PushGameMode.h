@@ -47,5 +47,4 @@ private:
 	uint8 index = 0;
 	TArray<class APushPlayerController*> Controllers;
 
-
 };

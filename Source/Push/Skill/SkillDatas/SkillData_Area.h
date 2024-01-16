@@ -13,6 +13,10 @@ public:
 	virtual void BeginPlay() override;
 
 public:
+	virtual void Play(ACharacter* InOwner) override;
+	virtual void Destroy_TracePoint() override;
+
+public:
 	UPROPERTY(EditAnywhere, Category = "Decal Class")
 		TSubclassOf<AActor> TracePoint_Class;
 
@@ -22,8 +26,6 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		bool bDecal = false;
 
-	virtual void Destroy_TracePoint() override;
-
-public:
-	virtual void Play(ACharacter* InOwner) override;
+	UPROPERTY(VisibleAnywhere)
+		FVector DecalSize;
 };

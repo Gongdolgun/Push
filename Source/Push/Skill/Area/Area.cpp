@@ -1,16 +1,12 @@
 #include "Area.h"
 #include "Global.h"
-#include "Components/DecalComponent.h"
 #include "GameFramework/Character.h"
-#include "Particles/ParticleSystemComponent.h"
 
 AArea::AArea()
 {
-	Helpers::CreateComponent(this, &Root, "Root", RootComponent);
-	Helpers::CreateComponent(this, &Particle, "Particle", Root);
+	bReplicates = true;
 
-	Particle->bAutoActivate = false;
-	Particle->SetIsReplicated(true);
+	Helpers::CreateComponent(this, &Root, "Root", RootComponent);
 
 }
 

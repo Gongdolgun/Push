@@ -42,6 +42,22 @@ public:
 	void OnKillDeathUI();
 	void OffKillDeathUI();
 
+	// 2024_01_15 ¹®ÀÎ¼ö - Gold
+	UFUNCTION(Server, Reliable)
+		void SetGold_Server(int InValue);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void SetGold_NMC(int InValue);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		int GetGold();
+
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+		void AdjustGold_Server(int InValue);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void AdjustGold_NMC(int InValue);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -54,6 +70,10 @@ private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
 	meta = (AllowPrivateAccess))
 		float MaxHP = 100.0f;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
+		meta = (AllowPrivateAccess))
+		int32 Gold = 0;
 
 	UPROPERTY()
 	class AMainHUD* MainHUD;

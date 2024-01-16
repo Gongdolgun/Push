@@ -20,29 +20,16 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	FORCEINLINE class UDecalComponent* GetDecalComponent() { return PointDecal; }
-
-	void SetDecalTime(float InDecalTime);
+	virtual void SetDecalTime(float InDecalTime) {};
 
 private:
 	UPROPERTY(VisibleAnywhere)
 		class USceneComponent* Root;
 
+protected:
 	UPROPERTY(EditAnywhere, Category = "Decal")
 		class UDecalComponent* PointDecal;
 
-private:
 	class UMaterialInstanceDynamic* Dynamic;
 
-	UPROPERTY()
-		float DecalTime;
-
-	float Radius = 0.0f;
-	float MaxRadius = 0.5f;
-	float InterpSpeed = 0.0f;
-
-	float CurrentTime;
-
-	
-	
 };
