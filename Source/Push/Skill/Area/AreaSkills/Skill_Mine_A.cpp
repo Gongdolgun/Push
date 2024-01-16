@@ -46,10 +46,11 @@ void ASkill_Mine_A::BeginPlay()
 //마인이 공격당했을때 폭파
 void ASkill_Mine_A::Hit(AActor* InAttacker, const FHitData& InHitData)
 {
-	ActivationCollision->SetVisibility(false);
+	ActivationCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	if (ExplosionParticleComponent)
 	{
+		BaseParticleComponent->DestroyComponent(true);
 		ExplosionParticleComponent->SetVisibility(true);
 		ExplosionParticleComponent->SetTemplate(ExplosionParticle);
 	}
@@ -62,7 +63,7 @@ void ASkill_Mine_A::OnActivateOverlap(UPrimitiveComponent* OverlappedComponent, 
 	if (!Cast<IDamageable>(OtherActor) || OtherActor->IsA(StaticClass()))
 		return;
 
-	ActivationCollision->SetVisibility(false);
+	ActivationCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	//DelayTime이후 ActiveExplosion함수(폭발 이펙트와 판정) 호출
 	FTimerHandle tempTimer;
 	GetWorldTimerManager().SetTimer(tempTimer, this, &ASkill_Mine_A::ActiveExplosion, DelayTime, false, DelayTime);
@@ -85,10 +86,11 @@ void ASkill_Mine_A::OnFinishParticle(class UParticleSystemComponent* PSystem)
 	Destroy();
 }
 
-//정상적인 파티클 호출
+//정상적인 파티클 호출`
 void ASkill_Mine_A::ActiveExplosion()
 {
 	ExplosionCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	BaseParticleComponent->DestroyComponent(true);
 	ExplosionParticleComponent->SetVisibility(true);
 	ExplosionParticleComponent->SetTemplate(ExplosionParticle);
 }

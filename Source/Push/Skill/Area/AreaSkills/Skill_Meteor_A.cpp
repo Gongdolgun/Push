@@ -111,44 +111,34 @@ void ASkill_Meteor_A::OnSpawnPointDecal(FVector InLocation)
 void ASkill_Meteor_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    FVector CollisionLocation = SkillComponent->SpawnLocation - SkillComponent->curSkillData->RelativeLocation;
+	FVector CollisionLocation = SkillComponent->SpawnLocation - SkillComponent->curSkillData->RelativeLocation;
 
-    // 땅에 닿을 때, 캐릭터가 아니여야함
-    if (!Cast<APawn>(OtherActor))
-    {
-        OnDestroy(CollisionLocation);
+	// 땅에 닿을 때, 캐릭터가 아니여야함
+	if (!Cast<APawn>(OtherActor))
+	{
+		OnDestroy(CollisionLocation);
 
-        FVector start = CollisionLocation;
-        FVector end = CollisionLocation;
-        float radius = 150.0f;
+		FVector start = CollisionLocation;
+		FVector end = CollisionLocation;
+		float radius = 150.0f;
 
-        //CLog::Print(start);
+		TArray<FHitResult> HitResult;
+		TArray<AActor*> ignores;
+		ignores.Add(Owner);
 
-        // 데미지를 줄 Pawn만 추적
-        FHitResult HitResult;
-        TArray<TEnumAsByte<EObjectTypeQuery>> ObjectType;
-        ObjectType.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
+		UKismetSystemLibrary::SphereTraceMulti(Owner->GetWorld(), start, end, radius,
+			ETraceTypeQuery::TraceTypeQuery1, false, ignores, DrawDebug, HitResult, true);
 
-        TArray<AActor*> ignores;
-        ignores.Add(Owner);
+		for (FHitResult hitResult : HitResult)
+		{
+			IDamageable* character = Cast<IDamageable>(hitResult.GetActor());
 
-        UKismetSystemLibrary::SphereTraceSingleForObjects(Owner->GetWorld(), start, end, radius, ObjectType,
-            false, ignores, DrawDebug, HitResult, true);
+			if (character == nullptr)
+				continue;
 
-        if (HitResult.bBlockingHit)//&& character != nullptr)
-        {
-            IDamageable* character = Cast<IDamageable>(HitResult.GetActor());
-
-            if (character == nullptr)
-            {
-                CLog::Print("Character Interface Null");
-            }
-
-            // TODO : Hit Interface 데미지 처리
-            CLog::Print("Meteor Hit");
-            character->Hit(this, HitData);
-        }
-    }
+			character->Hit(this, HitData);
+		}
+	}
 }
 
 void ASkill_Meteor_A::OnDestroy(FVector InLocation)

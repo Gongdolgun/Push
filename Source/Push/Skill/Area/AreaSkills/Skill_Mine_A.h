@@ -44,7 +44,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ABuffInstance> BuffClass;
 
-	float DelayTime = 2.0f;
+	UPROPERTY(EditAnywhere)
+		float DelayTime = 2.0f;
 };
 
 

@@ -24,6 +24,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation")
 		bool bUseControlYaw;
+public:
+	//2024.01.16 이현중
+	//빙결상태를 위한 Snapshot
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation")
+		bool IsSnapshot = false;
 
 public:
 	void NativeBeginPlay() override;
@@ -34,5 +39,6 @@ private:
 	class UMoveComponent* Movement;
 
 	FRotator PrevRotation;
+
 
 };
