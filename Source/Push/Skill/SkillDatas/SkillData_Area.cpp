@@ -8,6 +8,7 @@ void USkillData_Area::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 }
 
 void USkillData_Area::Destroy_TracePoint()

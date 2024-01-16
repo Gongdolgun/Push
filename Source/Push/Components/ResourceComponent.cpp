@@ -4,6 +4,7 @@
 #include "HUD/MainHUD.h"
 #include "Widgets/KillDeathUI.h"
 #include "Net/UnrealNetwork.h"
+#include "Global.h"
 #include "Widgets/MainUI.h"
 
 UResourceComponent::UResourceComponent()
@@ -89,8 +90,40 @@ void UResourceComponent::OffKillDeathUI()
 	}
 }
 
+void UResourceComponent::SetGold_Server_Implementation(int InValue)
+{
+	SetGold_NMC(InValue);
+}
+
+void UResourceComponent::SetGold_NMC_Implementation(int InValue)
+{
+	Gold = InValue;
+}
+
+int UResourceComponent::GetGold()
+{
+	return Gold;
+}
+
+void UResourceComponent::AdjustGold_Server_Implementation(int InValue)
+{
+	AdjustGold_NMC(InValue);
+}
+
+
+void UResourceComponent::AdjustGold_NMC_Implementation(int InValue)
+{
+	// 골드제한 할거면 Clamp 추가
+	Gold += InValue;
+
+	CLog::Log(Gold);
+}
+
+
 void UResourceComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	
 }
 

@@ -11,6 +11,7 @@ APointDecal::APointDecal()
 	PointDecal->SetRelativeRotation(FRotator(-90.0f, 0.0f, 0.0f));
 	PointDecal->SetVisibility(true);
 
+	PointDecal->DecalSize = FVector(10,128,128);
 }
 
 void APointDecal::BeginPlay()
@@ -20,34 +21,12 @@ void APointDecal::BeginPlay()
 	Dynamic = PointDecal->CreateDynamicMaterialInstance();
 	PointDecal->SetDecalMaterial(Dynamic);
 
-	CurrentTime = 0.0f;
-	InterpSpeed = MaxRadius / DecalTime;
 }
 
 void APointDecal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//FString message = FString::Printf(TEXT("DecalTime : %f, InterpSpeed : %f"), DecalTime, InterpSpeed);
-	//CLog::Print(message);
-
-	CurrentTime += DeltaTime;
-
-	if (CurrentTime <= DecalTime)
-	{
-		Radius = FMath::Min(Radius + InterpSpeed * DeltaTime, MaxRadius);
-		Dynamic->SetScalarParameterValue("Radius", Radius);
-	}
-
-	else
-	{
-		PointDecal->SetVisibility(false);
-		Destroy();
-	}
 
 }
 
-void APointDecal::SetDecalTime(float InDecalTime)
-{
-	DecalTime = InDecalTime;
-}

@@ -1,5 +1,6 @@
 #include "PushGameMode.h"
 #include "Character/PushCharacter.h"
+#include "GameFramework/GameStateBase.h"
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
 #include "GameInstance/PushGameInstance.h"
@@ -114,3 +115,4 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 
 	character->BodyColor = Colors[index++];
 }
+
