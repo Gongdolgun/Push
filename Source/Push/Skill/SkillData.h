@@ -30,5 +30,5 @@ public:
 	UFUNCTION()
 	virtual void Play(ACharacter* InOwner);
 
-	virtual void Destroy_TracePoint();
+	virtual void Destroy_TracePoint(){};
 };
