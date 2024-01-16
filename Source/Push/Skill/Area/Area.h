@@ -23,17 +23,18 @@ public:
 	virtual void OnSkillPressed() override;
 	virtual void OnSkillClicked() override;
 
-	virtual void OnSpawnPointDecal(FVector InLocation) {};
-	virtual void OnDestroy(FVector InLocation) {};
-
+	virtual void OnDestroy(FVector InLocation = FVector::ZeroVector) {};
 
 protected:
 	UPROPERTY(VisibleAnywhere)
 		class USceneComponent* Root;
 
-	UPROPERTY(EditAnywhere, Category = "DebugType")
-		TEnumAsByte<EDrawDebugTrace::Type> DrawDebug;
+	UPROPERTY(EditAnywhere, Category = "Particle")
+		class UParticleSystemComponent* Particle;
 
+protected:
 	UPROPERTY(BlueprintReadWrite)
 		FVector DecalLocation;
+
+	bool bShowDecal = false;
 };

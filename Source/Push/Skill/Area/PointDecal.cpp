@@ -33,7 +33,7 @@ void APointDecal::Tick(float DeltaTime)
 
 	CurrentTime += DeltaTime;
 
-	if (CurrentTime <= DecalTime)
+	if (CurrentTime + Correction <= DecalTime)
 	{
 		Radius = FMath::Min(Radius + InterpSpeed * DeltaTime, MaxRadius);
 		Dynamic->SetScalarParameterValue("Radius", Radius);

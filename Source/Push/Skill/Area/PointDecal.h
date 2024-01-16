@@ -43,6 +43,8 @@ private:
 
 	float CurrentTime;
 
+	UPROPERTY(EditAnywhere)
+		float Correction;
 	
 	
 };
