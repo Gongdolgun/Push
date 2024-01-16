@@ -63,11 +63,4 @@ public:
 		}
 		return nullptr;
 	}
-
-	template<typename T>
-	static void GetClass(TSubclassOf<T>* OutClass, FString InPath)
-	{
-		ConstructorHelpers::FClassFinder<T> asset(*InPath);
-		*OutClass = asset.Class;
-	}
 };
