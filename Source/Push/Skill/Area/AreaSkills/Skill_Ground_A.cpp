@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Character/PushCharacter.h"
 #include "Components/SkillComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/DecalComponent.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -12,6 +13,10 @@ ASkill_Ground_A::ASkill_Ground_A()
 {
 	Helpers::CreateComponent(this, &SphereComponent, "Collision", Root);
 	SphereComponent->SetSphereRadius(128.0f);
+
+	Helpers::CreateActorComponent(this, &ProjectileComponent, "ProjectileComponent");
+	ProjectileComponent->InitialSpeed = 1000.0f;
+	ProjectileComponent->ProjectileGravityScale = 0.0f;
 
 	Helpers::CreateComponent(this, &Particle, "Particle", Root);
 	Particle->bAutoActivate = false;
@@ -59,6 +64,12 @@ void ASkill_Ground_A::OnSpawnPointDecal(FVector InLocation)
 	APointDecal_Meteor* DeferredDecal = Cast<APointDecal_Meteor>(
 		Owner->GetWorld()->SpawnActorDeferred<APointDecal_Meteor>(PointDecal_Class, decalTransform));
 
+	// Meteor Trace
+	FHitResult HitResult;
+	TArray<AActor*> ignores;
+	ignores.Add(Owner);
+	UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), SkillComponent->SpawnLocation, DecalLocation, ETraceTypeQuery::TraceTypeQuery1, false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
+
 	if (DeferredDecal != nullptr)
 	{
 		DeferredDecal->SetDecalTime(0.0f);
@@ -68,7 +79,34 @@ void ASkill_Ground_A::OnSpawnPointDecal(FVector InLocation)
 
 void ASkill_Ground_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	FVector CollisionLocation = SkillComponent->SpawnLocation - SkillComponent->curSkillData->RelativeLocation;
 
+	// 땅에 닿을 때, 캐릭터가 아니여야함
+	if (!Cast<APawn>(OtherActor))
+	{
+		OnDestroy(CollisionLocation);
+
+		FVector start = CollisionLocation;
+		FVector end = CollisionLocation;
+		float radius = 150.0f;
+
+		TArray<FHitResult> HitResult;
+		TArray<AActor*> ignores;
+		ignores.Add(Owner);
+
+		UKismetSystemLibrary::SphereTraceMulti(Owner->GetWorld(), start, end, radius,
+			ETraceTypeQuery::TraceTypeQuery1, false, ignores, DrawDebug, HitResult, true);
+
+		for (FHitResult hitResult : HitResult)
+		{
+			IDamageable* character = Cast<IDamageable>(hitResult.GetActor());
+
+			if (character == nullptr)
+				continue;
+
+			character->Hit(this, HitData);
+		}
+	}
 }
 
 void ASkill_Ground_A::OnDestroy(FVector InLocation)
@@ -85,5 +123,4 @@ void ASkill_Ground_A::OnDestroy(FVector InLocation)
 
 		Particle->SetActive(false);
 	}
-
 }
