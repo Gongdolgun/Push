@@ -17,7 +17,7 @@ public:
 
 protected:
 	virtual void OnDestroy() override;
-
+	
 public:
 	UPROPERTY(EditAnywhere, Category = "Explosion Particle")
 		class UParticleSystem* Explosion;

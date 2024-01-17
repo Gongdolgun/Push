@@ -20,6 +20,21 @@ public:
 		float Price;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString SkillDescription;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString CoolTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString Damage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString LaunchRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString Type;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool isBought;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
