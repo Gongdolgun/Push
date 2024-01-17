@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Misc/Structures.h"
 #include "PushPlayerController.generated.h"
 
 /** PlayerController
@@ -21,6 +22,12 @@ public:
 
 	void SetHUDHealth(float Health, float MaxHealth);
 	void SetHUDTime();
+
+	// 24_01_16 문인수
+	// 플레이어 리스트 클라이언트에서 업데이트
+	UFUNCTION(Client, Reliable)
+		void UpdatePlayerList_Client(const TArray<FPlayerList>& PlayerList);
+
 
 protected:
 	virtual void BeginPlay() override;

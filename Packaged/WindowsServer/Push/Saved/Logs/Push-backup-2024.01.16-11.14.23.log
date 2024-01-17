@@ -1,0 +1,674 @@
+﻿Log file open, 01/16/24 20:13:10
+LogInit: LLM is enabled
+LogInit: LLM CsvWriter: off TraceWriter: off
+LogPakFile: Display: Found Pak file ../../../Push/Content/Paks/Push-WindowsServer.pak attempting to mount.
+LogPakFile: Display: Mounting pak file ../../../Push/Content/Paks/Push-WindowsServer.pak.
+LogPakFile: PakFile PrimaryIndexSize=22614
+LogPakFile: PakFile PathHashIndexSize=44974
+LogPakFile: PakFile FullDirectoryIndexSize=63102
+LogPakFile: OnPakFileMounted2Time == 0.000005
+LogPlatformFile: Not using cached read wrapper
+LogTaskGraph: Started task graph with 5 named threads and 9 total threads with 1 sets of task threads.
+LogStats: Stats thread started at 0.065203
+LogD3D11RHI: Loaded GFSDK_Aftermath_Lib.x64.dll
+LogICUInternationalization: ICU TimeZone Detection - Raw Offset: +9:00, Platform Override: ''
+LogPluginManager: Mounting plugin Paper2D
+LogPluginManager: Mounting plugin AISupport
+LogPluginManager: Mounting plugin EnvironmentQueryEditor
+LogPluginManager: Mounting plugin LightPropagationVolume
+LogPluginManager: Mounting plugin AnimationSharing
+LogPluginManager: Mounting plugin SignificanceManager
+LogPluginManager: Mounting plugin PluginUtils
+LogPluginManager: Mounting plugin PropertyAccessEditor
+LogPluginManager: Mounting plugin UObjectPlugin
+LogPluginManager: Mounting plugin AssetManagerEditor
+LogPluginManager: Mounting plugin FacialAnimation
+LogPluginManager: Mounting plugin GeometryMode
+LogPluginManager: Mounting plugin SpeedTreeImporter
+LogPluginManager: Mounting plugin DatasmithContent
+LogPluginManager: Mounting plugin VariantManagerContent
+LogPluginManager: Mounting plugin AlembicImporter
+LogPluginManager: Mounting plugin GeometryCache
+LogPluginManager: Mounting plugin AutomationUtils
+LogPluginManager: Mounting plugin ScreenshotTools
+LogPluginManager: Mounting plugin BackChannel
+LogPluginManager: Mounting plugin ChaosClothEditor
+LogPluginManager: Mounting plugin ChaosCloth
+LogPluginManager: Mounting plugin ChaosEditor
+LogPluginManager: Mounting plugin PlanarCut
+LogPluginManager: Mounting plugin GeometryProcessing
+LogPluginManager: Mounting plugin EditableMesh
+LogPluginManager: Mounting plugin GeometryCollectionPlugin
+LogPluginManager: Mounting plugin ProceduralMeshComponent
+LogPluginManager: Mounting plugin ChaosSolverPlugin
+LogPluginManager: Mounting plugin ChaosNiagara
+LogPluginManager: Mounting plugin Niagara
+LogPluginManager: Mounting plugin CharacterAI
+LogPluginManager: Mounting plugin MotoSynth
+LogPluginManager: Mounting plugin PlatformCrypto
+LogPluginManager: Mounting plugin MagicLeapPassableWorld
+LogPluginManager: Mounting plugin MagicLeap
+LogPluginManager: Mounting plugin MLSDK
+LogPluginManager: Mounting plugin MagicLeapLightEstimation
+LogPluginManager: Mounting plugin AvfMedia
+LogPluginManager: Mounting plugin ImgMedia
+LogPluginManager: Mounting plugin MediaCompositing
+LogPluginManager: Mounting plugin MeshPainting
+LogPluginManager: Mounting plugin TcpMessaging
+LogPluginManager: Mounting plugin UdpMessaging
+LogPluginManager: Mounting plugin ActorSequence
+LogPluginManager: Mounting plugin LevelSequenceEditor
+LogPluginManager: Mounting plugin MatineeToLevelSequence
+LogPluginManager: Mounting plugin TemplateSequence
+LogPluginManager: Mounting plugin OnlineSubsystemNull
+LogPluginManager: Mounting plugin OnlineSubsystem
+LogPluginManager: Mounting plugin OnlineSubsystemUtils
+LogPluginManager: Mounting plugin LauncherChunkInstaller
+LogPluginManager: Mounting plugin ActorLayerUtilities
+LogPluginManager: Mounting plugin AndroidPermission
+LogPluginManager: Mounting plugin AppleImageUtils
+LogPluginManager: Mounting plugin ArchVisCharacter
+LogPluginManager: Mounting plugin AssetTags
+LogPluginManager: Mounting plugin AudioCapture
+LogPluginManager: Mounting plugin CableComponent
+LogPluginManager: Mounting plugin ChunkDownloader
+LogPluginManager: Mounting plugin CustomMeshComponent
+LogPluginManager: Mounting plugin ExampleDeviceProfileSelector
+LogPluginManager: Mounting plugin GooglePAD
+LogPluginManager: Mounting plugin LocationServicesBPLibrary
+LogPluginManager: Mounting plugin MobilePatchingUtils
+LogPluginManager: Mounting plugin OculusVR
+LogPluginManager: Mounting plugin PhysXVehicles
+LogPluginManager: Mounting plugin RuntimePhysXCooking
+LogPluginManager: Mounting plugin SoundFields
+LogPluginManager: Mounting plugin SteamVR
+LogPluginManager: Mounting plugin Synthesis
+LogPluginManager: Mounting plugin AudioSynesthesia
+LogPluginManager: Mounting plugin WindowsMoviePlayer
+LogLuminAPIImpl: Warning: MLSDK not found.  This likely means the MLSDK environment variable is not set.
+LogInit: Using libcurl 7.55.1-DEV
+LogInit:  - built for x86_64-pc-win32
+LogInit:  - supports SSL with OpenSSL/1.1.1
+LogInit:  - supports HTTP deflate (compression) using libz 1.2.8
+LogInit:  - other features:
+LogInit:      CURL_VERSION_SSL
+LogInit:      CURL_VERSION_LIBZ
+LogInit:      CURL_VERSION_IPV6
+LogInit:      CURL_VERSION_ASYNCHDNS
+LogInit:      CURL_VERSION_LARGEFILE
+LogInit:      CURL_VERSION_IDN
+LogInit:  CurlRequestOptions (configurable via config and command line):
+LogInit:  - bVerifyPeer = true  - Libcurl will verify peer certificate
+LogInit:  - bUseHttpProxy = false  - Libcurl will NOT use HTTP proxy
+LogInit:  - bDontReuseConnections = false  - Libcurl will reuse connections
+LogInit:  - MaxHostConnections = 16  - Libcurl will limit the number of connections to a host
+LogInit:  - LocalHostAddr = Default
+LogInit:  - BufferSize = 65536
+LogOnline: OSS: Creating online subsystem instance for: NULL
+LogInit: WinSock: version 1.1 (2.2), MaxSocks=32767, MaxUdp=65467
+LogOnline: OSS: TryLoadSubsystemAndSetDefault: Loaded subsystem for module [NULL]
+LogInit: Build: ++UE4+Release-4.26-CL-0
+LogInit: Engine Version: 4.26.2-0+++UE4+Release-4.26
+LogInit: Compatible Engine Version: 4.26.0-0+++UE4+Release-4.26
+LogInit: Net CL: 0
+LogInit: OS: Windows 10 (Release 2009) (), CPU: 12th Gen Intel(R) Core(TM) i7-12700H, GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+LogInit: Compiled (64-bit): Jan 16 2024 16:05:54
+LogInit: Compiled with Visual C++: 19.29.30151.00
+LogInit: Build Configuration: Development
+LogInit: Branch Name: ++UE4+Release-4.26
+LogInit: Command Line:  -log
+LogInit: Base Directory: D:/GitDesktop/Push/Packaged/WindowsServer/Push/Binaries/Win64/
+LogInit: Allocator: binned2
+LogInit: Installed Engine Build: 0
+LogDevObjectVersion: Number of dev versions registered: 29
+LogDevObjectVersion:   Dev-Blueprints (B0D832E4-1F89-4F0D-ACCF-7EB736FD4AA2): 10
+LogDevObjectVersion:   Dev-Build (E1C64328-A22C-4D53-A36C-8E866417BD8C): 0
+LogDevObjectVersion:   Dev-Core (375EC13C-06E4-48FB-B500-84F0262A717E): 4
+LogDevObjectVersion:   Dev-Editor (E4B068ED-F494-42E9-A231-DA0B2E46BB41): 40
+LogDevObjectVersion:   Dev-Framework (CFFC743F-43B0-4480-9391-14DF171D2073): 37
+LogDevObjectVersion:   Dev-Mobile (B02B49B5-BB20-44E9-A304-32B752E40360): 3
+LogDevObjectVersion:   Dev-Networking (A4E4105C-59A1-49B5-A7C5-40C4547EDFEE): 0
+LogDevObjectVersion:   Dev-Online (39C831C9-5AE6-47DC-9A44-9C173E1C8E7C): 0
+LogDevObjectVersion:   Dev-Physics (78F01B33-EBEA-4F98-B9B4-84EACCB95AA2): 4
+LogDevObjectVersion:   Dev-Platform (6631380F-2D4D-43E0-8009-CF276956A95A): 0
+LogDevObjectVersion:   Dev-Rendering (12F88B9F-8875-4AFC-A67C-D90C383ABD29): 44
+LogDevObjectVersion:   Dev-Sequencer (7B5AE74C-D270-4C10-A958-57980B212A5A): 12
+LogDevObjectVersion:   Dev-VR (D7296918-1DD6-4BDD-9DE2-64A83CC13884): 3
+LogDevObjectVersion:   Dev-LoadTimes (C2A15278-BFE7-4AFE-6C17-90FF531DF755): 1
+LogDevObjectVersion:   Private-Geometry (6EACA3D4-40EC-4CC1-B786-8BED09428FC5): 3
+LogDevObjectVersion:   Dev-AnimPhys (29E575DD-E0A3-4627-9D10-D276232CDCEA): 17
+LogDevObjectVersion:   Dev-Anim (AF43A65D-7FD3-4947-9873-3E8ED9C1BB05): 15
+LogDevObjectVersion:   Dev-ReflectionCapture (6B266CEC-1EC7-4B8F-A30B-E4D90942FC07): 1
+LogDevObjectVersion:   Dev-Automation (0DF73D61-A23F-47EA-B727-89E90C41499A): 1
+LogDevObjectVersion:   FortniteMain (601D1886-AC64-4F84-AA16-D3DE0DEAC7D6): 43
+LogDevObjectVersion:   FortniteRelease (E7086368-6B23-4C58-8439-1B7016265E91): 1
+LogDevObjectVersion:   Dev-Enterprise (9DFFBCD6-494F-0158-E221-12823C92A888): 10
+LogDevObjectVersion:   Dev-Niagara (F2AED0AC-9AFE-416F-8664-AA7FFA26D6FC): 1
+LogDevObjectVersion:   Dev-Destruction (174F1F0B-B4C6-45A5-B13F-2EE8D0FB917D): 10
+LogDevObjectVersion:   Dev-Physics-Ext (35F94A83-E258-406C-A318-09F59610247C): 40
+LogDevObjectVersion:   Dev-PhysicsMaterial-Chaos (B68FC16E-8B1B-42E2-B453-215C058844FE): 1
+LogDevObjectVersion:   Dev-CineCamera (B2E18506-4273-CFC2-A54E-F4BB758BBA07): 1
+LogDevObjectVersion:   Dev-VirtualProduction (64F58936-FD1B-42BA-BA96-7289D5D0FA4E): 1
+LogDevObjectVersion:   Dev-MediaFramework (6F0ED827-A609-4895-9C91-998D90180EA4): 2
+LogInit: Presizing for max 2097152 objects, including 1 objects not considered by GC, pre-allocating 0 bytes for permanent pool.
+LogConfig: Applying CVar settings from Section [/Script/Engine.StreamingSettings] File [../../../Push/Saved/Config/WindowsServer/Engine.ini]
+LogConfig: Setting CVar [[s.MinBulkDataSizeForAsyncLoading:131072]]
+LogConfig: Setting CVar [[s.AsyncLoadingThreadEnabled:0]]
+LogConfig: Setting CVar [[s.EventDrivenLoaderEnabled:1]]
+LogConfig: Setting CVar [[s.WarnIfTimeLimitExceeded:0]]
+LogConfig: Setting CVar [[s.TimeLimitExceededMultiplier:1.5]]
+LogConfig: Setting CVar [[s.TimeLimitExceededMinTime:0.005]]
+LogConfig: Setting CVar [[s.UseBackgroundLevelStreaming:1]]
+LogConfig: Setting CVar [[s.PriorityAsyncLoadingExtraTime:15.0]]
+LogConfig: Setting CVar [[s.LevelStreamingActorsUpdateTimeLimit:5.0]]
+LogConfig: Setting CVar [[s.PriorityLevelStreamingActorsUpdateExtraTime:5.0]]
+LogConfig: Setting CVar [[s.LevelStreamingComponentsRegistrationGranularity:10]]
+LogConfig: Setting CVar [[s.UnregisterComponentsTimeLimit:1.0]]
+LogConfig: Setting CVar [[s.LevelStreamingComponentsUnregistrationGranularity:5]]
+LogConfig: Setting CVar [[s.FlushStreamingOnExit:1]]
+LogStreaming: Display: Async Loading initialized: Event Driven Loader: true, Async Loading Thread: false, Async Post Load: false
+LogInit: Object subsystem initialized
+LogConfig: Setting CVar [[con.DebugEarlyDefault:1]]
+LogConfig: Setting CVar [[r.setres:1280x720]]
+LogConfig: Setting CVar [[fx.NiagaraAllowRuntimeScalabilityChanges:1]]
+[2024.01.16-11.13.11:223][  0]LogConfig: Setting CVar [[con.DebugEarlyDefault:1]]
+[2024.01.16-11.13.11:223][  0]LogConfig: Setting CVar [[r.setres:1280x720]]
+[2024.01.16-11.13.11:227][  0]LogConfig: Setting CVar [[fx.NiagaraAllowRuntimeScalabilityChanges:1]]
+[2024.01.16-11.13.11:229][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.RendererSettings] File [../../../Push/Saved/Config/WindowsServer/Engine.ini]
+[2024.01.16-11.13.11:229][  0]LogConfig: Setting CVar [[r.GPUCrashDebugging:0]]
+[2024.01.16-11.13.11:230][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.RendererOverrideSettings] File [../../../Push/Saved/Config/WindowsServer/Engine.ini]
+[2024.01.16-11.13.11:230][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.StreamingSettings] File [../../../Push/Saved/Config/WindowsServer/Engine.ini]
+[2024.01.16-11.13.11:230][  0]LogConfig: Setting CVar [[s.MinBulkDataSizeForAsyncLoading:131072]]
+[2024.01.16-11.13.11:231][  0]LogConfig: Setting CVar [[s.AsyncLoadingThreadEnabled:0]]
+[2024.01.16-11.13.11:231][  0]LogConfig: Setting CVar [[s.EventDrivenLoaderEnabled:1]]
+[2024.01.16-11.13.11:231][  0]LogConfig: Setting CVar [[s.WarnIfTimeLimitExceeded:0]]
+[2024.01.16-11.13.11:231][  0]LogConfig: Setting CVar [[s.TimeLimitExceededMultiplier:1.5]]
+[2024.01.16-11.13.11:232][  0]LogConfig: Setting CVar [[s.TimeLimitExceededMinTime:0.005]]
+[2024.01.16-11.13.11:232][  0]LogConfig: Setting CVar [[s.UseBackgroundLevelStreaming:1]]
+[2024.01.16-11.13.11:232][  0]LogConfig: Setting CVar [[s.PriorityAsyncLoadingExtraTime:15.0]]
+[2024.01.16-11.13.11:233][  0]LogConfig: Setting CVar [[s.LevelStreamingActorsUpdateTimeLimit:5.0]]
+[2024.01.16-11.13.11:237][  0]LogConfig: Setting CVar [[s.PriorityLevelStreamingActorsUpdateExtraTime:5.0]]
+[2024.01.16-11.13.11:238][  0]LogConfig: Setting CVar [[s.LevelStreamingComponentsRegistrationGranularity:10]]
+[2024.01.16-11.13.11:238][  0]LogConfig: Setting CVar [[s.UnregisterComponentsTimeLimit:1.0]]
+[2024.01.16-11.13.11:238][  0]LogConfig: Setting CVar [[s.LevelStreamingComponentsUnregistrationGranularity:5]]
+[2024.01.16-11.13.11:239][  0]LogConfig: Setting CVar [[s.FlushStreamingOnExit:1]]
+[2024.01.16-11.13.11:239][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.GarbageCollectionSettings] File [../../../Push/Saved/Config/WindowsServer/Engine.ini]
+[2024.01.16-11.13.11:240][  0]LogConfig: Setting CVar [[gc.MaxObjectsNotConsideredByGC:1]]
+[2024.01.16-11.13.11:241][  0]LogConfig: Setting CVar [[gc.SizeOfPermanentObjectPool:0]]
+[2024.01.16-11.13.11:241][  0]LogConfig: Setting CVar [[gc.FlushStreamingOnGC:0]]
+[2024.01.16-11.13.11:242][  0]LogConfig: Setting CVar [[gc.NumRetriesBeforeForcingGC:10]]
+[2024.01.16-11.13.11:242][  0]LogConfig: Setting CVar [[gc.AllowParallelGC:1]]
+[2024.01.16-11.13.11:242][  0]LogConfig: Setting CVar [[gc.TimeBetweenPurgingPendingKillObjects:61.1]]
+[2024.01.16-11.13.11:242][  0]LogConfig: Setting CVar [[gc.MaxObjectsInEditor:25165824]]
+[2024.01.16-11.13.11:243][  0]LogConfig: Setting CVar [[gc.IncrementalBeginDestroyEnabled:1]]
+[2024.01.16-11.13.11:243][  0]LogConfig: Setting CVar [[gc.CreateGCClusters:1]]
+[2024.01.16-11.13.11:243][  0]LogConfig: Setting CVar [[gc.MinGCClusterSize:5]]
+[2024.01.16-11.13.11:244][  0]LogConfig: Setting CVar [[gc.ActorClusteringEnabled:0]]
+[2024.01.16-11.13.11:244][  0]LogConfig: Setting CVar [[gc.BlueprintClusteringEnabled:0]]
+[2024.01.16-11.13.11:244][  0]LogConfig: Setting CVar [[gc.UseDisregardForGCOnDedicatedServers:0]]
+[2024.01.16-11.13.11:244][  0]LogConfig: Setting CVar [[gc.MultithreadedDestructionEnabled:1]]
+[2024.01.16-11.13.11:245][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.NetworkSettings] File [../../../Push/Saved/Config/WindowsServer/Engine.ini]
+[2024.01.16-11.13.11:245][  0]LogConfig: Applying CVar settings from Section [ViewDistanceQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:245][  0]LogConfig: Setting CVar [[r.SkeletalMeshLODBias:0]]
+[2024.01.16-11.13.11:246][  0]LogConfig: Setting CVar [[r.ViewDistanceScale:1.0]]
+[2024.01.16-11.13.11:246][  0]LogConfig: Applying CVar settings from Section [AntiAliasingQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:246][  0]LogConfig: Setting CVar [[r.PostProcessAAQuality:4]]
+[2024.01.16-11.13.11:246][  0]LogConfig: Applying CVar settings from Section [ShadowQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:247][  0]LogConfig: Setting CVar [[r.LightFunctionQuality:1]]
+[2024.01.16-11.13.11:247][  0]LogConfig: Setting CVar [[r.ShadowQuality:5]]
+[2024.01.16-11.13.11:247][  0]LogConfig: Setting CVar [[r.Shadow.CSM.MaxCascades:10]]
+[2024.01.16-11.13.11:248][  0]LogConfig: Setting CVar [[r.Shadow.MaxResolution:2048]]
+[2024.01.16-11.13.11:248][  0]LogConfig: Setting CVar [[r.Shadow.MaxCSMResolution:2048]]
+[2024.01.16-11.13.11:248][  0]LogConfig: Setting CVar [[r.Shadow.RadiusThreshold:0.01]]
+[2024.01.16-11.13.11:249][  0]LogConfig: Setting CVar [[r.Shadow.DistanceScale:1.0]]
+[2024.01.16-11.13.11:249][  0]LogConfig: Setting CVar [[r.Shadow.CSM.TransitionScale:1.0]]
+[2024.01.16-11.13.11:249][  0]LogConfig: Setting CVar [[r.Shadow.PreShadowResolutionFactor:1.0]]
+[2024.01.16-11.13.11:249][  0]LogConfig: Setting CVar [[r.DistanceFieldShadowing:1]]
+[2024.01.16-11.13.11:250][  0]LogConfig: Setting CVar [[r.DistanceFieldAO:1]]
+[2024.01.16-11.13.11:250][  0]LogConfig: Setting CVar [[r.AOQuality:2]]
+[2024.01.16-11.13.11:250][  0]LogConfig: Setting CVar [[r.VolumetricFog:1]]
+[2024.01.16-11.13.11:251][  0]LogConfig: Setting CVar [[r.VolumetricFog.GridPixelSize:8]]
+[2024.01.16-11.13.11:252][  0]LogConfig: Setting CVar [[r.VolumetricFog.GridSizeZ:128]]
+[2024.01.16-11.13.11:253][  0]LogConfig: Setting CVar [[r.VolumetricFog.HistoryMissSupersampleCount:4]]
+[2024.01.16-11.13.11:253][  0]LogConfig: Setting CVar [[r.LightMaxDrawDistanceScale:1]]
+[2024.01.16-11.13.11:253][  0]LogConfig: Setting CVar [[r.CapsuleShadows:1]]
+[2024.01.16-11.13.11:253][  0]LogConfig: Applying CVar settings from Section [PostProcessQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:254][  0]LogConfig: Setting CVar [[r.MotionBlurQuality:4]]
+[2024.01.16-11.13.11:254][  0]LogConfig: Setting CVar [[r.AmbientOcclusionMipLevelFactor:0.4]]
+[2024.01.16-11.13.11:255][  0]LogConfig: Setting CVar [[r.AmbientOcclusionMaxQuality:100]]
+[2024.01.16-11.13.11:255][  0]LogConfig: Setting CVar [[r.AmbientOcclusionLevels:-1]]
+[2024.01.16-11.13.11:256][  0]LogConfig: Setting CVar [[r.AmbientOcclusionRadiusScale:1.0]]
+[2024.01.16-11.13.11:256][  0]LogConfig: Setting CVar [[r.DepthOfFieldQuality:2]]
+[2024.01.16-11.13.11:256][  0]LogConfig: Setting CVar [[r.RenderTargetPoolMin:400]]
+[2024.01.16-11.13.11:257][  0]LogConfig: Setting CVar [[r.LensFlareQuality:2]]
+[2024.01.16-11.13.11:257][  0]LogConfig: Setting CVar [[r.SceneColorFringeQuality:1]]
+[2024.01.16-11.13.11:257][  0]LogConfig: Setting CVar [[r.EyeAdaptationQuality:2]]
+[2024.01.16-11.13.11:257][  0]LogConfig: Setting CVar [[r.BloomQuality:5]]
+[2024.01.16-11.13.11:258][  0]LogConfig: Setting CVar [[r.FastBlurThreshold:100]]
+[2024.01.16-11.13.11:258][  0]LogConfig: Setting CVar [[r.Upscale.Quality:3]]
+[2024.01.16-11.13.11:258][  0]LogConfig: Setting CVar [[r.Tonemapper.GrainQuantization:1]]
+[2024.01.16-11.13.11:258][  0]LogConfig: Setting CVar [[r.LightShaftQuality:1]]
+[2024.01.16-11.13.11:259][  0]LogConfig: Setting CVar [[r.Filter.SizeScale:1]]
+[2024.01.16-11.13.11:259][  0]LogConfig: Setting CVar [[r.Tonemapper.Quality:5]]
+[2024.01.16-11.13.11:259][  0]LogConfig: Setting CVar [[r.DOF.Gather.AccumulatorQuality:1        ; higher gathering accumulator quality]]
+[2024.01.16-11.13.11:259][  0]LogConfig: Setting CVar [[r.DOF.Gather.PostfilterMethod:1          ; Median3x3 postfilering method]]
+[2024.01.16-11.13.11:260][  0]LogConfig: Setting CVar [[r.DOF.Gather.EnableBokehSettings:0       ; no bokeh simulation when gathering]]
+[2024.01.16-11.13.11:260][  0]LogConfig: Setting CVar [[r.DOF.Gather.RingCount:4                 ; medium number of samples when gathering]]
+[2024.01.16-11.13.11:260][  0]LogConfig: Setting CVar [[r.DOF.Scatter.ForegroundCompositing:1    ; additive foreground scattering]]
+[2024.01.16-11.13.11:261][  0]LogConfig: Setting CVar [[r.DOF.Scatter.BackgroundCompositing:2    ; additive background scattering]]
+[2024.01.16-11.13.11:261][  0]LogConfig: Setting CVar [[r.DOF.Scatter.EnableBokehSettings:1      ; bokeh simulation when scattering]]
+[2024.01.16-11.13.11:261][  0]LogConfig: Setting CVar [[r.DOF.Scatter.MaxSpriteRatio:0.1         ; only a maximum of 10% of scattered bokeh]]
+[2024.01.16-11.13.11:261][  0]LogConfig: Setting CVar [[r.DOF.Recombine.Quality:1                ; cheap slight out of focus]]
+[2024.01.16-11.13.11:262][  0]LogConfig: Setting CVar [[r.DOF.Recombine.EnableBokehSettings:0    ; no bokeh simulation on slight out of focus]]
+[2024.01.16-11.13.11:262][  0]LogConfig: Setting CVar [[r.DOF.TemporalAAQuality:1                ; more stable temporal accumulation]]
+[2024.01.16-11.13.11:263][  0]LogConfig: Setting CVar [[r.DOF.Kernel.MaxForegroundRadius:0.025]]
+[2024.01.16-11.13.11:263][  0]LogConfig: Setting CVar [[r.DOF.Kernel.MaxBackgroundRadius:0.025]]
+[2024.01.16-11.13.11:268][  0]LogConfig: Applying CVar settings from Section [TextureQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:270][  0]LogConfig: Setting CVar [[r.Streaming.MipBias:0]]
+[2024.01.16-11.13.11:270][  0]LogConfig: Setting CVar [[r.Streaming.AmortizeCPUToGPUCopy:0]]
+[2024.01.16-11.13.11:270][  0]LogConfig: Setting CVar [[r.Streaming.MaxNumTexturesToStreamPerFrame:0]]
+[2024.01.16-11.13.11:270][  0]LogConfig: Setting CVar [[r.Streaming.Boost:1]]
+[2024.01.16-11.13.11:270][  0]LogConfig: Setting CVar [[r.MaxAnisotropy:8]]
+[2024.01.16-11.13.11:270][  0]LogConfig: Setting CVar [[r.VT.MaxAnisotropy:8]]
+[2024.01.16-11.13.11:270][  0]LogConfig: Setting CVar [[r.Streaming.LimitPoolSizeToVRAM:0]]
+[2024.01.16-11.13.11:270][  0]LogConfig: Setting CVar [[r.Streaming.PoolSize:1000]]
+[2024.01.16-11.13.11:270][  0]LogConfig: Setting CVar [[r.Streaming.MaxEffectiveScreenSize:0]]
+[2024.01.16-11.13.11:271][  0]LogConfig: Applying CVar settings from Section [EffectsQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:271][  0]LogConfig: Setting CVar [[r.TranslucencyLightingVolumeDim:64]]
+[2024.01.16-11.13.11:271][  0]LogConfig: Setting CVar [[r.RefractionQuality:2]]
+[2024.01.16-11.13.11:271][  0]LogConfig: Setting CVar [[r.SSR.Quality:3]]
+[2024.01.16-11.13.11:272][  0]LogConfig: Setting CVar [[r.SSR.HalfResSceneColor:0]]
+[2024.01.16-11.13.11:272][  0]LogConfig: Setting CVar [[r.SceneColorFormat:4]]
+[2024.01.16-11.13.11:272][  0]LogConfig: Setting CVar [[r.DetailMode:2]]
+[2024.01.16-11.13.11:272][  0]LogConfig: Setting CVar [[r.TranslucencyVolumeBlur:1]]
+[2024.01.16-11.13.11:273][  0]LogConfig: Setting CVar [[r.MaterialQualityLevel:1 ; High quality]]
+[2024.01.16-11.13.11:273][  0]LogConfig: Setting CVar [[r.AnisotropicMaterials:1]]
+[2024.01.16-11.13.11:273][  0]LogConfig: Setting CVar [[r.SSS.Scale:1]]
+[2024.01.16-11.13.11:274][  0]LogConfig: Setting CVar [[r.SSS.SampleSet:2]]
+[2024.01.16-11.13.11:274][  0]LogConfig: Setting CVar [[r.SSS.Quality:1]]
+[2024.01.16-11.13.11:274][  0]LogConfig: Setting CVar [[r.SSS.HalfRes:0]]
+[2024.01.16-11.13.11:274][  0]LogConfig: Setting CVar [[r.SSGI.Quality:3]]
+[2024.01.16-11.13.11:275][  0]LogConfig: Setting CVar [[r.EmitterSpawnRateScale:1.0]]
+[2024.01.16-11.13.11:275][  0]LogConfig: Setting CVar [[r.ParticleLightQuality:2]]
+[2024.01.16-11.13.11:276][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.FastApplyOnOpaque:1 ; Always have FastSkyLUT 1 in this case to avoid wrong sky]]
+[2024.01.16-11.13.11:276][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.SampleCountMaxPerSlice:4]]
+[2024.01.16-11.13.11:276][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.DepthResolution:16.0]]
+[2024.01.16-11.13.11:277][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.FastSkyLUT:1]]
+[2024.01.16-11.13.11:277][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMin:4.0]]
+[2024.01.16-11.13.11:277][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMax:128.0]]
+[2024.01.16-11.13.11:278][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.SampleCountMin:4.0]]
+[2024.01.16-11.13.11:278][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.SampleCountMax:128.0]]
+[2024.01.16-11.13.11:278][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.TransmittanceLUT.UseSmallFormat:0]]
+[2024.01.16-11.13.11:278][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.TransmittanceLUT.SampleCount:10.0]]
+[2024.01.16-11.13.11:279][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.MultiScatteringLUT.SampleCount:15.0]]
+[2024.01.16-11.13.11:279][  0]LogConfig: Setting CVar [[fx.Niagara.QualityLevel:3]]
+[2024.01.16-11.13.11:279][  0]LogConfig: Applying CVar settings from Section [FoliageQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:280][  0]LogConfig: Setting CVar [[foliage.DensityScale:1.0]]
+[2024.01.16-11.13.11:280][  0]LogConfig: Setting CVar [[grass.DensityScale:1.0]]
+[2024.01.16-11.13.11:280][  0]LogConfig: Applying CVar settings from Section [ShadingQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:280][  0]LogConfig: Setting CVar [[r.HairStrands.SkyLighting.IntegrationType:2]]
+[2024.01.16-11.13.11:281][  0]LogConfig: Setting CVar [[r.HairStrands.SkyAO.SampleCount:4]]
+[2024.01.16-11.13.11:283][  0]LogConfig: Setting CVar [[r.HairStrands.Visibility.MSAA.SamplePerPixel:4]]
+[2024.01.16-11.13.11:283][  0]LogInit: Selected Device Profile: [WindowsServer]
+[2024.01.16-11.13.11:283][  0]LogInit: Applying CVar settings loaded from the selected device profile: [WindowsServer]
+[2024.01.16-11.13.11:283][  0]LogHAL: Display: Platform has ~ 32 GB [33961922560 / 34359738368 / 32], which maps to Largest [LargestMinGB=32, LargerMinGB=12, DefaultMinGB=8, SmallerMinGB=6, SmallestMinGB=0)
+[2024.01.16-11.13.11:284][  0]LogInit: Going up to parent DeviceProfile [Windows]
+[2024.01.16-11.13.11:284][  0]LogInit: Going up to parent DeviceProfile []
+[2024.01.16-11.13.11:284][  0]LogConfig: Applying CVar settings from Section [ViewDistanceQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:285][  0]LogConfig: Setting CVar [[r.SkeletalMeshLODBias:0]]
+[2024.01.16-11.13.11:285][  0]LogConfig: Setting CVar [[r.ViewDistanceScale:1.0]]
+[2024.01.16-11.13.11:285][  0]LogConfig: Applying CVar settings from Section [AntiAliasingQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:286][  0]LogConfig: Setting CVar [[r.PostProcessAAQuality:4]]
+[2024.01.16-11.13.11:286][  0]LogConfig: Applying CVar settings from Section [ShadowQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:286][  0]LogConfig: Setting CVar [[r.LightFunctionQuality:1]]
+[2024.01.16-11.13.11:286][  0]LogConfig: Setting CVar [[r.ShadowQuality:5]]
+[2024.01.16-11.13.11:287][  0]LogConfig: Setting CVar [[r.Shadow.CSM.MaxCascades:10]]
+[2024.01.16-11.13.11:287][  0]LogConfig: Setting CVar [[r.Shadow.MaxResolution:2048]]
+[2024.01.16-11.13.11:287][  0]LogConfig: Setting CVar [[r.Shadow.MaxCSMResolution:2048]]
+[2024.01.16-11.13.11:288][  0]LogConfig: Setting CVar [[r.Shadow.RadiusThreshold:0.01]]
+[2024.01.16-11.13.11:288][  0]LogConfig: Setting CVar [[r.Shadow.DistanceScale:1.0]]
+[2024.01.16-11.13.11:289][  0]LogConfig: Setting CVar [[r.Shadow.CSM.TransitionScale:1.0]]
+[2024.01.16-11.13.11:290][  0]LogConfig: Setting CVar [[r.Shadow.PreShadowResolutionFactor:1.0]]
+[2024.01.16-11.13.11:290][  0]LogConfig: Setting CVar [[r.DistanceFieldShadowing:1]]
+[2024.01.16-11.13.11:290][  0]LogConfig: Setting CVar [[r.DistanceFieldAO:1]]
+[2024.01.16-11.13.11:291][  0]LogConfig: Setting CVar [[r.AOQuality:2]]
+[2024.01.16-11.13.11:291][  0]LogConfig: Setting CVar [[r.VolumetricFog:1]]
+[2024.01.16-11.13.11:291][  0]LogConfig: Setting CVar [[r.VolumetricFog.GridPixelSize:8]]
+[2024.01.16-11.13.11:292][  0]LogConfig: Setting CVar [[r.VolumetricFog.GridSizeZ:128]]
+[2024.01.16-11.13.11:292][  0]LogConfig: Setting CVar [[r.VolumetricFog.HistoryMissSupersampleCount:4]]
+[2024.01.16-11.13.11:292][  0]LogConfig: Setting CVar [[r.LightMaxDrawDistanceScale:1]]
+[2024.01.16-11.13.11:293][  0]LogConfig: Setting CVar [[r.CapsuleShadows:1]]
+[2024.01.16-11.13.11:293][  0]LogConfig: Applying CVar settings from Section [PostProcessQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:294][  0]LogConfig: Setting CVar [[r.MotionBlurQuality:4]]
+[2024.01.16-11.13.11:294][  0]LogConfig: Setting CVar [[r.AmbientOcclusionMipLevelFactor:0.4]]
+[2024.01.16-11.13.11:294][  0]LogConfig: Setting CVar [[r.AmbientOcclusionMaxQuality:100]]
+[2024.01.16-11.13.11:294][  0]LogConfig: Setting CVar [[r.AmbientOcclusionLevels:-1]]
+[2024.01.16-11.13.11:295][  0]LogConfig: Setting CVar [[r.AmbientOcclusionRadiusScale:1.0]]
+[2024.01.16-11.13.11:295][  0]LogConfig: Setting CVar [[r.DepthOfFieldQuality:2]]
+[2024.01.16-11.13.11:295][  0]LogConfig: Setting CVar [[r.RenderTargetPoolMin:400]]
+[2024.01.16-11.13.11:296][  0]LogConfig: Setting CVar [[r.LensFlareQuality:2]]
+[2024.01.16-11.13.11:297][  0]LogConfig: Setting CVar [[r.SceneColorFringeQuality:1]]
+[2024.01.16-11.13.11:298][  0]LogConfig: Setting CVar [[r.EyeAdaptationQuality:2]]
+[2024.01.16-11.13.11:298][  0]LogConfig: Setting CVar [[r.BloomQuality:5]]
+[2024.01.16-11.13.11:299][  0]LogConfig: Setting CVar [[r.FastBlurThreshold:100]]
+[2024.01.16-11.13.11:299][  0]LogConfig: Setting CVar [[r.Upscale.Quality:3]]
+[2024.01.16-11.13.11:299][  0]LogConfig: Setting CVar [[r.Tonemapper.GrainQuantization:1]]
+[2024.01.16-11.13.11:299][  0]LogConfig: Setting CVar [[r.LightShaftQuality:1]]
+[2024.01.16-11.13.11:300][  0]LogConfig: Setting CVar [[r.Filter.SizeScale:1]]
+[2024.01.16-11.13.11:300][  0]LogConfig: Setting CVar [[r.Tonemapper.Quality:5]]
+[2024.01.16-11.13.11:300][  0]LogConfig: Setting CVar [[r.DOF.Gather.AccumulatorQuality:1        ; higher gathering accumulator quality]]
+[2024.01.16-11.13.11:301][  0]LogConfig: Setting CVar [[r.DOF.Gather.PostfilterMethod:1          ; Median3x3 postfilering method]]
+[2024.01.16-11.13.11:301][  0]LogConfig: Setting CVar [[r.DOF.Gather.EnableBokehSettings:0       ; no bokeh simulation when gathering]]
+[2024.01.16-11.13.11:302][  0]LogConfig: Setting CVar [[r.DOF.Gather.RingCount:4                 ; medium number of samples when gathering]]
+[2024.01.16-11.13.11:303][  0]LogConfig: Setting CVar [[r.DOF.Scatter.ForegroundCompositing:1    ; additive foreground scattering]]
+[2024.01.16-11.13.11:303][  0]LogConfig: Setting CVar [[r.DOF.Scatter.BackgroundCompositing:2    ; additive background scattering]]
+[2024.01.16-11.13.11:304][  0]LogConfig: Setting CVar [[r.DOF.Scatter.EnableBokehSettings:1      ; bokeh simulation when scattering]]
+[2024.01.16-11.13.11:304][  0]LogConfig: Setting CVar [[r.DOF.Scatter.MaxSpriteRatio:0.1         ; only a maximum of 10% of scattered bokeh]]
+[2024.01.16-11.13.11:304][  0]LogConfig: Setting CVar [[r.DOF.Recombine.Quality:1                ; cheap slight out of focus]]
+[2024.01.16-11.13.11:305][  0]LogConfig: Setting CVar [[r.DOF.Recombine.EnableBokehSettings:0    ; no bokeh simulation on slight out of focus]]
+[2024.01.16-11.13.11:305][  0]LogConfig: Setting CVar [[r.DOF.TemporalAAQuality:1                ; more stable temporal accumulation]]
+[2024.01.16-11.13.11:305][  0]LogConfig: Setting CVar [[r.DOF.Kernel.MaxForegroundRadius:0.025]]
+[2024.01.16-11.13.11:306][  0]LogConfig: Setting CVar [[r.DOF.Kernel.MaxBackgroundRadius:0.025]]
+[2024.01.16-11.13.11:306][  0]LogConfig: Applying CVar settings from Section [TextureQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:306][  0]LogConfig: Setting CVar [[r.Streaming.MipBias:0]]
+[2024.01.16-11.13.11:307][  0]LogConfig: Setting CVar [[r.Streaming.AmortizeCPUToGPUCopy:0]]
+[2024.01.16-11.13.11:307][  0]LogConfig: Setting CVar [[r.Streaming.MaxNumTexturesToStreamPerFrame:0]]
+[2024.01.16-11.13.11:307][  0]LogConfig: Setting CVar [[r.Streaming.Boost:1]]
+[2024.01.16-11.13.11:307][  0]LogConfig: Setting CVar [[r.MaxAnisotropy:8]]
+[2024.01.16-11.13.11:308][  0]LogConfig: Setting CVar [[r.VT.MaxAnisotropy:8]]
+[2024.01.16-11.13.11:308][  0]LogConfig: Setting CVar [[r.Streaming.LimitPoolSizeToVRAM:0]]
+[2024.01.16-11.13.11:308][  0]LogConfig: Setting CVar [[r.Streaming.PoolSize:1000]]
+[2024.01.16-11.13.11:308][  0]LogConfig: Setting CVar [[r.Streaming.MaxEffectiveScreenSize:0]]
+[2024.01.16-11.13.11:309][  0]LogConfig: Applying CVar settings from Section [EffectsQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:309][  0]LogConfig: Setting CVar [[r.TranslucencyLightingVolumeDim:64]]
+[2024.01.16-11.13.11:310][  0]LogConfig: Setting CVar [[r.RefractionQuality:2]]
+[2024.01.16-11.13.11:310][  0]LogConfig: Setting CVar [[r.SSR.Quality:3]]
+[2024.01.16-11.13.11:310][  0]LogConfig: Setting CVar [[r.SSR.HalfResSceneColor:0]]
+[2024.01.16-11.13.11:311][  0]LogConfig: Setting CVar [[r.SceneColorFormat:4]]
+[2024.01.16-11.13.11:311][  0]LogConfig: Setting CVar [[r.DetailMode:2]]
+[2024.01.16-11.13.11:312][  0]LogConfig: Setting CVar [[r.TranslucencyVolumeBlur:1]]
+[2024.01.16-11.13.11:313][  0]LogConfig: Setting CVar [[r.MaterialQualityLevel:1 ; High quality]]
+[2024.01.16-11.13.11:313][  0]LogConfig: Setting CVar [[r.AnisotropicMaterials:1]]
+[2024.01.16-11.13.11:313][  0]LogConfig: Setting CVar [[r.SSS.Scale:1]]
+[2024.01.16-11.13.11:314][  0]LogConfig: Setting CVar [[r.SSS.SampleSet:2]]
+[2024.01.16-11.13.11:314][  0]LogConfig: Setting CVar [[r.SSS.Quality:1]]
+[2024.01.16-11.13.11:315][  0]LogConfig: Setting CVar [[r.SSS.HalfRes:0]]
+[2024.01.16-11.13.11:315][  0]LogConfig: Setting CVar [[r.SSGI.Quality:3]]
+[2024.01.16-11.13.11:315][  0]LogConfig: Setting CVar [[r.EmitterSpawnRateScale:1.0]]
+[2024.01.16-11.13.11:315][  0]LogConfig: Setting CVar [[r.ParticleLightQuality:2]]
+[2024.01.16-11.13.11:316][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.FastApplyOnOpaque:1 ; Always have FastSkyLUT 1 in this case to avoid wrong sky]]
+[2024.01.16-11.13.11:316][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.SampleCountMaxPerSlice:4]]
+[2024.01.16-11.13.11:316][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.DepthResolution:16.0]]
+[2024.01.16-11.13.11:316][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.FastSkyLUT:1]]
+[2024.01.16-11.13.11:317][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMin:4.0]]
+[2024.01.16-11.13.11:317][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMax:128.0]]
+[2024.01.16-11.13.11:318][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.SampleCountMin:4.0]]
+[2024.01.16-11.13.11:319][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.SampleCountMax:128.0]]
+[2024.01.16-11.13.11:319][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.TransmittanceLUT.UseSmallFormat:0]]
+[2024.01.16-11.13.11:320][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.TransmittanceLUT.SampleCount:10.0]]
+[2024.01.16-11.13.11:320][  0]LogConfig: Setting CVar [[r.SkyAtmosphere.MultiScatteringLUT.SampleCount:15.0]]
+[2024.01.16-11.13.11:321][  0]LogConfig: Setting CVar [[fx.Niagara.QualityLevel:3]]
+[2024.01.16-11.13.11:321][  0]LogConfig: Applying CVar settings from Section [FoliageQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:321][  0]LogConfig: Setting CVar [[foliage.DensityScale:1.0]]
+[2024.01.16-11.13.11:321][  0]LogConfig: Setting CVar [[grass.DensityScale:1.0]]
+[2024.01.16-11.13.11:322][  0]LogConfig: Applying CVar settings from Section [ShadingQuality@3] File [../../../Push/Saved/Config/WindowsServer/Scalability.ini]
+[2024.01.16-11.13.11:322][  0]LogConfig: Setting CVar [[r.HairStrands.SkyLighting.IntegrationType:2]]
+[2024.01.16-11.13.11:323][  0]LogConfig: Setting CVar [[r.HairStrands.SkyAO.SampleCount:4]]
+[2024.01.16-11.13.11:323][  0]LogConfig: Setting CVar [[r.HairStrands.Visibility.MSAA.SamplePerPixel:4]]
+[2024.01.16-11.13.11:323][  0]LogConfig: Applying CVar settings from Section [Startup] File [../../../Engine/Config/ConsoleVariables.ini]
+[2024.01.16-11.13.11:325][  0]LogConfig: Setting CVar [[net.UseAdaptiveNetUpdateFrequency:0]]
+[2024.01.16-11.13.11:325][  0]LogConfig: Setting CVar [[p.chaos.AllowCreatePhysxBodies:1]]
+[2024.01.16-11.13.11:325][  0]LogConfig: Setting CVar [[fx.SkipVectorVMBackendOptimizations:1]]
+[2024.01.16-11.13.11:329][  0]LogConfig: Applying CVar settings from Section [ConsoleVariables] File [../../../Push/Saved/Config/WindowsServer/Engine.ini]
+[2024.01.16-11.13.11:330][  0]LogInit: Computer: DESKTOP-JQI8A3Q
+[2024.01.16-11.13.11:331][  0]LogInit: User: MoonInSu
+[2024.01.16-11.13.11:331][  0]LogInit: CPU Page size=4096, Cores=14
+[2024.01.16-11.13.11:332][  0]LogInit: High frequency timer resolution =10.000000 MHz
+[2024.01.16-11.13.11:332][  0]LogMemory: Memory total: Physical=31.6GB (32GB approx)
+[2024.01.16-11.13.11:332][  0]LogMemory: Platform Memory Stats for WindowsServer
+[2024.01.16-11.13.11:332][  0]LogMemory: Process Physical Memory: 68.88 MB used, 68.88 MB peak
+[2024.01.16-11.13.11:333][  0]LogMemory: Process Virtual Memory: 69.93 MB used, 69.93 MB peak
+[2024.01.16-11.13.11:334][  0]LogMemory: Physical Memory: 20448.27 MB used,  11940.35 MB free, 32388.61 MB total
+[2024.01.16-11.13.11:334][  0]LogMemory: Virtual Memory: 134198184.00 MB used,  19545.54 MB free, 134217728.00 MB total
+[2024.01.16-11.13.11:338][  0]LogWindows: WindowsPlatformFeatures disabled or dedicated server build
+[2024.01.16-11.13.11:406][  0]LogInit: Physics initialised using underlying interface: PhysX
+[2024.01.16-11.13.11:407][  0]LogInit: Using OS detected language (ko-KR).
+[2024.01.16-11.13.11:408][  0]LogInit: Using OS detected locale (ko-KR).
+[2024.01.16-11.13.11:408][  0]LogTextLocalizationManager: No localization for 'ko-KR' exists, so 'en' will be used for the language.
+[2024.01.16-11.13.11:410][  0]LogTextLocalizationManager: No localization for 'ko-KR' exists, so 'en' will be used for the locale.
+[2024.01.16-11.13.11:419][  0]LogRendererCore: Ray tracing is disabled. Reason: r.RayTracing=0.
+[2024.01.16-11.13.11:422][  0]LogInit: Using OS detected language (ko-KR).
+[2024.01.16-11.13.11:422][  0]LogInit: Using OS detected locale (ko-KR).
+[2024.01.16-11.13.11:422][  0]LogTextLocalizationManager: No localization for 'ko-KR' exists, so 'en' will be used for the language.
+[2024.01.16-11.13.11:423][  0]LogTextLocalizationManager: No localization for 'ko-KR' exists, so 'en' will be used for the locale.
+[2024.01.16-11.13.11:424][  0]LogTextLocalizationManager: Compacting localization data took   0.44ms
+[2024.01.16-11.13.11:427][  0]LogAssetRegistry: FAssetRegistry took 0.0013 seconds to start up
+[2024.01.16-11.13.11:467][  0]LogStreaming: Display: FlushAsyncLoading: 1 QueuedPackages, 0 AsyncPackages
+[2024.01.16-11.13.11:467][  0]LogPackageLocalizationCache: Processed 21 localized package path(s) for 1 prioritized culture(s) in 0.000041 seconds
+[2024.01.16-11.13.11:469][  0]LogPakFile: New pak file ../../../Push/Content/Paks/Push-WindowsServer.pak added to pak precacher.
+[2024.01.16-11.13.11:474][  0]LogInit: Selected Device Profile: [WindowsServer]
+[2024.01.16-11.13.11:474][  0]LogInit: Active device profile: [0000013ECFF65980][0000013ECBA7B140 49] WindowsServer
+[2024.01.16-11.13.11:475][  0]LogInit: Profiles: [0000013ECFF65B00][0000013ECBA7D8A0 49] Windows, [0000013ECFF65980][0000013ECBA7B140 49] WindowsServer, 
+[2024.01.16-11.13.11:480][  0]LogSerialization: Display: AllowBulkDataInIoStore: 'true'
+[2024.01.16-11.13.11:484][  0]LogNetVersion: Push 1.0.0, NetCL: 0, EngineNetVer: 16, GameNetVer: 0 (Checksum: 2604895795)
+[2024.01.16-11.13.11:498][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2024.01.16-11.13.11:498][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2024.01.16-11.13.11:499][  0]LogHMD: PokeAHoleMaterial loaded successfully
+[2024.01.16-11.13.11:512][  0]LogUObjectArray: 15466 objects as part of root set at end of initial load.
+[2024.01.16-11.13.11:512][  0]LogUObjectAllocator: 3189016 out of 0 bytes used by permanent object pool.
+[2024.01.16-11.13.11:513][  0]LogUObjectArray: CloseDisregardForGC: 15466/0 objects in disregard for GC pool
+[2024.01.16-11.13.11:519][  0]LogAndroidPermission: UAndroidPermissionCallbackProxy::GetInstance
+[2024.01.16-11.13.11:519][  0]LogOcInput: OculusInput pre-init called
+[2024.01.16-11.13.11:520][  0]LogEngine: Initializing Engine...
+[2024.01.16-11.13.11:521][  0]LogStats: UGameplayTagsManager::InitializeManager -  0.000 s
+[2024.01.16-11.13.11:525][  0]LogInit: Initializing FReadOnlyCVARCache
+[2024.01.16-11.13.11:525][  0]LogNetVersion: Set ProjectVersion to 1.0.0.0. Version Checksum will be recalculated on next use.
+[2024.01.16-11.13.11:525][  0]LogInit: Texture streaming: Disabled
+[2024.01.16-11.13.11:539][  0]LogInit: Display: Game Engine Initialized.
+[2024.01.16-11.13.11:539][  0]LogInit: Display: Starting Game.
+[2024.01.16-11.13.11:540][  0]LogNet: Browse: /Game/Maps/ThirdPersonExampleMap?Name=Player
+[2024.01.16-11.13.11:540][  0]LogLoad: LoadMap: /Game/Maps/ThirdPersonExampleMap?Name=Player
+[2024.01.16-11.13.11:540][  0]LogWorld: BeginTearingDown for /Temp/Untitled_0
+[2024.01.16-11.13.11:542][  0]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
+[2024.01.16-11.13.11:543][  0]LogUObjectHash: Compacting FUObjectHashTables data took   0.33ms
+[2024.01.16-11.13.11:561][  0]LogAIModule: Creating AISystem for world ThirdPersonExampleMap
+[2024.01.16-11.13.11:561][  0]LogLoad: Game class is 'BP_LobbyGameMode_C'
+[2024.01.16-11.13.11:562][  0]LogNet: ReplicationDriverClass is null! Not using ReplicationDriver.
+[2024.01.16-11.13.11:563][  0]LogNetCore: DDoS detection status: detection enabled: 0 analytics enabled: 0
+[2024.01.16-11.13.11:563][  0]LogInit: WinSock: Socket queue. Rx: 131072 (config 131072) Tx: 131072 (config 131072)
+[2024.01.16-11.13.11:564][  0]LogNet: Created socket for bind address: 0.0.0.0 on port 7777
+[2024.01.16-11.13.11:564][  0]PacketHandlerLog: Loaded PacketHandler component: Engine.EngineHandlerComponentFactory (StatelessConnectHandlerComponent)
+[2024.01.16-11.13.11:564][  0]LogNet: GameNetDriver IpNetDriver_2147482567 IpNetDriver listening on port 7777
+[2024.01.16-11.13.11:565][  0]LogWorld: Bringing World /Game/Maps/ThirdPersonExampleMap.ThirdPersonExampleMap up for play (max tick rate 30) at 2024.01.16-20.13.11
+[2024.01.16-11.13.11:565][  0]LogWorld: Bringing up level for play took: 0.000509
+[2024.01.16-11.13.11:567][  0]LogGameMode: Display: Match State Changed from EnteringMap to WaitingToStart
+[2024.01.16-11.13.11:568][  0]LogGameState: Match State Changed from EnteringMap to WaitingToStart
+[2024.01.16-11.13.11:569][  0]LogLoad: Took 0.028839 seconds to LoadMap(/Game/Maps/ThirdPersonExampleMap)
+[2024.01.16-11.13.11:570][  0]LogPakFile: AllPaks IndexSizes: DirectoryHashSize=220244, PathHashSize=16, EntriesSize=32752, TotalSize=253012
+[2024.01.16-11.13.11:570][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()
+[2024.01.16-11.13.11:570][  0]LogLoad: (Engine Initialization) Total time: 0.75 seconds
+[2024.01.16-11.13.11:571][  0]LogInit: First time updating LLM stats...
+[2024.01.16-11.13.14:960][100]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:52310
+[2024.01.16-11.13.14:960][100]LogHandshake: SendConnectChallenge. Timestamp: 3.388590, Cookie: 017187203120050221094107175120100065216108091196092121142241
+[2024.01.16-11.13.14:994][101]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:52310
+[2024.01.16-11.13.14:994][101]LogHandshake: SendChallengeAck. InCookie: 017187203120050221094107175120100065216108091196092121142241
+[2024.01.16-11.13.14:994][101]LogNet: Server accepting post-challenge connection from: 127.0.0.1:52310
+[2024.01.16-11.13.14:995][101]PacketHandlerLog: Loaded PacketHandler component: Engine.EngineHandlerComponentFactory (StatelessConnectHandlerComponent)
+[2024.01.16-11.13.14:995][101]LogNet: NotifyAcceptedConnection: Name: ThirdPersonExampleMap, TimeStamp: 01/16/24 20:13:14, [UNetConnection] RemoteAddr: 127.0.0.1:52310, Name: IpConnection_2147482560, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.14:996][101]LogNet: AddClientConnection: Added client connection: [UNetConnection] RemoteAddr: 127.0.0.1:52310, Name: IpConnection_2147482560, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.15:028][102]LogNet: NotifyAcceptingChannel Control 0 server World /Game/Maps/ThirdPersonExampleMap.ThirdPersonExampleMap: Accepted
+[2024.01.16-11.13.15:028][102]LogNet: Remote platform little endian=1
+[2024.01.16-11.13.15:029][102]LogNet: This platform little endian=1
+[2024.01.16-11.13.15:029][102]LogNetVersion: Push 1.0.0.0, NetCL: 0, EngineNetVer: 16, GameNetVer: 0 (Checksum: 2030252422)
+[2024.01.16-11.13.15:061][103]LogNet: Login request: ?Name=DESKTOP-JQI8A3Q-CEA83EAF42FE533E6BC03895488ACE8B userId: NULL:DESKTOP-JQI8A3Q-CEA83EAF42FE533E6BC03895488ACE8B platform: NULL
+[2024.01.16-11.13.15:094][104]LogNet: Client netspeed is 100000
+[2024.01.16-11.13.15:127][105]LogNet: Join request: /Game/Maps/ThirdPersonExampleMap?Name=DESKTOP-JQI8A3Q-CEA83EAF42FE533E6BC03895488ACE8B?SplitscreenCount=1
+[2024.01.16-11.13.15:127][105]LogOnlineSession: Warning: OSS: No game present to join for session (GameSession)
+[2024.01.16-11.13.15:128][105]LogGameMode: Display: Match State Changed from WaitingToStart to InProgress
+[2024.01.16-11.13.15:130][105]LogGameState: Match State Changed from WaitingToStart to InProgress
+[2024.01.16-11.13.15:130][105]GP: Display: Num of Players = 1
+[2024.01.16-11.13.15:130][105]GP: Display: currentNumOfPlayers = 
+[2024.01.16-11.13.15:131][105]GP: Display: 1
+[2024.01.16-11.13.15:131][105]LogNet: Join succeeded: DESKTOP-JQI8A3Q-CEA8
+[2024.01.16-11.13.16:415][144]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:52311
+[2024.01.16-11.13.16:415][144]LogHandshake: SendConnectChallenge. Timestamp: 4.843570, Cookie: 134224083011200152197140192129117135036116035139210140176012
+[2024.01.16-11.13.16:448][145]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:52311
+[2024.01.16-11.13.16:448][145]LogHandshake: SendChallengeAck. InCookie: 134224083011200152197140192129117135036116035139210140176012
+[2024.01.16-11.13.16:449][145]LogNet: Server accepting post-challenge connection from: 127.0.0.1:52311
+[2024.01.16-11.13.16:450][145]PacketHandlerLog: Loaded PacketHandler component: Engine.EngineHandlerComponentFactory (StatelessConnectHandlerComponent)
+[2024.01.16-11.13.16:450][145]LogNet: NotifyAcceptedConnection: Name: ThirdPersonExampleMap, TimeStamp: 01/16/24 20:13:16, [UNetConnection] RemoteAddr: 127.0.0.1:52311, Name: IpConnection_2147482530, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.16:450][145]LogNet: AddClientConnection: Added client connection: [UNetConnection] RemoteAddr: 127.0.0.1:52311, Name: IpConnection_2147482530, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.16:481][146]LogNet: NotifyAcceptingChannel Control 0 server World /Game/Maps/ThirdPersonExampleMap.ThirdPersonExampleMap: Accepted
+[2024.01.16-11.13.16:481][146]LogNet: Remote platform little endian=1
+[2024.01.16-11.13.16:482][146]LogNet: This platform little endian=1
+[2024.01.16-11.13.16:515][147]LogNet: Login request: ?Name=DESKTOP-JQI8A3Q-654D1B3640B2D14BB3F44CAB5476873F userId: NULL:DESKTOP-JQI8A3Q-654D1B3640B2D14BB3F44CAB5476873F platform: NULL
+[2024.01.16-11.13.16:549][148]LogNet: Client netspeed is 100000
+[2024.01.16-11.13.16:582][149]LogNet: Join request: /Game/Maps/ThirdPersonExampleMap?Name=DESKTOP-JQI8A3Q-654D1B3640B2D14BB3F44CAB5476873F?SplitscreenCount=1
+[2024.01.16-11.13.16:582][149]LogOnlineSession: Warning: OSS: No game present to join for session (GameSession)
+[2024.01.16-11.13.16:586][149]GP: Display: Num of Players = 2
+[2024.01.16-11.13.16:586][149]GP: Display: currentNumOfPlayers = 
+[2024.01.16-11.13.16:587][149]GP: Display: 2
+[2024.01.16-11.13.16:587][149]LogNet: Join succeeded: DESKTOP-JQI8A3Q-654D
+[2024.01.16-11.13.17:970][191]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:52312
+[2024.01.16-11.13.17:970][191]LogHandshake: SendConnectChallenge. Timestamp: 6.398570, Cookie: 023137183059142043056013086003141096217102109051179052096076
+[2024.01.16-11.13.18:003][192]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:52312
+[2024.01.16-11.13.18:003][192]LogHandshake: SendChallengeAck. InCookie: 023137183059142043056013086003141096217102109051179052096076
+[2024.01.16-11.13.18:004][192]LogNet: Server accepting post-challenge connection from: 127.0.0.1:52312
+[2024.01.16-11.13.18:005][192]PacketHandlerLog: Loaded PacketHandler component: Engine.EngineHandlerComponentFactory (StatelessConnectHandlerComponent)
+[2024.01.16-11.13.18:005][192]LogNet: NotifyAcceptedConnection: Name: ThirdPersonExampleMap, TimeStamp: 01/16/24 20:13:18, [UNetConnection] RemoteAddr: 127.0.0.1:52312, Name: IpConnection_2147482499, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.18:006][192]LogNet: AddClientConnection: Added client connection: [UNetConnection] RemoteAddr: 127.0.0.1:52312, Name: IpConnection_2147482499, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.18:037][193]LogNet: NotifyAcceptingChannel Control 0 server World /Game/Maps/ThirdPersonExampleMap.ThirdPersonExampleMap: Accepted
+[2024.01.16-11.13.18:037][193]LogNet: Remote platform little endian=1
+[2024.01.16-11.13.18:038][193]LogNet: This platform little endian=1
+[2024.01.16-11.13.18:071][194]LogNet: Login request: ?Name=DESKTOP-JQI8A3Q-6DFA2E0842418F70DE21ED8FE9875913 userId: NULL:DESKTOP-JQI8A3Q-6DFA2E0842418F70DE21ED8FE9875913 platform: NULL
+[2024.01.16-11.13.18:105][195]LogNet: Client netspeed is 100000
+[2024.01.16-11.13.18:139][196]LogNet: Join request: /Game/Maps/ThirdPersonExampleMap?Name=DESKTOP-JQI8A3Q-6DFA2E0842418F70DE21ED8FE9875913?SplitscreenCount=1
+[2024.01.16-11.13.18:139][196]LogOnlineSession: Warning: OSS: No game present to join for session (GameSession)
+[2024.01.16-11.13.18:143][196]GP: Display: Num of Players = 3
+[2024.01.16-11.13.18:143][196]GP: Display: currentNumOfPlayers = 
+[2024.01.16-11.13.18:143][196]GP: Display: 3
+[2024.01.16-11.13.18:144][196]LogNet: Join succeeded: DESKTOP-JQI8A3Q-6DFA
+[2024.01.16-11.13.22:163][317]LogGameMode: Display: Match State Changed from InProgress to LeavingMap
+[2024.01.16-11.13.22:164][317]LogGameState: Match State Changed from InProgress to LeavingMap
+[2024.01.16-11.13.22:165][317]LogGameMode: ProcessServerTravel: /Game/SW/Maps/TestLevelMap
+[2024.01.16-11.13.22:166][317]GP: Display: When 'Num of Players = 3', Dedicated Server entered TestLevelMap!!
+[2024.01.16-11.13.22:229][319]LogNet: UChannel::ReceivedSequencedBunch: Bunch.bClose == true. ChIndex == 0. Calling ConditionalCleanUp.
+[2024.01.16-11.13.22:229][319]LogNet: UChannel::CleanUp: ChIndex == 0. Closing connection. [UChannel] ChIndex: 0, Closing: 0 [UNetConnection] RemoteAddr: 127.0.0.1:52310, Name: IpConnection_2147482560, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: BP_LobbyPlayerController_C_2147482556, Owner: BP_LobbyPlayerController_C_2147482556, UniqueId: NULL:DESKTOP-JQI8A3Q-CEA83EAF42FE533E6BC03895488ACE8B
+[2024.01.16-11.13.22:230][319]LogNet: UNetConnection::Close: [UNetConnection] RemoteAddr: 127.0.0.1:52310, Name: IpConnection_2147482560, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: BP_LobbyPlayerController_C_2147482556, Owner: BP_LobbyPlayerController_C_2147482556, UniqueId: NULL:DESKTOP-JQI8A3Q-CEA83EAF42FE533E6BC03895488ACE8B, Channels: 13, Time: 2024.01.16-11.13.22
+[2024.01.16-11.13.22:230][319]LogNet: UChannel::Close: Sending CloseBunch. ChIndex == 0. Name: [UChannel] ChIndex: 0, Closing: 0 [UNetConnection] RemoteAddr: 127.0.0.1:52310, Name: IpConnection_2147482560, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: BP_LobbyPlayerController_C_2147482556, Owner: BP_LobbyPlayerController_C_2147482556, UniqueId: NULL:DESKTOP-JQI8A3Q-CEA83EAF42FE533E6BC03895488ACE8B
+[2024.01.16-11.13.22:231][319]LogNet: UChannel::ReceivedSequencedBunch: Bunch.bClose == true. ChIndex == 0. Calling ConditionalCleanUp.
+[2024.01.16-11.13.22:232][319]LogNet: UChannel::CleanUp: ChIndex == 0. Closing connection. [UChannel] ChIndex: 0, Closing: 0 [UNetConnection] RemoteAddr: 127.0.0.1:52311, Name: IpConnection_2147482530, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: BP_LobbyPlayerController_C_2147482526, Owner: BP_LobbyPlayerController_C_2147482526, UniqueId: NULL:DESKTOP-JQI8A3Q-654D1B3640B2D14BB3F44CAB5476873F
+[2024.01.16-11.13.22:232][319]LogNet: UNetConnection::Close: [UNetConnection] RemoteAddr: 127.0.0.1:52311, Name: IpConnection_2147482530, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: BP_LobbyPlayerController_C_2147482526, Owner: BP_LobbyPlayerController_C_2147482526, UniqueId: NULL:DESKTOP-JQI8A3Q-654D1B3640B2D14BB3F44CAB5476873F, Channels: 13, Time: 2024.01.16-11.13.22
+[2024.01.16-11.13.22:232][319]LogNet: UChannel::Close: Sending CloseBunch. ChIndex == 0. Name: [UChannel] ChIndex: 0, Closing: 0 [UNetConnection] RemoteAddr: 127.0.0.1:52311, Name: IpConnection_2147482530, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: BP_LobbyPlayerController_C_2147482526, Owner: BP_LobbyPlayerController_C_2147482526, UniqueId: NULL:DESKTOP-JQI8A3Q-654D1B3640B2D14BB3F44CAB5476873F
+[2024.01.16-11.13.22:233][319]LogNet: UChannel::ReceivedSequencedBunch: Bunch.bClose == true. ChIndex == 0. Calling ConditionalCleanUp.
+[2024.01.16-11.13.22:233][319]LogNet: UChannel::CleanUp: ChIndex == 0. Closing connection. [UChannel] ChIndex: 0, Closing: 0 [UNetConnection] RemoteAddr: 127.0.0.1:52312, Name: IpConnection_2147482499, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: BP_LobbyPlayerController_C_2147482495, Owner: BP_LobbyPlayerController_C_2147482495, UniqueId: NULL:DESKTOP-JQI8A3Q-6DFA2E0842418F70DE21ED8FE9875913
+[2024.01.16-11.13.22:234][319]LogNet: UNetConnection::Close: [UNetConnection] RemoteAddr: 127.0.0.1:52312, Name: IpConnection_2147482499, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: BP_LobbyPlayerController_C_2147482495, Owner: BP_LobbyPlayerController_C_2147482495, UniqueId: NULL:DESKTOP-JQI8A3Q-6DFA2E0842418F70DE21ED8FE9875913, Channels: 13, Time: 2024.01.16-11.13.22
+[2024.01.16-11.13.22:235][319]LogNet: UChannel::Close: Sending CloseBunch. ChIndex == 0. Name: [UChannel] ChIndex: 0, Closing: 0 [UNetConnection] RemoteAddr: 127.0.0.1:52312, Name: IpConnection_2147482499, Driver: GameNetDriver IpNetDriver_2147482567, IsServer: YES, PC: BP_LobbyPlayerController_C_2147482495, Owner: BP_LobbyPlayerController_C_2147482495, UniqueId: NULL:DESKTOP-JQI8A3Q-6DFA2E0842418F70DE21ED8FE9875913
+[2024.01.16-11.13.22:239][319]LogOnlineSession: Warning: OSS: No game present to leave for session (GameSession)
+[2024.01.16-11.13.22:240][319]GP: Display: currentNumOfPlayers = 
+[2024.01.16-11.13.22:240][319]GP: Display: 3
+[2024.01.16-11.13.22:240][319]LogOnlineSession: Warning: OSS: No game present to leave for session (GameSession)
+[2024.01.16-11.13.22:240][319]GP: Display: currentNumOfPlayers = 
+[2024.01.16-11.13.22:241][319]GP: Display: 2
+[2024.01.16-11.13.22:241][319]LogOnlineSession: Warning: OSS: No game present to leave for session (GameSession)
+[2024.01.16-11.13.22:242][319]GP: Display: currentNumOfPlayers = 
+[2024.01.16-11.13.22:242][319]GP: Display: 1
+[2024.01.16-11.13.23:139][346]GP: Display: When 'Num of Players = 3', Dedicated Server entered TestLevelMap!!
+[2024.01.16-11.13.23:240][349]LogNet: NotifyAcceptingConnection: Server ThirdPersonExampleMap refused
+[2024.01.16-11.13.23:240][349]LogNet: NotifyAcceptingConnection: Server ThirdPersonExampleMap refused
+[2024.01.16-11.13.23:240][349]LogNet: NotifyAcceptingConnection: Server ThirdPersonExampleMap refused
+[2024.01.16-11.13.24:148][376]GP: Display: When 'Num of Players = 3', Dedicated Server entered TestLevelMap!!
+[2024.01.16-11.13.24:249][379]LogNet: NotifyAcceptingConnection: Server ThirdPersonExampleMap refused
+[2024.01.16-11.13.24:249][379]LogNet: NotifyAcceptingConnection: Server ThirdPersonExampleMap refused
+[2024.01.16-11.13.24:249][379]LogNet: NotifyAcceptingConnection: Server ThirdPersonExampleMap refused
+[2024.01.16-11.13.25:154][406]GP: Display: When 'Num of Players = 3', Dedicated Server entered TestLevelMap!!
+[2024.01.16-11.13.25:254][409]LogNet: NotifyAcceptingConnection: Server ThirdPersonExampleMap refused
+[2024.01.16-11.13.25:254][409]LogNet: NotifyAcceptingConnection: Server ThirdPersonExampleMap refused
+[2024.01.16-11.13.25:254][409]LogNet: NotifyAcceptingConnection: Server ThirdPersonExampleMap refused
+[2024.01.16-11.13.26:163][436]GP: Display: When 'Num of Players = 3', Dedicated Server entered TestLevelMap!!
+[2024.01.16-11.13.26:196][437]LogEngine: Server switch level: /Game/SW/Maps/TestLevelMap?Name=Player
+[2024.01.16-11.13.26:196][437]LogNet: Browse: /Game/SW/Maps/TestLevelMap?Name=Player
+[2024.01.16-11.13.26:197][437]LogLoad: LoadMap: /Game/SW/Maps/TestLevelMap?Name=Player
+[2024.01.16-11.13.26:198][437]LogWorld: BeginTearingDown for /Game/Maps/ThirdPersonExampleMap
+[2024.01.16-11.13.26:199][437]LogNet: World NetDriver shutdown IpNetDriver_2147482567 [GameNetDriver]
+[2024.01.16-11.13.26:199][437]LogNet: DestroyNamedNetDriver IpNetDriver_2147482567 [GameNetDriver]
+[2024.01.16-11.13.26:200][437]LogExit: GameNetDriver IpNetDriver_2147482567 shut down
+[2024.01.16-11.13.26:200][437]LogWorld: UWorld::CleanupWorld for ThirdPersonExampleMap, bSessionEnded=true, bCleanupResources=true
+[2024.01.16-11.13.26:205][437]LogUObjectHash: Compacting FUObjectHashTables data took   0.41ms
+[2024.01.16-11.13.26:229][437]LogAIModule: Creating AISystem for world TestLevelMap
+[2024.01.16-11.13.26:229][437]LogLoad: Game class is 'BP_PushGameMode_C'
+[2024.01.16-11.13.26:230][437]LogNet: ReplicationDriverClass is null! Not using ReplicationDriver.
+[2024.01.16-11.13.26:230][437]LogNetCore: DDoS detection status: detection enabled: 0 analytics enabled: 0
+[2024.01.16-11.13.26:231][437]LogInit: WinSock: Socket queue. Rx: 131072 (config 131072) Tx: 131072 (config 131072)
+[2024.01.16-11.13.26:231][437]LogNet: Created socket for bind address: 0.0.0.0 on port 7777
+[2024.01.16-11.13.26:231][437]PacketHandlerLog: Loaded PacketHandler component: Engine.EngineHandlerComponentFactory (StatelessConnectHandlerComponent)
+[2024.01.16-11.13.26:232][437]LogNet: GameNetDriver IpNetDriver_2147482438 IpNetDriver listening on port 7777
+[2024.01.16-11.13.26:232][437]LogWorld: Bringing World /Game/SW/Maps/TestLevelMap.TestLevelMap up for play (max tick rate 30) at 2024.01.16-20.13.26
+[2024.01.16-11.13.26:233][437]LogWorld: Bringing up level for play took: 0.000356
+[2024.01.16-11.13.26:233][437]LogGameMode: Display: Match State Changed from EnteringMap to WaitingToStart
+[2024.01.16-11.13.26:233][437]LogGameState: Match State Changed from EnteringMap to WaitingToStart
+[2024.01.16-11.13.26:233][437]LogLoad: Took 0.036000 seconds to LoadMap(/Game/SW/Maps/TestLevelMap)
+[2024.01.16-11.13.26:268][439]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:64839
+[2024.01.16-11.13.26:268][439]LogHandshake: SendConnectChallenge. Timestamp: 0.104883, Cookie: 220054144014024124148049095242248240232183200004225135005044
+[2024.01.16-11.13.26:269][439]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:64840
+[2024.01.16-11.13.26:269][439]LogHandshake: SendConnectChallenge. Timestamp: 0.104883, Cookie: 170187121042113110000062116135031129189127101043153089094177
+[2024.01.16-11.13.26:271][439]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:64841
+[2024.01.16-11.13.26:271][439]LogHandshake: SendConnectChallenge. Timestamp: 0.104883, Cookie: 025090007159236232065003155127220132202017039166139171252188
+[2024.01.16-11.13.26:302][440]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:64839
+[2024.01.16-11.13.26:302][440]LogHandshake: SendChallengeAck. InCookie: 220054144014024124148049095242248240232183200004225135005044
+[2024.01.16-11.13.26:303][440]LogNet: Server accepting post-challenge connection from: 127.0.0.1:64839
+[2024.01.16-11.13.26:304][440]PacketHandlerLog: Loaded PacketHandler component: Engine.EngineHandlerComponentFactory (StatelessConnectHandlerComponent)
+[2024.01.16-11.13.26:304][440]LogNet: NotifyAcceptedConnection: Name: TestLevelMap, TimeStamp: 01/16/24 20:13:26, [UNetConnection] RemoteAddr: 127.0.0.1:64839, Name: IpConnection_2147482432, Driver: GameNetDriver IpNetDriver_2147482438, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.26:305][440]LogNet: AddClientConnection: Added client connection: [UNetConnection] RemoteAddr: 127.0.0.1:64839, Name: IpConnection_2147482432, Driver: GameNetDriver IpNetDriver_2147482438, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.26:305][440]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:64840
+[2024.01.16-11.13.26:306][440]LogHandshake: SendChallengeAck. InCookie: 170187121042113110000062116135031129189127101043153089094177
+[2024.01.16-11.13.26:306][440]LogNet: Server accepting post-challenge connection from: 127.0.0.1:64840
+[2024.01.16-11.13.26:307][440]PacketHandlerLog: Loaded PacketHandler component: Engine.EngineHandlerComponentFactory (StatelessConnectHandlerComponent)
+[2024.01.16-11.13.26:307][440]LogNet: NotifyAcceptedConnection: Name: TestLevelMap, TimeStamp: 01/16/24 20:13:26, [UNetConnection] RemoteAddr: 127.0.0.1:64840, Name: IpConnection_2147482429, Driver: GameNetDriver IpNetDriver_2147482438, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.26:308][440]LogNet: AddClientConnection: Added client connection: [UNetConnection] RemoteAddr: 127.0.0.1:64840, Name: IpConnection_2147482429, Driver: GameNetDriver IpNetDriver_2147482438, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.26:308][440]LogNet: NotifyAcceptingConnection accepted from: 127.0.0.1:64841
+[2024.01.16-11.13.26:308][440]LogHandshake: SendChallengeAck. InCookie: 025090007159236232065003155127220132202017039166139171252188
+[2024.01.16-11.13.26:309][440]LogNet: Server accepting post-challenge connection from: 127.0.0.1:64841
+[2024.01.16-11.13.26:309][440]PacketHandlerLog: Loaded PacketHandler component: Engine.EngineHandlerComponentFactory (StatelessConnectHandlerComponent)
+[2024.01.16-11.13.26:310][440]LogNet: NotifyAcceptedConnection: Name: TestLevelMap, TimeStamp: 01/16/24 20:13:26, [UNetConnection] RemoteAddr: 127.0.0.1:64841, Name: IpConnection_2147482426, Driver: GameNetDriver IpNetDriver_2147482438, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.26:310][440]LogNet: AddClientConnection: Added client connection: [UNetConnection] RemoteAddr: 127.0.0.1:64841, Name: IpConnection_2147482426, Driver: GameNetDriver IpNetDriver_2147482438, IsServer: YES, PC: NULL, Owner: NULL, UniqueId: INVALID
+[2024.01.16-11.13.26:336][441]LogNet: NotifyAcceptingChannel Control 0 server World /Game/SW/Maps/TestLevelMap.TestLevelMap: Accepted
+[2024.01.16-11.13.26:336][441]LogNet: Remote platform little endian=1
+[2024.01.16-11.13.26:337][441]LogNet: This platform little endian=1
+[2024.01.16-11.13.26:337][441]LogNet: NotifyAcceptingChannel Control 0 server World /Game/SW/Maps/TestLevelMap.TestLevelMap: Accepted
+[2024.01.16-11.13.26:337][441]LogNet: Remote platform little endian=1
+[2024.01.16-11.13.26:338][441]LogNet: This platform little endian=1
+[2024.01.16-11.13.26:338][441]LogNet: NotifyAcceptingChannel Control 0 server World /Game/SW/Maps/TestLevelMap.TestLevelMap: Accepted
+[2024.01.16-11.13.26:338][441]LogNet: Remote platform little endian=1
+[2024.01.16-11.13.26:339][441]LogNet: This platform little endian=1
+[2024.01.16-11.13.26:369][442]LogNet: Login request: ?game=/Game/BP/GameMode/BP_LobbyGameMode.BP_LobbyGameMode_C?Name=DESKTOP-JQI8A3Q-CEA83EAF42FE533E6BC03895488ACE8B userId: NULL:DESKTOP-JQI8A3Q-CEA83EAF42FE533E6BC03895488ACE8B platform: NULL
+[2024.01.16-11.13.26:369][442]LogNet: Login request: ?game=/Game/BP/GameMode/BP_LobbyGameMode.BP_LobbyGameMode_C?Name=DESKTOP-JQI8A3Q-654D1B3640B2D14BB3F44CAB5476873F userId: NULL:DESKTOP-JQI8A3Q-654D1B3640B2D14BB3F44CAB5476873F platform: NULL
+[2024.01.16-11.13.26:370][442]LogNet: Login request: ?game=/Game/BP/GameMode/BP_LobbyGameMode.BP_LobbyGameMode_C?Name=DESKTOP-JQI8A3Q-6DFA2E0842418F70DE21ED8FE9875913 userId: NULL:DESKTOP-JQI8A3Q-6DFA2E0842418F70DE21ED8FE9875913 platform: NULL
+[2024.01.16-11.13.26:402][443]LogNet: Client netspeed is 100000
+[2024.01.16-11.13.26:468][445]LogNet: Join request: /Game/Maps/ThirdPersonExampleMap?game=/Game/BP/GameMode/BP_LobbyGameMode.BP_LobbyGameMode_C?Name=DESKTOP-JQI8A3Q-CEA83EAF42FE533E6BC03895488ACE8B?SplitscreenCount=1
+[2024.01.16-11.13.26:468][445]LogOnlineSession: Warning: OSS: No game present to join for session (GameSession)
+[2024.01.16-11.13.26:469][445]LogGameMode: Display: Match State Changed from WaitingToStart to InProgress
+[2024.01.16-11.13.26:470][445]LogGameState: Match State Changed from WaitingToStart to InProgress
+[2024.01.16-11.13.26:470][445]GP: Display: Post Login In the Game
+[2024.01.16-11.13.26:471][445]LogNet: Join succeeded: DESKTOP-JQI8A3Q-CEA8
+[2024.01.16-11.13.26:471][445]LogNet: Client netspeed is 100000
+[2024.01.16-11.13.26:502][446]LogNet: Join request: /Game/Maps/ThirdPersonExampleMap?game=/Game/BP/GameMode/BP_LobbyGameMode.BP_LobbyGameMode_C?Name=DESKTOP-JQI8A3Q-654D1B3640B2D14BB3F44CAB5476873F?SplitscreenCount=1
+[2024.01.16-11.13.26:502][446]LogOnlineSession: Warning: OSS: No game present to join for session (GameSession)
+[2024.01.16-11.13.26:504][446]GP: Display: Post Login In the Game
+[2024.01.16-11.13.26:504][446]LogNet: Join succeeded: DESKTOP-JQI8A3Q-654D
+[2024.01.16-11.13.26:504][446]LogNet: Client netspeed is 100000
+[2024.01.16-11.13.26:535][447]LogNet: Join request: /Game/Maps/ThirdPersonExampleMap?game=/Game/BP/GameMode/BP_LobbyGameMode.BP_LobbyGameMode_C?Name=DESKTOP-JQI8A3Q-6DFA2E0842418F70DE21ED8FE9875913?SplitscreenCount=1
+[2024.01.16-11.13.26:535][447]LogOnlineSession: Warning: OSS: No game present to join for session (GameSession)
+[2024.01.16-11.13.26:537][447]GP: Display: Post Login In the Game
+[2024.01.16-11.13.26:538][447]LogNet: Join succeeded: DESKTOP-JQI8A3Q-6DFA
+[2024.01.16-11.13.29:183][527]LogGameMode: Display: Match State Changed from InProgress to Round
+[2024.01.16-11.13.29:183][527]LogGameState: Match State Changed from InProgress to Round
+[2024.01.16-11.13.49:164][131]LogGameMode: Display: Match State Changed from Round to Result
+[2024.01.16-11.13.49:164][131]LogGameState: Match State Changed from Round to Result
+[2024.01.16-11.13.53:165][252]LogGameMode: Display: Match State Changed from Result to InProgress
+[2024.01.16-11.13.53:165][252]LogGameState: Match State Changed from Result to InProgress
+[2024.01.16-11.13.56:174][343]LogGameMode: Display: Match State Changed from InProgress to Round
+[2024.01.16-11.13.56:792][343]LogGameState: Match State Changed from InProgress to Round
+[2024.01.16-11.14.17:500][938]LogGameMode: Display: Match State Changed from Round to Result
+[2024.01.16-11.14.18:103][938]LogGameState: Match State Changed from Round to Result
+[2024.01.16-11.14.23:115][ 48]LogGameMode: Display: Match State Changed from Result to InProgress

@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
+#include "Misc/Structures.h"
 #include "PushGameMode.generated.h"
 
 /** 실제 게임에 사용되는 GameMode
@@ -44,10 +45,22 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void OnMatchStateSet() override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+	virtual void Logout(AController* Exiting) override;
 
 private:
 	FLinearColor Colors[4] = {FLinearColor::Red, FLinearColor::Blue, FLinearColor::Green, FLinearColor::Black};
 	uint8 index = 0;
 	TArray<class APushPlayerController*> Controllers;
+
+public:
+	// 24_01_16 문인수
+	UFUNCTION(BlueprintCallable)
+		void UpdatePlayerList();
+
+	UPROPERTY(EditAnywhere, Category = "PlayerList")
+		TArray<FPlayerList> PlayerListData;
+
+	UPROPERTY(BlueprintReadWrite)
+		TArray<class APlayerController*> AllPC;
 
 };

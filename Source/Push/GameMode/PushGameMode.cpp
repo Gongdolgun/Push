@@ -1,10 +1,12 @@
 #include "PushGameMode.h"
 #include "Character/PushCharacter.h"
 #include "GameFramework/GameStateBase.h"
+#include "GameFramework/PlayerState.h"
 #include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
 #include "GameInstance/PushGameInstance.h"
 #include "GameState/PushGameState.h"
+#include "Kismet/KismetArrayLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "Utilites/CLog.h"
 #include "Widgets/StoreUI.h"
@@ -113,6 +115,50 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 		return;
 	}
 
+	CLog::Log("Post Login In the Game");
+	
+
 	character->BodyColor = Colors[index++];
+
+	AllPC.Add(NewPlayer);
+	UpdatePlayerList();
 }
+
+void APushGameMode::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
+
+	APlayerController* playercontroller = Cast<APlayerController>(Exiting);
+	AllPC.Empty();
+
+	UpdatePlayerList();
+}
+
+void APushGameMode::UpdatePlayerList()
+{
+	PlayerListData.Empty();
+
+	for (APlayerController* playerContrller : AllPC)
+	{
+		if (playerContrller)
+		{
+			FString PlayerName = playerContrller->PlayerState->GetPlayerName();
+
+			FPlayerList NewPlayer;
+			NewPlayer.PlayerName = PlayerName;
+			
+			PlayerListData.Add(NewPlayer);
+		}
+	}
+
+	for (APlayerController* playerController : AllPC)
+	{
+		APushPlayerController* pushPlayerController = Cast<APushPlayerController>(playerController);
+		if (pushPlayerController)
+			pushPlayerController->UpdatePlayerList_Client(PlayerListData);
+	}
+}
+
+
+
 
