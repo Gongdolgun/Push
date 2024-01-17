@@ -31,6 +31,8 @@ private:
 	class USkillComponent* SkillComponent;
 	UPROPERTY(VisibleAnywhere)
 		class USphereComponent* SphereComponent;
+	UPROPERTY(VisibleAnywhere)
+		class UProjectileMovementComponent* ProjectileComponent;
 	UPROPERTY(EditAnywhere, Category = "Particle")
 		class UParticleSystemComponent* Particle;
 
