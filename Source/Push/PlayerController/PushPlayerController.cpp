@@ -10,6 +10,7 @@
 #include "Components/TextBlock.h"
 #include "GameState/PushGameState.h"
 #include "Widgets/KillDeathUI.h"
+#include "Widgets/LeaderBoard_List.h"
 #include "Widgets/StoreUI.h"
 
 void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -18,6 +19,8 @@ void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 
 	DOREPLIFETIME(APushPlayerController, MatchState); // replicated 되도록 MatchState 등록
 }
+
+
 
 void APushPlayerController::BeginPlay()
 {
@@ -171,6 +174,33 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	{
 		MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText->SetText(FText::FromName(MatchState));
 	}
+}
+
+void APushPlayerController::UpdatePlayerList_Client_Implementation(const TArray<FPlayerList>& PlayerList)
+{
+	if (MainHUD == nullptr) return;
+	if (MainHUD->GetWidget<ULeaderBoard_List>("LeaderBoard_List") == nullptr) return;
+
+	//for (const FPlayerList& playerList : PlayerList)
+	//{
+	//	FString playerName = playerList.PlayerName;
+	//
+	//	FString message = FString::Printf(TEXT("PlayerName : %s"), *playerName);
+	//	CLog::Log(message);
+	//}
+
+	if (MainHUD->GetWidget<ULeaderBoard_List>("LeaderBoard_List"))
+	{
+		MainHUD->GetWidget<ULeaderBoard_List>("LeaderBoard_List")->UpdatePlayerList(PlayerList);
+	}
+
+	else
+	{
+		CLog::Log("LeaderBoard_List Is Where ??????????????");
+	}
+
+	
+
 }
 
 void APushPlayerController::OnRep_MatchState()

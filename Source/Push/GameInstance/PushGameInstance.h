@@ -4,22 +4,19 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "PushGameInstance.generated.h"
 
-/**
- * 
- */
-UCLASS()
-class PUSH_API UPushGameInstance : public UGameInstanceSubsystem
+UCLASS(Blueprintable)
+class PUSH_API UPushGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-		
-	
+
 public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		FString GetPlayerName();
+
 	UFUNCTION(BlueprintCallable)
-	void CreateDedicatedServerSession(FString PassedMapPath);
+		void SetPlayerName(const FString& InPlayerName);
 
-	UFUNCTION()
-	void OnSessionCreationReply(FName SessionName, bool bWasSuccess);
+private:
+	FString PlayerName;
 
-	UPROPERTY()
-	FString MapPath;
 };

@@ -20,7 +20,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 		void OffLeaderBoard();
-	void OffLeaderBoard_Implementation();
+		void OffLeaderBoard_Implementation();
 
 public:
 	void GetSkillSlots();
