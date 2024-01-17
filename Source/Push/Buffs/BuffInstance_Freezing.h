@@ -12,18 +12,10 @@ public:
 	virtual void OnEffect() override;
 	virtual void OffEffect() override;
 
-	UFUNCTION(Server,Reliable)
-		void OnSnapshot_Server();
+	UFUNCTION(Reliable, Server)
+		void Test_S();
 	UFUNCTION(NetMulticast, Reliable)
-		void OnSnapshot_NMC();
-
-	UFUNCTION(Server, Reliable)
-		void OffSnapshot_Server();
-	UFUNCTION(NetMulticast, Reliable)
-		void OffSnapshot_NMC();
-
-
+		void Test_N();
 private:
-	 class UMoveComponent* MoveComponent;
-	 class UAnimInstance_PushCharacter* AnimInstance;
+	// class UAnimInstance_PushCharacter* AnimInstance;
 };

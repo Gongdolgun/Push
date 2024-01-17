@@ -15,7 +15,6 @@ public:
 	UBuffComponent();
 protected:
 	virtual void BeginPlay() override;
-	
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 public:
@@ -23,10 +22,13 @@ public:
 
 	void RemoveBuff(ABuffInstance* removeBuff);
 
+	UFUNCTION(BlueprintCallable)
+		int GetBuffCount() { return Buffs.Num(); }
+
 private:
 	TWeakObjectPtr<ACharacter> Owner;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,        
 	meta = (AllowPrivateAccess))
 		TArray<ABuffInstance*> Buffs;
 

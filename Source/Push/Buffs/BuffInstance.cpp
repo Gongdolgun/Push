@@ -11,6 +11,7 @@ ABuffInstance::ABuffInstance()
 	FString path = "WidgetBlueprint'/Game/BP/Widgets/BuffWidget/WDG_Buff.WDG_Buff_C'";
 
 	WidgetClass = ConstructorHelpers::FClassFinder<UWDG_Buff>(*path).Class;
+	bReplicates = true;
 }
 
 ABuffInstance::~ABuffInstance()

@@ -15,12 +15,6 @@ ASkill_Mine_A::ASkill_Mine_A()
 	Helpers::CreateComponent<UParticleSystemComponent>(this, &BaseParticleComponent, "BaseParticleComponent", Root);
 	Helpers::CreateComponent<UParticleSystemComponent>(this, &ExplosionParticleComponent, "ExplosionParticleComponent", Root);
 
-	//TODO///////////// 2024.01.15 - 테스트용 코드/////////////
-	ActivationCollision->SetHiddenInGame(false);
-	ExplosionCollision->SetHiddenInGame(false);
-	//TODO///////////////////////////////////////////////////
-
-
 	//폭발 파티클 종료후 엑터 제거함수 바인드
 	ExplosionParticleComponent->SetVisibility(false);
 	ExplosionParticleComponent->OnSystemFinished.AddDynamic(this, &ASkill_Mine_A::OnFinishParticle);

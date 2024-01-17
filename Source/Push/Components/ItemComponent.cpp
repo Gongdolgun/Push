@@ -32,6 +32,7 @@ void UItemComponent::UseItem_NMC_Implementation(TSubclassOf<AItemBase> ItemClass
 {
 	if (!Owner.IsValid() || !ItemClass)
 		return;
+	
 
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
