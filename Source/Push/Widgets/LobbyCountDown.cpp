@@ -4,37 +4,21 @@
 #include "GameState/LobbyGameState.h"
 #include "Kismet/GameplayStatics.h"
 
-void ULobbyCountDown::UpdateCountdown(float InTime)
+void ULobbyCountDown::UpdateWidget()
 {
-	CountdownNum->SetText(UKismetTextLibrary::Conv_FloatToText(InTime, ERoundingMode::ToZero));
-
-	lobbyGameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this));
+    PlayerAmount->SetText(FText::FromString(FString::FromInt(NumofPlayers) + FString(" / 3 players")));
+    CountDown->SetText(FText::FromString(FString::FromInt(Countdown) + FString(" seconds")));
 }
 
-void ULobbyCountDown::UpdateWidget(int currTime)
+void ULobbyCountDown::SetPlayerNum(int InNum)
 {
-	if(currTime == 0)
-	{
-		RemoveFromParent();
-	}
-	else
-	{
-		countDown->SetText(FText::FromString(FString::FromInt(currTime)));
-	}
+    NumofPlayers = InNum;
+    UpdateWidget();
 }
 
-UTextBlock* ULobbyCountDown::GetPlayerAmountText()
+void ULobbyCountDown::SetCountdown(int InNum)
 {
-	if (lobbyGameState == nullptr) return nullptr;
-
-	//playerAmount = lobbyGameState->currentNumOfPlayers;
-
-	return nullptr;
+    Countdown = InNum;
+    UpdateWidget();
 }
 
-UTextBlock* ULobbyCountDown::GetCountDownText()
-{
-	if (lobbyGameState == nullptr) return nullptr;
-
-	return nullptr;
-}

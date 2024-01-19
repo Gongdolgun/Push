@@ -93,10 +93,6 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 
 	if (controller == nullptr)
 		return;
-	//for(APushPlayerController* control : Controllers)
-	//{
-	//	control->ChangeBodyColor_Client_Implementation();
-	//}
 
 	APushCharacter* character = Cast<APushCharacter>(controller->GetPawn());
 
@@ -106,5 +102,8 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 		return;
 	}
 
-	character->BodyColor = Colors[index++];
+	if(index >= Colors.Num() - 1)
+		character->BodyColor = FLinearColor::Black;
+	else
+		character->BodyColor = Colors[index++];
 }

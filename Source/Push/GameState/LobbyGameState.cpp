@@ -1,73 +1,52 @@
 #include "GameState/LobbyGameState.h"
-#include "Net/UnrealNetwork.h"
-#include "Utilites/CLog.h"
 #include "HUD/LobbyHUD.h"
 #include "Widgets/LobbyCountDown.h"
 #include "Kismet/GameplayStatics.h"
+#include "Character/PushCharacter.h"
+#include "PlayerController/LobbyPlayerController.h"
+#include "Global.h"
+#include "GameFramework/PlayerState.h"
+#include "Net/UnrealNetwork.h"
+
+void ALobbyGameState::CountDown(int InCountdown)
+{
+	Count = InCountdown;
+	for(APlayerState* player : PlayerArray)
+	{
+		ALobbyPlayerController* controller = Cast<ALobbyPlayerController>(player->GetOwner());
+
+		if(controller == nullptr)
+		{
+			CLog::Log("No Controller");
+			continue;
+		}
+
+		controller->UpdateTimer_Client(InCountdown);
+	}
+}
 
 void ALobbyGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(ALobbyGameState, MatchStartCountdown);
+	DOREPLIFETIME(ALobbyGameState, NumofPlayers);
+	DOREPLIFETIME(ALobbyGameState, Count);
 }
 
-void ALobbyGameState::PlayerConnection()
+void ALobbyGameState::PlayerConnection(int InPlayerNum)
 {
-	currentNumOfPlayers = PlayerArray.Num();
-	CLog::Print("currentNumOfPlayers = ");
-	CLog::Print(currentNumOfPlayers);
-	CLog::Log("currentNumOfPlayers = ");
-	CLog::Log(currentNumOfPlayers);
-
-	if (currentNumOfPlayers >= 3)
+	NumofPlayers = InPlayerNum;
+	for (APlayerState* player : PlayerArray)
 	{
-		if (MatchStartCountdown >= 20)
+		ALobbyPlayerController* controller = Cast<ALobbyPlayerController>(player->GetOwner());
+
+		if (controller == nullptr)
 		{
-			MatchStartCountdown = 5;
+			CLog::Log("No Controller");
+			continue;
 		}
+
+		controller->UpdatePlayerNum_Client(InPlayerNum);
 	}
 }
 
-void ALobbyGameState::MatchCountDown()
-{
-	GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, this, &ALobbyGameState::CountDown, 1.0f, true, 0);
-
-}
-void ALobbyGameState::CountDown()
-{
-
-	MatchStartCountdown -= 1;
-}
-
-void ALobbyGameState::OnRep_MatchStartCountdown()
-{
-	UpdateMatchStartCountdownWidget();
-
-	if (MatchStartCountdown >= 5)
-	{
-		MatchCountDown();
-	}
-	else
-	{
-		if (MatchStartCountdown == 0) CLog::Log("Start Match!! & Move to another Game Level!");
-		else MatchCountDown();
-	}
-}
-
-void ALobbyGameState::UpdateMatchStartCountdownWidget()
-{
-	/*UUserWidget* MyWidgetObject = NewObject<UUserWidget>(this, UUswer::StaticClass());
-
-	if (MyWidgetObject != nullptr && MyWidgetObject->WidgetTree != nullptr)
-	{
-		ULobbyCountDown* FoundWidget = MyWidgetObject->WidgetTree->FindWidget<UUserWidget>(FName(TEXT("ULobbyCountDown")));
-		FoundWidget->UpdateWidget();
-	}*/
-
-	ALobbyHUD* lobbyHUD = Cast<ALobbyHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
-	if (lobbyHUD == nullptr) return;
-	if (false == lobbyHUD->CheckWidget("LobbyCountDown")) return;
-
-	lobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->UpdateWidget(MatchStartCountdown);
-}

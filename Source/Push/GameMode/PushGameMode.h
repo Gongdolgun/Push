@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 		float ResultTime = 5.0f; // 결과발표시간
 
+	UPROPERTY(EditAnywhere)
+		TArray<FLinearColor> Colors;
+
 	float LevelStartingTime = 0.0f; // 게임레벨맵에 들어간 시간
 
 	float CountdownTime = 0.0f;
@@ -43,7 +46,5 @@ protected:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	
 private:
-	FLinearColor Colors[4] = {FLinearColor::Red, FLinearColor::Blue, FLinearColor::Green, FLinearColor::Black};
 	uint8 index = 0;
-	TArray<class APushPlayerController*> Controllers;
 };

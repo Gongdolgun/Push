@@ -1,6 +1,6 @@
 #include "PlayerController/LobbyPlayerController.h"
 #include "Global.h"
-#include "GameMode/LobbyGameMode.h"
+#include "GameState/LobbyGameState.h"
 #include "HUD/LobbyHUD.h"
 #include "Widgets/LobbyCountDown.h"
 
@@ -8,44 +8,56 @@ void ALobbyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LobbyHUD = Cast<ALobbyHUD>(GetHUD());
+	ALobbyHUD* LobbyHUD = Cast<ALobbyHUD>(GetHUD());
 
 	if (IsValid(LobbyHUD))
 	{
 		LobbyHUD->AddWidget();
-		if(LobbyHUD->CheckWidget("LobbyCountDown"))
+		if (LobbyHUD->CheckWidget("LobbyCountDown"))
+		{
 			LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetVisibility(ESlateVisibility::Visible);
+			ALobbyGameState* state = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(GetWorld()));
+			if (state != nullptr)
+				LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetPlayerNum(state->NumofPlayers);
+		}
 	}
-
-	GameMode = Cast<ALobbyGameMode>(UGameplayStatics::GetGameMode(this));
-
-	LevelStartingTime = GetWorld()->GetTimeSeconds();
 }
 
 void ALobbyPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	SetHUDCountdownTime();
+	//SetHUDCountdownTime(); // LobbyHUD의 함수 UpdateWidget()으로 '입장한 플레이어 & 시간' 업데이트 
 }
 
-void ALobbyPlayerController::SetHUDCountdownTime()
+void ALobbyPlayerController::UpdateTimer_Client_Implementation(int InTime)
 {
-	if (LobbyHUD == nullptr) return;
-	if (LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown") == nullptr) return;
+	ALobbyHUD* LobbyHUD = Cast<ALobbyHUD>(GetHUD());
 
-	float TimeLeft = countdownTimer - GetWorld()->GetTimeSeconds() + LevelStartingTime;
-	LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->UpdateCountdown(TimeLeft);
-	
+
+	if (LobbyHUD->CheckWidget("LobbyCountDown"))
+	{
+		LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetCountdown(InTime);
+	}
 }
 
-//void ALobbyPlayerController::ClientCheck_Implementation()
-//{
-//	if (GameMode == nullptr) return;
-//
-//	if (IsValid(GameMode))
-//	{
-//		countdownTimer = GameMode->countdownTimer;
-//		LevelStartingTime = GameMode->LevelStartingTime;
-//	}
-//}
+void ALobbyPlayerController::UpdatePlayerNum_Client_Implementation(int InNum)
+{
+	ALobbyHUD* LobbyHUD = Cast<ALobbyHUD>(GetHUD());
+
+	if(LobbyHUD == nullptr)
+	{
+		CLog::Log("HUD invalid");
+		return;
+	}
+
+	if (LobbyHUD->CheckWidget("LobbyCountDown"))
+	{
+		LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetPlayerNum(InNum);
+	}
+	else
+	{
+		CLog::Log("No Widget");
+	}
+}
+

@@ -13,17 +13,10 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
-	void SetHUDCountdownTime();
+public:
+	UFUNCTION(Client, Unreliable)
+		void UpdatePlayerNum_Client(int InNum);
 
-	//UFUNCTION(Client, Reliable) // Client RPC
-	//	void ClientCheck();
-
-private:
-	UPROPERTY()
-	class ALobbyGameMode* GameMode;
-
-	class ALobbyHUD* LobbyHUD;
-
-	float countdownTimer = 5.f;
-	float LevelStartingTime;
+	UFUNCTION(Client, Unreliable)
+		void UpdateTimer_Client(int InTime);
 };

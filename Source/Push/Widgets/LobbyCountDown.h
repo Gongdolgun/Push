@@ -3,8 +3,8 @@
 #include "Blueprint/UserWidget.h"
 #include "LobbyCountDown.generated.h"
 
-/**
- * 
+/** Lobby에서 사용되는 위젯
+ *
  */
 UCLASS(Blueprintable)
 class PUSH_API ULobbyCountDown : public UUserWidget
@@ -12,27 +12,20 @@ class PUSH_API ULobbyCountDown : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void UpdateCountdown(float InTime);
-
-
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* CountdownNum; // 5초 카운트 다운
-
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	class UTextBlock* countDown; // 카운트 다운
+		class UTextBlock* PlayerAmount; // 입장한 플레이어 수
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	class UTextBlock* playerAmount; // 입장 플레이어
-	UPROPERTY(BlueprintReadOnly)
-	class ALobbyGameState* lobbyGameState;
+		class UTextBlock* CountDown; // 카운트 다운
 
 	UFUNCTION()
-	void UpdateWidget(int currTime);
-
-
-	UFUNCTION()
-	UTextBlock* GetPlayerAmountText();
+		void UpdateWidget();
 
 	UFUNCTION()
-	UTextBlock* GetCountDownText();
+		void SetPlayerNum(int InNum);
+	UFUNCTION()
+		void SetCountdown(int InNum);
 
+private:
+	int NumofPlayers = 0;
+	int Countdown = 0;
 };
