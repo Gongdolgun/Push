@@ -18,6 +18,7 @@ void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(APushPlayerController, MatchState); // replicated 되도록 MatchState 등록
+	DOREPLIFETIME(APushPlayerController, Gold); // replicated 되도록 MatchState 등록
 }
 
 
@@ -33,6 +34,9 @@ void APushPlayerController::BeginPlay()
 		MainHUD->AddWidget();
 		if (MainHUD->CheckWidget("KDA"))
 			MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
+
+		if (MainHUD->CheckWidget("LeaderBoard_List"))
+			MainHUD->GetWidget<ULeaderBoard_List>("LeaderBoard_List")->SetVisibility(ESlateVisibility::Hidden);
 
 		if (MainHUD->CheckWidget("Store"))
 			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
@@ -93,7 +97,7 @@ void APushPlayerController::OnMatchStateSet(FName State)
 
 			if(MainHUD->CheckWidget("Resource"))
 				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
-			
+
 		}
 	}
 	else if (MatchState == MatchState::Round) // 경기
@@ -179,8 +183,9 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 void APushPlayerController::UpdatePlayerList_Client_Implementation(const TArray<FPlayerList>& PlayerList)
 {
 	if (MainHUD == nullptr) return;
-	if (MainHUD->GetWidget<ULeaderBoard_List>("LeaderBoard_List") == nullptr) return;
+	if (MainHUD->GetWidget<UKillDeathUI>("LeaderBoard") == nullptr) return;
 
+	// Log에 접속한 플레이어 데스크탑 이름 출력. 로그에 잘 찍힌다.
 	//for (const FPlayerList& playerList : PlayerList)
 	//{
 	//	FString playerName = playerList.PlayerName;
@@ -189,17 +194,24 @@ void APushPlayerController::UpdatePlayerList_Client_Implementation(const TArray<
 	//	CLog::Log(message);
 	//}
 
-	if (MainHUD->GetWidget<ULeaderBoard_List>("LeaderBoard_List"))
+	if (MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard")))
 	{
-		MainHUD->GetWidget<ULeaderBoard_List>("LeaderBoard_List")->UpdatePlayerList(PlayerList);
+		MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->UpdatePlayerList(PlayerList);
 	}
 
+	// 없으면 0.1초 뒤에 다시 호출
 	else
 	{
-		CLog::Log("LeaderBoard_List Is Where ??????????????");
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this, PlayerList]()
+			{
+				if (MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard")))
+				{
+					MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard"))->UpdatePlayerList(PlayerList);
+				}
+			}, 0.1f, false);
 	}
 
-	
 
 }
 

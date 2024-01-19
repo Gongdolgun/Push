@@ -113,17 +113,17 @@ struct FPlayerList
     GENERATED_BODY()
 
 public:
-    UPROPERTY(VisibleAnywhere)
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
         FString PlayerName = TEXT("NNNNNN");
 
-    UPROPERTY(VisibleAnywhere)
-        FString Kill_Death;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+        int32 Kill_Death;
 
-    //UPROPERTY(VisibleAnywhere)
+    //UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     //	FTexture Skill_Icon;
 
-    UPROPERTY(VisibleAnywhere)
-        FString Gold;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+        int32 Gold;
 };
 
 UCLASS()

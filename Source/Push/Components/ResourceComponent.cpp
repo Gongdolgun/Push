@@ -120,7 +120,14 @@ void UResourceComponent::AdjustGold_NMC_Implementation(int InValue)
 }
 
 
-void UResourceComponent::BeginPlay()
+void UResourceComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UResourceComponent, Gold);
+}
+
+void UResourceComponent::BeginPlay()	
 {
 	Super::BeginPlay();
 

@@ -62,6 +62,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UStateComponent* StateComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UWidgetComponent* WidgetComponent;
+
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
 
@@ -91,5 +94,17 @@ public:
 		FLinearColor BodyColor;
 
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
+
+	// 24_01_17 ¹®ÀÎ¼ö
+	UPROPERTY(ReplicatedUsing= OnRep_CustomPlayerName)
+		FString CustomPlayerName;
+
+	void SetUpLocalName();
+
+	UFUNCTION(Server, Reliable)
+		void SetPlayerNameServer(const FString& NewPlayerName);
+
+	UFUNCTION()
+		void OnRep_CustomPlayerName();
 };
 
