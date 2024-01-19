@@ -30,9 +30,6 @@ public:
 	void CountDown();
 	void EnterMap();
 
-	UFUNCTION(NetMulticast, Reliable)
-		void UpdateTimer_NMC(float InTime);
-
 private:
 	uint8 NumOfPlayers = 0;
 	int countdownTimer = 0;
