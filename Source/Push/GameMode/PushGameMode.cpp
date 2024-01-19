@@ -144,8 +144,17 @@ void APushGameMode::UpdatePlayerList()
 		{
 			FString PlayerName = playerContrller->PlayerState->GetPlayerName();
 
+			APushPlayerController* pushController = Cast<APushPlayerController>(playerContrller);
+			APawn* pawn = playerContrller->GetPawn();
+			if (pawn)
+			{
+				APushCharacter* pushCharacter = Cast<APushCharacter>(pawn);
+				pushCharacter->CustomPlayerName;
+			}
+
 			FPlayerList NewPlayer;
 			NewPlayer.PlayerName = PlayerName;
+			NewPlayer.Gold = pushController->Gold;
 			
 			PlayerListData.Add(NewPlayer);
 		}
@@ -154,6 +163,7 @@ void APushGameMode::UpdatePlayerList()
 	for (APlayerController* playerController : AllPC)
 	{
 		APushPlayerController* pushPlayerController = Cast<APushPlayerController>(playerController);
+
 		if (pushPlayerController)
 			pushPlayerController->UpdatePlayerList_Client(PlayerListData);
 	}

@@ -11,6 +11,7 @@ class PUSH_API ULeaderBoard_List : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintNativeEvent)
-		void UpdatePlayerList(const TArray<FPlayerList>& PlayerList);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void UpdatePlayerData(FPlayerList InPlayerData);
+
 };

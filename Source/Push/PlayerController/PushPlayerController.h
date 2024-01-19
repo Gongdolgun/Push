@@ -5,7 +5,7 @@
 #include "PushPlayerController.generated.h"
 
 /** PlayerController
- *  HUD를 Update 한다.
+ *  HUD를 UpdatePlayerData 한다.
  */
 
 UCLASS()
@@ -58,4 +58,7 @@ private:
 public:
 	float HUDHealth;
 	float HUDMaxHealth;
+
+	UPROPERTY(Replicated, BlueprintReadWrite)
+		int32 Gold;
 };
