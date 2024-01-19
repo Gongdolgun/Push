@@ -13,11 +13,10 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
-	void SetHUDCountdownTime();
+public:
+	UFUNCTION(Client, Unreliable)
+		void UpdatePlayerNum_Client(int InNum);
 
-private:
-	UPROPERTY()
-	class ALobbyGameState* GameState;
-
-	class ALobbyHUD* LobbyHUD;
+	UFUNCTION(Client, Unreliable)
+		void UpdateTimer_Client(int InTime);
 };

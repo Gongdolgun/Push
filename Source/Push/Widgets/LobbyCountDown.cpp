@@ -4,32 +4,21 @@
 #include "GameState/LobbyGameState.h"
 #include "Kismet/GameplayStatics.h"
 
-void ULobbyCountDown::UpdateWidget(int currTime)
+void ULobbyCountDown::UpdateWidget()
 {
-	if(currTime == 0)
-	{
-		RemoveFromParent();
-	}
-	else
-	{
-		PlayerAmountText();
-		CountDownText();
-	}
+    PlayerAmount->SetText(FText::FromString(FString::FromInt(NumofPlayers) + FString(" / 3 players")));
+    CountDown->SetText(FText::FromString(FString::FromInt(Countdown) + FString(" seconds")));
 }
 
-void ULobbyCountDown::PlayerAmountText()
+void ULobbyCountDown::SetPlayerNum(int InNum)
 {
-	lobbyGameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this));
-	if (lobbyGameState == nullptr) return countDown->SetText(FText::FromString("Null Players?!?!"));
-
-	playerAmount->SetText(FText::FromString(FString::FromInt(lobbyGameState->currentNumOfPlayers) + FString(" / 3 players")));
-
+    NumofPlayers = InNum;
+    UpdateWidget();
 }
 
-void ULobbyCountDown::CountDownText()
+void ULobbyCountDown::SetCountdown(int InNum)
 {
-	lobbyGameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this));
-	if (lobbyGameState == nullptr) return countDown->SetText(FText::FromString("Null Seconds?!?!"));
-
-	countDown->SetText(FText::FromString(FString::FromInt(lobbyGameState->MatchStartCountdown) + FString(" seconds")));
+    Countdown = InNum;
+    UpdateWidget();
 }
+
