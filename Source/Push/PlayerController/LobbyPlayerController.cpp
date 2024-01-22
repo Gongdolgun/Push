@@ -8,30 +8,56 @@ void ALobbyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LobbyHUD = Cast<ALobbyHUD>(GetHUD());
+	ALobbyHUD* LobbyHUD = Cast<ALobbyHUD>(GetHUD());
 
 	if (IsValid(LobbyHUD))
 	{
 		LobbyHUD->AddWidget();
-		if(LobbyHUD->CheckWidget("LobbyCountDown"))
+		if (LobbyHUD->CheckWidget("LobbyCountDown"))
+		{
 			LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetVisibility(ESlateVisibility::Visible);
+			ALobbyGameState* state = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(GetWorld()));
+			if (state != nullptr)
+				LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetPlayerNum(state->NumofPlayers);
+		}
 	}
-	
-	GameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this));
 }
 
 void ALobbyPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	SetHUDCountdownTime(); // LobbyHUD의 함수 UpdateWidget()으로 '입장한 플레이어 & 시간' 업데이트 
+	//SetHUDCountdownTime(); // LobbyHUD의 함수 UpdateWidget()으로 '입장한 플레이어 & 시간' 업데이트 
 }
 
-void ALobbyPlayerController::SetHUDCountdownTime()
+void ALobbyPlayerController::UpdateTimer_Client_Implementation(int InTime)
 {
-	if (LobbyHUD == nullptr) return;
-	if (LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown") == nullptr) return;
-	
-	LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->UpdateWidget(GameState->MatchStartCountdown);
+	ALobbyHUD* LobbyHUD = Cast<ALobbyHUD>(GetHUD());
 
+
+	if (LobbyHUD->CheckWidget("LobbyCountDown"))
+	{
+		LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetCountdown(InTime);
+	}
 }
+
+void ALobbyPlayerController::UpdatePlayerNum_Client_Implementation(int InNum)
+{
+	ALobbyHUD* LobbyHUD = Cast<ALobbyHUD>(GetHUD());
+
+	if(LobbyHUD == nullptr)
+	{
+		CLog::Log("HUD invalid");
+		return;
+	}
+
+	if (LobbyHUD->CheckWidget("LobbyCountDown"))
+	{
+		LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetPlayerNum(InNum);
+	}
+	else
+	{
+		CLog::Log("No Widget");
+	}
+}
+

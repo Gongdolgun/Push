@@ -58,6 +58,8 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void AdjustGold_NMC(int InValue);
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -72,7 +74,7 @@ private:
 		float MaxHP = 100.0f;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
-		meta = (AllowPrivateAccess))
+		meta = (AllowPrivateAccess), Replicated)
 		int32 Gold = 0;
 
 	UPROPERTY()

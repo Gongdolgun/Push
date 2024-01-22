@@ -29,7 +29,6 @@ ASkill_Meteor_A::ASkill_Meteor_A()
 
 void ASkill_Meteor_A::BeginPlay()
 {
-
 	Super::BeginPlay();
 
 	SkillComponent = Helpers::GetComponent<USkillComponent>(Owner);

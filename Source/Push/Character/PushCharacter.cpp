@@ -19,11 +19,14 @@
 #include "Global.h"
 #include "Components/SkillComponent.h"
 #include "Components/StateComponent.h"
+#include "Components/WidgetComponent.h"
+#include "GameInstance/PushGameInstance.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "Widgets/SkillSlots.h"
 #include "Skill/SkillData.h"
 #include "PlayerController/PushPlayerController.h"
+#include "Widgets/PlayerNameTag.h"
 #include "Widgets/SkillSlots.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,6 +67,7 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
+    Helpers::CreateActorComponent<UWidgetComponent>(this, &WidgetComponent, "PlayerNameTag");
 
 
 	/*if (ResourceComponent != nullptr)
@@ -193,7 +197,31 @@ void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
     DOREPLIFETIME(APushCharacter, BodyColor);
+    DOREPLIFETIME(APushCharacter, CustomPlayerName);
 }
+
+void APushCharacter::SetUpLocalName()
+{
+    if (IsLocallyControlled())
+    {
+        UPushGameInstance* gameInstance = Cast<UPushGameInstance>(GetGameInstance());
+        SetPlayerNameServer(gameInstance->GetPlayerName());
+    }
+}
+
+void APushCharacter::OnRep_CustomPlayerName()
+{
+    UPlayerNameTag* playerTag = Cast<UPlayerNameTag>(WidgetComponent->GetWidget());
+    playerTag->SetPlayerName(CustomPlayerName);
+
+
+}
+
+void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayerName)
+{
+    CustomPlayerName = NewPlayerName;
+}
+
 
 void APushCharacter::BeginPlay()
 {
@@ -201,6 +229,8 @@ void APushCharacter::BeginPlay()
 
     Create_DynamicMaterial();
     Change_Color(BodyColor);
+
+    SetUpLocalName();
 }
 
 void APushCharacter::Tick(float DeltaSeconds)

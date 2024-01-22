@@ -10,5 +10,6 @@ class PUSH_API UPlayerNameTag : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void SetPlayerName(const FString& InPlayerName);
 };

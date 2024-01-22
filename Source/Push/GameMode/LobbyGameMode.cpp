@@ -8,29 +8,33 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
 
-	PlayerLoginInServer_Implementation();
+	NumOfPlayers++;
 
 	if (false == IsValid(NewPlayer)) return;
 
-	if(HasAuthority())
+	if (HasAuthority())
 	{
 		TWeakObjectPtr<UGameInstance> GameInstance = GetGameInstance();
 		if (GameInstance.IsValid())
 		{
-			if (NumOfPlayers == 1) CLog::Log("Num of Players = 1");
-			else if (NumOfPlayers == 2) CLog::Log("Num of Players = 2");
-			else if (NumOfPlayers == 3) 
+			if (NumOfPlayers >= MaxNumofPlayers)
 			{
-				CLog::Log("Num of Players = 3"); 
-
+				CLog::Log(NumOfPlayers);
+				countdownTimer = StartCountdown;
 				GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, this, &ALobbyGameMode::CountDown, 1.0f, true, 0);
-				
 			}
 		}
 	}
 
 	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
-	lobbyGameState->PlayerConnection();
+
+	if (lobbyGameState == nullptr)
+	{
+		CLog::Log("GameState Nullptr");
+		return;
+	}
+
+	lobbyGameState->PlayerConnection(NumOfPlayers);
 }
 
 void ALobbyGameMode::Logout(AController* Exiting)
@@ -38,7 +42,6 @@ void ALobbyGameMode::Logout(AController* Exiting)
 	Super::Logout(Exiting);
 
 	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
-	lobbyGameState->PlayerConnection();
 }
 
 void ALobbyGameMode::PlayerLoginInServer_Implementation()
@@ -53,9 +56,16 @@ void ALobbyGameMode::Tick(float DeltaSeconds)
 
 void ALobbyGameMode::CountDown()
 {
-	countdownTimer -= 1.0f;
+	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
 
-	if (countdownTimer <= 0.0f)
+	if (lobbyGameState != nullptr)
+	{
+		lobbyGameState->CountDown(countdownTimer);
+	}
+
+	countdownTimer--;
+
+	if (countdownTimer < 0)
 		EnterMap();
 }
 

@@ -4,9 +4,6 @@
 #include "GameFramework/HUD.h"
 #include "LobbyHUD.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class PUSH_API ALobbyHUD : public AHUD
 {
@@ -37,10 +34,5 @@ T* ALobbyHUD::GetWidget(FString Key)
 
 	T* temp = Cast<T>((*(UserWidgets.Find(Key))));
 
-	if (temp == nullptr)
-	{
-		CLog::Print("WRONG_NAME_WIDGET_" + Key);
-		return nullptr;
-	}
 	return temp;
 }
