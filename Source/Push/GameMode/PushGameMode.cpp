@@ -10,6 +10,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Utilites/CLog.h"
 #include "Widgets/StoreUI.h"
+#include "Objects/Ring.h"
 
 namespace MatchState
 {
@@ -44,6 +45,16 @@ void APushGameMode::BeginPlay()
 	if (IsValid(pushGameState))
 	{
 		pushGameState->SetTime(WarmupTime, MatchTime, ResultTime, LevelStartingTime);
+	}
+
+	TWeakObjectPtr<UWorld> world = GetWorld();
+
+	if (world.IsValid())
+	{
+		if (IsValid(ring))
+		{
+			world->SpawnActor<ARing>(ring);
+		}
 	}
 }
 
@@ -168,7 +179,3 @@ void APushGameMode::UpdatePlayerList()
 			pushPlayerController->UpdatePlayerList_Client(PlayerListData);
 	}
 }
-
-
-
-

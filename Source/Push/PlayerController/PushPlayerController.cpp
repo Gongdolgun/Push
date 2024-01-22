@@ -1,4 +1,4 @@
-#include "Push/PlayerController/PushPlayerController.h"
+ï»¿#include "Push/PlayerController/PushPlayerController.h"
 #include "HUD/MainHUD.h"
 #include "GameMode/PushGameMode.h"
 #include "Global.h"
@@ -17,11 +17,9 @@ void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(APushPlayerController, MatchState); // replicated µÇµµ·Ï MatchState µî·Ï
-	DOREPLIFETIME(APushPlayerController, Gold); // replicated µÇµµ·Ï MatchState µî·Ï
+	DOREPLIFETIME(APushPlayerController, MatchState); // replicated ë˜ë„ë¡ MatchState ë“±ë¡
+	DOREPLIFETIME(APushPlayerController, Gold); // replicated ë˜ë„ë¡ MatchState ë“±ë¡
 }
-
-
 
 void APushPlayerController::BeginPlay()
 {
@@ -49,8 +47,8 @@ void APushPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	SetHUDHealth(HUDHealth, HUDMaxHealth); // WDG¿¡¼­ °ü¸®ÇÒ°Å¸é »èÁ¦
-	SetHUDTime(); // ½Ã°£
+	SetHUDHealth(HUDHealth, HUDMaxHealth); // WDGì—ì„œ ê´€ë¦¬í• ê±°ë©´ ì‚­ì œ
+	SetHUDTime(); // ì‹œê°„
 }
 
 void APushPlayerController::OnPossess(APawn* InPawn)
@@ -71,7 +69,7 @@ void APushPlayerController::ClientCheckMatchState_Implementation()
 	GameState = Cast<APushGameState>(UGameplayStatics::GetGameState(this));
 	if (IsValid(GameState))
 	{
-		// PushGameState.hÀÇ °ªÀ» °¡Á®´Ù°¡ ³Ö¾îÁØ´Ù.
+		// PushGameState.hì˜ ê°’ì„ ê°€ì ¸ë‹¤ê°€ ë„£ì–´ì¤€ë‹¤.
 		MatchState = GameState->GetMatchState();
 		WarmupTime = GameState->WarmupTime;
 		MatchTime = GameState->MatchTime;
@@ -84,51 +82,11 @@ void APushPlayerController::ClientCheckMatchState_Implementation()
 
 void APushPlayerController::OnMatchStateSet(FName State)
 {
-	MatchState = State;  // GameMode¿¡¼­ °Ç³»¹Ş´Â FName StateÀ¸·Î MatchState ¼³Á¤
+	MatchState = State;  // GameModeì—ì„œ ê±´ë‚´ë°›ëŠ” FName Stateìœ¼ë¡œ MatchState ì„¤ì •
 
-	if (MatchState == MatchState::InProgress) // ´ë±â
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD¸¦ ¾÷µ¥ÀÌÆ® ÇÔ¼ö
-			//CLog::Print("WaitingToStart!!");
-			/*if(MainHUD->CheckWidget("Store"))
-				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
-
-			if(MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
-
-		}
-	}
-	else if (MatchState == MatchState::Round) // °æ±â
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD¸¦ ¾÷µ¥ÀÌÆ® ÇÔ¼ö
-			//CLog::Print("InProgress!!");
-			/*if(MainHUD->CheckWidget("Store"))
-				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-
-			if(MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);*/
-		}
-	}
-	else if (MatchState == MatchState::Result) // °á°ú¹ßÇ¥
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD¸¦ ¾÷µ¥ÀÌÆ® ÇÔ¼ö
-			//CLog::Print("Result!!");
-			/*if(MainHUD->CheckWidget("Store"))
-				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-
-			if (MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);;*/
-		}
-	}
 }
 
-void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG¿¡¼­ °ü¸®ÇÒ°Å¸é »èÁ¦
+void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDGì—ì„œ ê´€ë¦¬í• ê±°ë©´ ì‚­ì œ
 {
 	//MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(GetHUD()) : MainHUD;
 
@@ -137,34 +95,35 @@ void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG¿¡
 	//	const float HealthPercent = Health / MaxHealth;
 	//	MainHUD->GetWidget<UResource>("Resource")->HealthBar->SetPercent(HealthPercent);
 	//}
-	//else // HUD°¡ ¾ø´Ù¸é
+	//else // HUDê°€ ì—†ë‹¤ë©´
 	//{
 	//	HUDHealth = Health;
 	//	HUDMaxHealth = MaxHealth;
 	//}
 }
 
-void APushPlayerController::SetHUDTime() // È­¸é¿¡ ½Ã°£ ¶ç¿ì±â
+void APushPlayerController::SetHUDTime() // í™”ë©´ì— ì‹œê°„ ë„ìš°ê¸°
 {
 	if (MainHUD == nullptr) return;
 	if (MainHUD->GetWidget<UResource>("Resource") == nullptr) return;
 
 	float TimeLeft = 0.0f;
-	if (MatchState == MatchState::InProgress) // ´ë±â
+	if (MatchState == MatchState::InProgress) // ëŒ€ê¸°
 	{
 		TimeLeft = WarmupTime + LevelStartingTime + tempTime - GetWorld()->GetTimeSeconds();
 	}
-	else if (MatchState == MatchState::Round) // °æ±â
+	else if (MatchState == MatchState::Round) // ê²½ê¸°
 	{
 		TimeLeft = WarmupTime + LevelStartingTime + MatchTime + tempTime - GetWorld()->GetTimeSeconds();
 	}
-	else if (MatchState == MatchState::Result) // °á°ú
+	else if (MatchState == MatchState::Result) // ê²°ê³¼
 	{
 		TimeLeft = WarmupTime + LevelStartingTime + MatchTime + ResultTime + tempTime - GetWorld()->GetTimeSeconds();
 	}
 
 	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
 
+	// ì‹œê°„ ë„ìš°ê¸°
 	if (MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText)
 	{
 		int32 Minutes = FMath::FloorToInt(CountdownTime / 60.f);
@@ -173,10 +132,15 @@ void APushPlayerController::SetHUDTime() // È­¸é¿¡ ½Ã°£ ¶ç¿ì±â
 		FString CountdownText = FString::Printf(TEXT("%02d:%02d"), Minutes, Seconds);
 		MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText->SetText(FText::FromString(CountdownText));
 	}
-
+	// MatchState ë„ìš°ê¸°
 	if (MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText)
 	{
-		MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText->SetText(FText::FromName(MatchState));
+		FText name;
+		if (MatchState == MatchState::InProgress) name = FText::FromString("Store");
+		else if (MatchState == MatchState::Round) name = FText::FromString("Round");
+		else if (MatchState == MatchState::Result) name = FText::FromString("Result");
+
+		MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText->SetText(name);
 	}
 }
 
@@ -185,7 +149,7 @@ void APushPlayerController::UpdatePlayerList_Client_Implementation(const TArray<
 	if (MainHUD == nullptr) return;
 	if (MainHUD->GetWidget<UKillDeathUI>("LeaderBoard") == nullptr) return;
 
-	// Log¿¡ Á¢¼ÓÇÑ ÇÃ·¹ÀÌ¾î µ¥½ºÅ©Å¾ ÀÌ¸§ Ãâ·Â. ·Î±×¿¡ Àß ÂïÈù´Ù.
+	// Logì— ì ‘ì†í•œ í”Œë ˆì´ì–´ ë°ìŠ¤í¬íƒ‘ ì´ë¦„ ì¶œë ¥. ë¡œê·¸ì— ì˜ ì°íŒë‹¤.
 	//for (const FPlayerList& playerList : PlayerList)
 	//{
 	//	FString playerName = playerList.PlayerName;
@@ -199,7 +163,7 @@ void APushPlayerController::UpdatePlayerList_Client_Implementation(const TArray<
 		MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->UpdatePlayerList(PlayerList);
 	}
 
-	// ¾øÀ¸¸é 0.1ÃÊ µÚ¿¡ ´Ù½Ã È£Ãâ
+	// ì—†ìœ¼ë©´ 0.1ì´ˆ ë’¤ì— ë‹¤ì‹œ í˜¸ì¶œ
 	else
 	{
 		FTimerHandle TimerHandle;
@@ -211,8 +175,6 @@ void APushPlayerController::UpdatePlayerList_Client_Implementation(const TArray<
 				}
 			}, 0.1f, false);
 	}
-
-
 }
 
 void APushPlayerController::OnRep_MatchState()
@@ -220,46 +182,5 @@ void APushPlayerController::OnRep_MatchState()
 	if (MatchState == MatchState::InProgress)
 	{
 		tempTime = GetWorld()->GetTimeSeconds();
-	}
-
-	if (MatchState == MatchState::InProgress) // ´ë±â
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD¸¦ ¾÷µ¥ÀÌÆ® ÇÔ¼ö
-			//CLog::Print("WaitingToStart!!");
-			/*if (MainHUD->CheckWidget("Store"))
-				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
-
-			if (MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
-
-		}
-	}
-	else if (MatchState == MatchState::Round) // °æ±â
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD¸¦ ¾÷µ¥ÀÌÆ® ÇÔ¼ö
-			//CLog::Print("InProgress!!");
-			/*if (MainHUD->CheckWidget("Store"))
-				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-
-			if (MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);*/
-		}
-	}
-	else if (MatchState == MatchState::Result) // °á°ú¹ßÇ¥
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD¸¦ ¾÷µ¥ÀÌÆ® ÇÔ¼ö
-			//CLog::Print("Result!!");
-			/*if (MainHUD->CheckWidget("Store"))
-				MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-
-			if (MainHUD->CheckWidget("Resource"))
-				MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
-		}
 	}
 }
