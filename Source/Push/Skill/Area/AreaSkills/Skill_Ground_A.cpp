@@ -45,19 +45,10 @@ void ASkill_Ground_A::OnSkillClicked()
 
 	DecalLocation = SkillComponent->SpawnLocation - SkillComponent->curSkillData->RelativeLocation;
 
-	// Meteor Direction
-	FVector direction = (SkillComponent->SpawnLocation - DecalLocation).GetSafeNormal();
-	ProjectileComponent->Velocity = ProjectileComponent->InitialSpeed * (-direction);
-
 	FHitResult HitResult;
 	TArray<AActor*> ignores;
 	ignores.Add(Owner);
 
-	// Meteor Trace
-	UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), SkillComponent->SpawnLocation, DecalLocation,
-		ETraceTypeQuery::TraceTypeQuery1, false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
-
-	// Spawn Decal
 	OnSpawnPointDecal(DecalLocation);
 }
 
