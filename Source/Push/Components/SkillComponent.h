@@ -29,16 +29,18 @@ public:
 	ACharacter* Owner;
 
 public:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class USkillData* curSkillData;
 
 	UPROPERTY(VisibleAnywhere)
 		class USkillData* prevSkillData;
 
+	UPROPERTY(BlueprintReadWrite)
+		bool isDecal;
+
 public:
 	UPROPERTY(EditAnywhere, Replicated)
 		FVector SpawnLocation;
-
 
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
