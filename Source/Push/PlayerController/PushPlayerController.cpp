@@ -46,8 +46,7 @@ void APushPlayerController::BeginPlay()
 void APushPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	SetHUDHealth(HUDHealth, HUDMaxHealth); // WDG에서 관리할거면 삭제
+	
 	SetHUDTime(); // 시간
 }
 
@@ -57,11 +56,6 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
 	resourceComponent = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
-	if (PushCharacter.IsValid())
-	{
-		if (IsValid(resourceComponent))
-			SetHUDHealth(resourceComponent->GetHP(), resourceComponent->GetMaxHP());
-	}
 }
 
 void APushPlayerController::ClientCheckMatchState_Implementation()
@@ -83,23 +77,6 @@ void APushPlayerController::ClientCheckMatchState_Implementation()
 void APushPlayerController::OnMatchStateSet(FName State)
 {
 	MatchState = State;  // GameMode에서 건내받는 FName State으로 MatchState 설정
-
-}
-
-void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG에서 관리할거면 삭제
-{
-	//MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(GetHUD()) : MainHUD;
-
-	//if (IsValid(MainHUD) && IsValid(MainHUD->GetWidget<UResource>("Resource")) && IsValid(MainHUD->GetWidget<UResource>("Resource")->HealthBar))
-	//{
-	//	const float HealthPercent = Health / MaxHealth;
-	//	MainHUD->GetWidget<UResource>("Resource")->HealthBar->SetPercent(HealthPercent);
-	//}
-	//else // HUD가 없다면
-	//{
-	//	HUDHealth = Health;
-	//	HUDMaxHealth = MaxHealth;
-	//}
 }
 
 void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기

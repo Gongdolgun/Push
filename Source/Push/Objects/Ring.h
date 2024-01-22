@@ -33,7 +33,7 @@ public:
 
 	//자기장 피해량
 	UPROPERTY(EditAnywhere)
-		float RingDamage = 5.0f;
+		float RingDamage = 1.0f;
 
 	//자기장 이펙트 Widget
 	UPROPERTY(EditAnywhere)
