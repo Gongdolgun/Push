@@ -68,4 +68,6 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ARing> ring; // 경기 중 줄어드는 링
+
+	FPlayerList PlayerData;
 };

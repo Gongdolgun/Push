@@ -163,7 +163,7 @@ void APushGameMode::UpdatePlayerList()
 				GetWorld()->GetTimerManager().SetTimer(
 					TimerHandle, this, &APushGameMode::UpdatePlayerList, 0.2f, false);
 			}
-			
+
 			else
 			{
 				// Lobby에서 입력된 이름인 CustomPlayerName이 출력되도록 변경
