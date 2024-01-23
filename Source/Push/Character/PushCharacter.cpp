@@ -224,7 +224,6 @@ void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayer
     CustomPlayerName = NewPlayerName;
 }
 
-
 void APushCharacter::BeginPlay()
 {
     Super::BeginPlay();
