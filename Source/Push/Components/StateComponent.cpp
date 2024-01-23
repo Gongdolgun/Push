@@ -1,4 +1,5 @@
 #include "Components/StateComponent.h"
+#include "GameFramework/Character.h"
 
 UStateComponent::UStateComponent()
 {

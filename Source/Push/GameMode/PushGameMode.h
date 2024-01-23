@@ -60,10 +60,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "PlayerList")
 		TArray<FPlayerList> PlayerListData;
 
-	UPROPERTY(EditAnywhere, Category = "PlayerList")
-		TArray<FPlayerList> PlayerListData_Sorted;
-
 	UPROPERTY(BlueprintReadWrite)
 		TArray<class APlayerController*> AllPC;
 
+	FPlayerList PlayerData;
 };

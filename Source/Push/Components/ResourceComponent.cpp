@@ -61,12 +61,9 @@ void UResourceComponent::OnKillDeathUI()
 
 	if (false == IsValid(MainHUD)) return;
 
-	//if(MainHUD->CheckWidget("KDA"))
-	//	MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Visible);
-
-	if (MainHUD->CheckWidget("Main"))
+	if (MainHUD->CheckWidget("LeaderBoard"))
 	{
-		MainHUD->GetWidget<UMainUI>("Main")->OpenLeaderBoard();
+		MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->OpenLeaderBoard();
 	}
 }
 
@@ -81,12 +78,9 @@ void UResourceComponent::OffKillDeathUI()
 
 	if (false == IsValid(MainHUD)) return;
 
-	//if (MainHUD->CheckWidget("KDA"))
-	//	MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
-
-	if (MainHUD->CheckWidget("Main"))
+	if (MainHUD->CheckWidget("LeaderBoard"))
 	{
-		MainHUD->GetWidget<UMainUI>("Main")->OffLeaderBoard();
+		MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->OffLeaderBoard();
 	}
 }
 
