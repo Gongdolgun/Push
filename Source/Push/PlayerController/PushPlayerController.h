@@ -19,8 +19,7 @@ public:
 	virtual void OnPossess(APawn* InPawn) override; // possed된 Pawn에 접근하는 함수
 
 	void OnMatchStateSet(FName State);
-
-	void SetHUDHealth(float Health, float MaxHealth);
+	
 	void SetHUDTime();
 
 	// 24_01_16 문인수
