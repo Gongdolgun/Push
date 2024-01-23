@@ -1,6 +1,5 @@
 #include "Push/GameState/PushGameState.h"
 #include "Net/UnrealNetwork.h"
-#include "Objects/Ring.h"
 
 APushGameState::APushGameState()
 {
@@ -30,11 +29,4 @@ void APushGameState::SetTime(float wTime, float mTime, float rTime, float lTime)
 
 void APushGameState::OnRep_TimeChanged()
 {
-}
-
-void APushGameState::BeginPlay()
-{
-	Super::BeginPlay();
-
-	
 }
