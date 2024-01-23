@@ -46,8 +46,7 @@ void APushPlayerController::BeginPlay()
 void APushPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	SetHUDHealth(HUDHealth, HUDMaxHealth); // WDG에서 관리할거면 삭제
+	
 	SetHUDTime(); // 시간
 }
 
@@ -57,11 +56,6 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
 	resourceComponent = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
-	if (PushCharacter.IsValid())
-	{
-		if (IsValid(resourceComponent))
-			SetHUDHealth(resourceComponent->GetHP(), resourceComponent->GetMaxHP());
-	}
 }
 
 void APushPlayerController::ClientCheckMatchState_Implementation()
@@ -83,63 +77,6 @@ void APushPlayerController::ClientCheckMatchState_Implementation()
 void APushPlayerController::OnMatchStateSet(FName State)
 {
 	MatchState = State;  // GameMode에서 건내받는 FName State으로 MatchState 설정
-
-	if (MatchState == MatchState::InProgress) // 대기
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD를 업데이트 함수
-			//CLog::Print("WaitingToStart!!");
-			/*if(MainHUD->CheckWidget("Store"))
-			   MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
-
-			if(MainHUD->CheckWidget("Resource"))
-			   MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
-
-		}
-	}
-	else if (MatchState == MatchState::Round) // 경기
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD를 업데이트 함수
-			//CLog::Print("InProgress!!");
-			/*if(MainHUD->CheckWidget("Store"))
-			   MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-
-			if(MainHUD->CheckWidget("Resource"))
-			   MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);*/
-		}
-	}
-	else if (MatchState == MatchState::Result) // 결과발표
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD를 업데이트 함수
-			//CLog::Print("Result!!");
-			/*if(MainHUD->CheckWidget("Store"))
-			   MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-
-			if (MainHUD->CheckWidget("Resource"))
-			   MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);;*/
-		}
-	}
-}
-
-void APushPlayerController::SetHUDHealth(float Health, float MaxHealth) // WDG에서 관리할거면 삭제
-{
-	//MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(GetHUD()) : MainHUD;
-
-	//if (IsValid(MainHUD) && IsValid(MainHUD->GetWidget<UResource>("Resource")) && IsValid(MainHUD->GetWidget<UResource>("Resource")->HealthBar))
-	//{
-	//   const float HealthPercent = Health / MaxHealth;
-	//   MainHUD->GetWidget<UResource>("Resource")->HealthBar->SetPercent(HealthPercent);
-	//}
-	//else // HUD가 없다면
-	//{
-	//   HUDHealth = Health;
-	//   HUDMaxHealth = MaxHealth;
-	//}
 }
 
 void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
@@ -163,6 +100,7 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 
 	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
 
+	// 시간 띄우기
 	if (MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText)
 	{
 		int32 Minutes = FMath::FloorToInt(CountdownTime / 60.f);
@@ -171,10 +109,15 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 		FString CountdownText = FString::Printf(TEXT("%02d:%02d"), Minutes, Seconds);
 		MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText->SetText(FText::FromString(CountdownText));
 	}
-
+	// MatchState 띄우기
 	if (MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText)
 	{
-		MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText->SetText(FText::FromName(MatchState));
+		FText name;
+		if (MatchState == MatchState::InProgress) name = FText::FromString("Store");
+		else if (MatchState == MatchState::Round) name = FText::FromString("Round");
+		else if (MatchState == MatchState::Result) name = FText::FromString("Result");
+
+		MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText->SetText(name);
 	}
 }
 
@@ -211,45 +154,5 @@ void APushPlayerController::OnRep_MatchState()
 	{
 		tempTime = GetWorld()->GetTimeSeconds();
 	}
-
-	if (MatchState == MatchState::InProgress) // 대기
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD를 업데이트 함수
-			//CLog::Print("WaitingToStart!!");
-			/*if (MainHUD->CheckWidget("Store"))
-			   MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Visible);
-
-			if (MainHUD->CheckWidget("Resource"))
-			   MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
-
-		}
-	}
-	else if (MatchState == MatchState::Round) // 경기
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD를 업데이트 함수
-			//CLog::Print("InProgress!!");
-			/*if (MainHUD->CheckWidget("Store"))
-			   MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-
-			if (MainHUD->CheckWidget("Resource"))
-			   MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Visible);*/
-		}
-	}
-	else if (MatchState == MatchState::Result) // 결과발표
-	{
-		if (false == HasAuthority())
-		{
-			// TODO: HUD를 업데이트 함수
-			//CLog::Print("Result!!");
-			/*if (MainHUD->CheckWidget("Store"))
-			   MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
-
-			if (MainHUD->CheckWidget("Resource"))
-			   MainHUD->GetWidget<UResource>("Resource")->SetVisibility(ESlateVisibility::Hidden);*/
-		}
-	}
+	
 }
