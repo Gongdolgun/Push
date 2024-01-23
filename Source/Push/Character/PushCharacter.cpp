@@ -118,21 +118,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(ResourceComponent != nullptr)
     {
-        if(ResourceComponent->GetHP() <= 0.0f)
-        {
-            return;
-        }
-
-        if(ResourceComponent->GetHP() - InHitData.Damage <= 0)
-        {
-            ResourceComponent->SetHP_Server(0.0f);
-            StateComponent->SetDeadMode();
-            Ragdoll();
-        }
-        else
-        {
-            ResourceComponent->AdjustHP_Server(-InHitData.Damage);	        
-        }
+		ResourceComponent->AdjustHP_Server(-InHitData.Damage);
     }
 
     if(launch.X + launch.Y + launch.Z > 0.0f)
@@ -231,27 +217,6 @@ void APushCharacter::OnRep_CustomPlayerName()
     if (playerTag)
 		playerTag->SetPlayerName(CustomPlayerName);
 
-}
-
-void APushCharacter::Ragdoll()
-{
-    if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision) return;
-
-    GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-    GetMesh()->SetCollisionProfileName("Ragdoll");
-    GetMesh()->SetSimulatePhysics(true);
-
-    FVector ImpulseDirection = GetActorRotation().Vector() * -1.0f;
-    ImpulseDirection.Normalize();
-
-    //충돌 세기
-    float ImpulseStrength = 5000.0f;
-
-    FVector FinalImpulse = ImpulseDirection * ImpulseStrength;
-
-    //GetMesh()->SetPhysicsLinearVelocity(FVector::ZeroVector);
-    GetMesh()->AddImpulseToAllBodiesBelow(FinalImpulse, NAME_None);
 }
 
 void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayerName)
