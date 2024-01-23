@@ -42,7 +42,9 @@ void APushPlayerController::BeginPlay()
 	ClientCheckMatchState();
 
 	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	PushGameMode->UpdatePlayerList();
+
+	if (PushGameMode)
+		PushGameMode->UpdatePlayerList();
 }
 
 void APushPlayerController::Tick(float DeltaSeconds)
