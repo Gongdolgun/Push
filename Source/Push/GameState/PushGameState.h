@@ -29,7 +29,4 @@ public:
 
     UFUNCTION()
 	void OnRep_TimeChanged();
-
-	void BeginPlay() override;
-
 };
