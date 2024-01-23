@@ -46,7 +46,7 @@ void APushPlayerController::BeginPlay()
 void APushPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
+	
 	SetHUDTime(); // 시간
 }
 
@@ -154,5 +154,5 @@ void APushPlayerController::OnRep_MatchState()
 	{
 		tempTime = GetWorld()->GetTimeSeconds();
 	}
-
+	
 }
