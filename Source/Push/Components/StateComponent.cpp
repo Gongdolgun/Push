@@ -18,7 +18,6 @@ void UStateComponent::BeginPlay()
 void UStateComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
 	
 }
 
@@ -62,4 +61,3 @@ void UStateComponent::ChangeType(EStateType InType)
 	if (OnStateTypeChanged.IsBound())
 		OnStateTypeChanged.Broadcast(prevType, StateType);
 }
-

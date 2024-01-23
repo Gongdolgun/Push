@@ -106,5 +106,8 @@ public:
 
 	UFUNCTION()
 		void OnRep_CustomPlayerName();
+
+
+	void Ragdoll();
 };
 
