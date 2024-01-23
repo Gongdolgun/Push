@@ -66,8 +66,6 @@ void UBuffComponent::AddBuff_Server_Implementation(TSubclassOf<ABuffInstance> Bu
 
 void UBuffComponent::AddBuff_NMC_Implementation(TSubclassOf<ABuffInstance> BuffClass)
 {
-	CLog::Log("TEST");
-
 	if (!Owner.Get() || !BuffClass)
 		return;
 

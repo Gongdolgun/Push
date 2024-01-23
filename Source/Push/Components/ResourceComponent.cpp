@@ -121,10 +121,9 @@ void UResourceComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME(UResourceComponent, Gold);
 }
 
-void UResourceComponent::BeginPlay()	
+void UResourceComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
-}
 
+}

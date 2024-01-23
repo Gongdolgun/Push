@@ -20,7 +20,6 @@ public:
 
 	void OnMatchStateSet(FName State);
 
-	void SetHUDHealth(float Health, float MaxHealth);
 	void SetHUDTime();
 
 	// 24_01_16 ¹®ÀÎ¼ö
