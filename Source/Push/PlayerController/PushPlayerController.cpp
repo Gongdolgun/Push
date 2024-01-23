@@ -18,10 +18,8 @@ void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(APushPlayerController, MatchState); // replicated 되도록 MatchState 등록
-	DOREPLIFETIME(APushPlayerController, Gold); // replicated 되도록 MatchState 등록
+	DOREPLIFETIME(APushPlayerController, Gold);
 }
-
-
 
 void APushPlayerController::BeginPlay()
 {
@@ -180,39 +178,31 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	}
 }
 
-void APushPlayerController::UpdatePlayerList_Client_Implementation(const TArray<FPlayerList>& PlayerList)
+void APushPlayerController::UpdatePlayerList_Server_Implementation(const TArray<FPlayerList>& PlayerList)
+{
+	UpdatePlayerList_NMC(PlayerList);
+}
+
+void APushPlayerController::UpdatePlayerList_NMC_Implementation(const TArray<FPlayerList>& PlayerList)
 {
 	if (MainHUD == nullptr) return;
-	if (MainHUD->GetWidget<UKillDeathUI>("LeaderBoard") == nullptr) return;
+	//if (MainHUD->GetWidget<UKillDeathUI>("LeaderBoard") == nullptr) return;
 
-	// Log에 접속한 플레이어 데스크탑 이름 출력. 로그에 잘 찍힌다.
-	//for (const FPlayerList& playerList : PlayerList)
-	//{
-	//	FString playerName = playerList.PlayerName;
-	//
-	//	FString message = FString::Printf(TEXT("PlayerName : %s"), *playerName);
-	//	CLog::Log(message);
-	//}
-
-	if (MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard")))
+	// 정상적으로 호출이 되었으면, PlayerList Update
+	if (MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard")) == nullptr)
 	{
 		MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->UpdatePlayerList(PlayerList);
-	}
 
-	// 없으면 0.1초 뒤에 다시 호출
+	}
+	// 리더보드가 인식이 되지 않았으면 0.1초 뒤에 다시 호출
 	else
 	{
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this, PlayerList]()
 			{
-				if (MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard")))
-				{
-					MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard"))->UpdatePlayerList(PlayerList);
-				}
-			}, 0.1f, false);
+				MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard"))->UpdatePlayerList(PlayerList);
+			}, 0.2f, false);
 	}
-
-
 }
 
 void APushPlayerController::OnRep_MatchState()

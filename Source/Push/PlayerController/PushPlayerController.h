@@ -25,8 +25,11 @@ public:
 
 	// 24_01_16 문인수
 	// 플레이어 리스트 클라이언트에서 업데이트
-	UFUNCTION(Client, Reliable)
-		void UpdatePlayerList_Client(const TArray<FPlayerList>& PlayerList);
+	UFUNCTION(Server, Reliable)
+		void UpdatePlayerList_Server(const TArray<FPlayerList>& PlayerList);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void UpdatePlayerList_NMC(const TArray<FPlayerList>& PlayerList);
 
 
 protected:

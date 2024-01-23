@@ -117,7 +117,7 @@ public:
         FString PlayerName = TEXT("NNNNNN");
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-        int32 Kill_Death;
+        int32 Kill_Death = 1;
 
     //UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     //	FTexture Skill_Icon;

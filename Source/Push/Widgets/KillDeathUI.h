@@ -16,5 +16,12 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 		void UpdatePlayerList(const TArray<FPlayerList>& PlayerData);
 
+	UFUNCTION(BlueprintNativeEvent)
+		void OpenLeaderBoard();
+	void OpenLeaderBoard_Implementation();
+
+	UFUNCTION(BlueprintNativeEvent)
+		void OffLeaderBoard();
+	void OffLeaderBoard_Implementation();
 
 };
