@@ -205,15 +205,17 @@ void APushCharacter::SetUpLocalName()
     if (IsLocallyControlled())
     {
         UPushGameInstance* gameInstance = Cast<UPushGameInstance>(GetGameInstance());
-        SetPlayerNameServer(gameInstance->GetPlayerName());
+        if (gameInstance)
+			SetPlayerNameServer(gameInstance->GetPlayerName());
     }
 }
 
 void APushCharacter::OnRep_CustomPlayerName()
 {
     UPlayerNameTag* playerTag = Cast<UPlayerNameTag>(WidgetComponent->GetWidget());
-    playerTag->SetPlayerName(CustomPlayerName);
 
+    if (playerTag)
+		playerTag->SetPlayerName(CustomPlayerName);
 
 }
 

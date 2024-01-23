@@ -10,6 +10,7 @@
 #include "Net/UnrealNetwork.h"
 #include "Utilites/CLog.h"
 #include "Widgets/StoreUI.h"
+#include "Objects/Ring.h"
 
 namespace MatchState
 {
@@ -44,6 +45,16 @@ void APushGameMode::BeginPlay()
 	if (IsValid(pushGameState))
 	{
 		pushGameState->SetTime(WarmupTime, MatchTime, ResultTime, LevelStartingTime);
+	}
+
+	TWeakObjectPtr<UWorld> world = GetWorld();
+
+	if (world.IsValid())
+	{
+		if (IsValid(ring))
+		{
+			world->SpawnActor<ARing>(ring);
+		}
 	}
 }
 
@@ -136,39 +147,44 @@ void APushGameMode::Logout(AController* Exiting)
 
 void APushGameMode::UpdatePlayerList()
 {
+	// 플레이어 리스트를 비워주고, GameState에서 Player의 이름을 가져와서 세팅
 	PlayerListData.Empty();
 
 	for (APlayerController* playerContrller : AllPC)
 	{
 		if (playerContrller)
 		{
-			FString PlayerName = playerContrller->PlayerState->GetPlayerName();
-
 			APushPlayerController* pushController = Cast<APushPlayerController>(playerContrller);
 			APawn* pawn = playerContrller->GetPawn();
-			if (pawn)
+			// 업데이트가 제대로 안되고 게임이 시작할 경우가 생겨서 0.2초뒤에 다시 함수 실행
+			if (!pawn)
 			{
-				APushCharacter* pushCharacter = Cast<APushCharacter>(pawn);
-				pushCharacter->CustomPlayerName;
+				FTimerHandle TimerHandle;
+				GetWorld()->GetTimerManager().SetTimer(
+					TimerHandle, this, &APushGameMode::UpdatePlayerList, 0.2f, false);
 			}
 
-			FPlayerList NewPlayer;
-			NewPlayer.PlayerName = PlayerName;
-			NewPlayer.Gold = pushController->Gold;
-			
-			PlayerListData.Add(NewPlayer);
+			else
+			{
+				// Lobby에서 입력된 이름인 CustomPlayerName이 출력되도록 변경
+				APushCharacter* pushCharacter = Cast<APushCharacter>(pawn);
+				if (pushCharacter)
+				{
+					PlayerData.PlayerName = pushCharacter->CustomPlayerName;
+					PlayerData.Gold = pushController->Gold;
+
+					PlayerListData.Add(PlayerData);
+				}
+			}
 		}
 	}
 
+	// 플레이어 리스트 업데이트
 	for (APlayerController* playerController : AllPC)
 	{
 		APushPlayerController* pushPlayerController = Cast<APushPlayerController>(playerController);
 
 		if (pushPlayerController)
-			pushPlayerController->UpdatePlayerList_Client(PlayerListData);
+			pushPlayerController->UpdatePlayerList_Server(PlayerListData);
 	}
 }
-
-
-
-

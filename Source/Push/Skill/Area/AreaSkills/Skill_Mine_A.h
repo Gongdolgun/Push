@@ -44,6 +44,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ABuffInstance> BuffClass;
 
+	TArray<AActor*> hitted;
+
 	UPROPERTY(EditAnywhere)
 		float DelayTime = 2.0f;
 };

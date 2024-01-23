@@ -18,11 +18,17 @@ void AItem_FastMove::UseItem()
 {
 	if (!Owner.IsValid())
 		return;
+	APlayerController* controller = Cast<APlayerController>(Owner->GetController());
+
+	if (!controller || !controller->IsLocalController())
+		return;
 
 	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
 
 	if(!!buffComponent)
 	{
-		buffComponent->AddBuff(BuffClass);	
+		buffComponent->AddBuff(BuffClass);
+		Destroy();
 	}
+
 }

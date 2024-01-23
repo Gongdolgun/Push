@@ -15,18 +15,23 @@ public:
 	UBuffComponent();
 protected:
 	virtual void BeginPlay() override;
-	
-public:	
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 public:
 	void AddBuff(TSubclassOf<ABuffInstance> BuffClass);
 
 	void RemoveBuff(ABuffInstance* removeBuff);
 
-private:
+	UFUNCTION(BlueprintCallable)
+		int GetBuffCount() { return Buffs.Num(); }
+
+	UFUNCTION(Server, Reliable)
+		void AddBuff_Server(TSubclassOf<ABuffInstance> BuffClass);
+	UFUNCTION(NetMulticast, Reliable)
+		void AddBuff_NMC(TSubclassOf<ABuffInstance> BuffClass);
+public:
 	TWeakObjectPtr<ACharacter> Owner;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,        
 	meta = (AllowPrivateAccess))
 		TArray<ABuffInstance*> Buffs;
 
@@ -34,7 +39,5 @@ private:
 		TSubclassOf<class UWDG_BuffBoard> WidgetClass;
 	UWDG_BuffBoard* Widget;
 
-public:
-	int BuffCount = 0;
 };
 

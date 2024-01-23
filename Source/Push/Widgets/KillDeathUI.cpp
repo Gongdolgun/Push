@@ -6,3 +6,13 @@ void UKillDeathUI::UpdatePlayerList_Implementation(const TArray<FPlayerList>& Pl
 {
 	
 }
+
+void UKillDeathUI::OpenLeaderBoard_Implementation()
+{
+
+}
+
+void UKillDeathUI::OffLeaderBoard_Implementation()
+{
+
+}

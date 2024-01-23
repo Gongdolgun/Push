@@ -23,7 +23,8 @@ public:
 public:
 	// 2024_01_12_¹®ÀÎ¼ö
 	// Moving
-	FORCEINLINE	bool CanMove() { return bCanMove; }
+	UFUNCTION(BlueprintCallable)
+		bool CanMove() { return bCanMove; }
 	FORCEINLINE void Move() { bCanMove = true; }
 	FORCEINLINE void Stop() { bCanMove = false; }
 
