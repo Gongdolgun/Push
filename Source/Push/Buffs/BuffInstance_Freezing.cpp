@@ -9,15 +9,22 @@ void ABuffInstance_Freezing::OnEffect()
 {
 	Super::OnEffect();
 
-	Test_S();
+	FreezeON_Server();
 }
 
 void ABuffInstance_Freezing::OffEffect()
 {	
-	//Super::OffEffect();
+	Super::OffEffect();
+	FreezeOFF_Server();
+}
 
-	Test_S();
+void ABuffInstance_Freezing::FreezeOFF_Server_Implementation()
+{
+	FreezeOFF_NMC();
+}
 
+void ABuffInstance_Freezing::FreezeOFF_NMC_Implementation()
+{
 	UMoveComponent* MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
 	UAnimInstance_PushCharacter* AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
 	if (!MoveComponent)
@@ -34,12 +41,12 @@ void ABuffInstance_Freezing::OffEffect()
 	MoveComponent->Move();
 }
 
-void ABuffInstance_Freezing::Test_S_Implementation()
+void ABuffInstance_Freezing::FreezeON_Server_Implementation()
 {
-	Test_N();
+	FreezeON_NMC();
 }
 
-void ABuffInstance_Freezing::Test_N_Implementation()
+void ABuffInstance_Freezing::FreezeON_NMC_Implementation()
 {
 	if (!Owner.IsValid())
 		return;

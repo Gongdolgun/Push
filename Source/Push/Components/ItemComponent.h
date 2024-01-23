@@ -20,7 +20,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
-	//void BuyItem();
+	UFUNCTION(BlueprintCallable)
+		void UseItem(TSubclassOf<class AItemBase> ItemClass);
+	
 	UFUNCTION(BlueprintCallable, Reliable, Server)
 		void UseItem_Server(TSubclassOf<class AItemBase> ItemClass);
 

@@ -34,19 +34,6 @@ void UBuffComponent::BeginPlay()
 void UBuffComponent::AddBuff(TSubclassOf<ABuffInstance> BuffClass)
 {
 	AddBuff_Server(BuffClass);
-	/*if (!Owner.Get() || !BuffClass)
-		return;
-
-	FActorSpawnParameters param;
-	param.Owner = Owner.Get();
-
-	ABuffInstance* temp = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass,0,0, param));
-	if (!temp || !Widget)
-		return;
-
-	temp->OnEffect();
-	Widget->AddBuff(temp->GetWidget());
-	Buffs.Add(temp);*/
 }
 
 void UBuffComponent::RemoveBuff(ABuffInstance* removeBuff)
@@ -69,16 +56,15 @@ void UBuffComponent::AddBuff_NMC_Implementation(TSubclassOf<ABuffInstance> BuffC
 	if (!Owner.Get() || !BuffClass)
 		return;
 
+	CLog::Log("AddBuff");
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
 
-	ABuffInstance* temp = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param));
-	if (!temp || !Widget)
+	ABuffInstance* buffInstance = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param));
+	if (!buffInstance || !Widget)
 		return;
 
-	Buffs.Add(temp);
-	
-	Widget->AddBuff(temp->GetWidget());
+	Buffs.Add(buffInstance);
 }
 
 

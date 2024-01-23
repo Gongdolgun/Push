@@ -113,8 +113,6 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     FVector launch = FVector(InHitData.xLaunchPower * direction.X, InHitData.xLaunchPower * direction.Y, InHitData.zLaunchPower);
 
-    CLog::Log(InAttacker->GetActorLocation());
-    CLog::Log(launch);
 
     if(ResourceComponent != nullptr)
     {

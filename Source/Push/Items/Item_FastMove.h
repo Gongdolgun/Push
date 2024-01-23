@@ -15,6 +15,7 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(Client, Reliable)
 	virtual void UseItem()  override;
 
 private:
