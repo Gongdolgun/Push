@@ -9,6 +9,8 @@
 #include "Kismet/KismetArrayLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "Utilites/CLog.h"
+#include "Global.h"
+#include "Components/ResourceComponent.h"
 #include "Widgets/StoreUI.h"
 #include "Objects/Ring.h"
 
@@ -170,8 +172,10 @@ void APushGameMode::UpdatePlayerList()
 				APushCharacter* pushCharacter = Cast<APushCharacter>(pawn);
 				if (pushCharacter)
 				{
+					UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(pushCharacter);
+
 					PlayerData.PlayerName = pushCharacter->CustomPlayerName;
-					PlayerData.Gold = pushController->Gold;
+					PlayerData.Gold = resource->GetGold();
 
 					PlayerListData.Add(PlayerData);
 				}

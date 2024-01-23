@@ -18,7 +18,6 @@ void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(APushPlayerController, MatchState); // replicated 되도록 MatchState 등록
-	DOREPLIFETIME(APushPlayerController, Gold);
 }
 
 void APushPlayerController::BeginPlay()
@@ -41,6 +40,9 @@ void APushPlayerController::BeginPlay()
 	}
 
 	ClientCheckMatchState();
+
+	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	PushGameMode->UpdatePlayerList();
 }
 
 void APushPlayerController::Tick(float DeltaSeconds)
@@ -132,12 +134,11 @@ void APushPlayerController::UpdatePlayerList_NMC_Implementation(const TArray<FPl
 	//if (MainHUD->GetWidget<UKillDeathUI>("LeaderBoard") == nullptr) return;
 
 	// 정상적으로 호출이 되었으면, PlayerList Update
-	if (MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard")) == nullptr)
+	if (MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard")) != nullptr)
 	{
 		MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->UpdatePlayerList(PlayerList);
-
 	}
-	// 리더보드가 인식이 되지 않았으면 0.1초 뒤에 다시 호출
+	// 리더보드가 인식이 되지 않았으면 잠시 뒤에 다시 호출
 	else
 	{
 		FTimerHandle TimerHandle;
