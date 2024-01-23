@@ -67,11 +67,15 @@ void ASkill_Mine_A::OnActivateOverlap(UPrimitiveComponent* OverlappedComponent, 
 void ASkill_Mine_A::OnExplosionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (hitted.Find(OtherActor) >= 0 && hitted.Num() > 0)
+		return;
+
 	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(OtherActor);
 	if (!buffComponent)
 		return;
 
 	buffComponent->AddBuff(BuffClass);
+	hitted.AddUnique(OtherActor);
 }
 
 //폭발 파티클 끝난후 파괴
