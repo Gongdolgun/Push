@@ -30,6 +30,8 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void UpdatePlayerList_NMC(const TArray<FPlayerList>& PlayerList);
 
+	UPROPERTY(BlueprintReadWrite)
+		class APushGameMode* PushGameMode;
 
 protected:
 	virtual void BeginPlay() override;
@@ -42,7 +44,7 @@ private:
 		class APushGameState* GameState;
 	UPROPERTY()
 		class AMainHUD* MainHUD;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess))
 		class UResourceComponent* resourceComponent;
 
 	float LevelStartingTime; // 게임레벨맵에 들어간 시간
@@ -60,7 +62,4 @@ private:
 public:
 	float HUDHealth;
 	float HUDMaxHealth;
-
-	UPROPERTY(Replicated, BlueprintReadWrite)
-		int32 Gold;
 };

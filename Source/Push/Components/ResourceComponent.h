@@ -43,7 +43,7 @@ public:
 	void OffKillDeathUI();
 
 	// 2024_01_15 ¹®ÀÎ¼ö - Gold
-	UFUNCTION(Server, Reliable)
+	UFUNCTION(Server, Reliable, BlueprintCallable)
 		void SetGold_Server(int InValue);
 
 	UFUNCTION(NetMulticast, Reliable)
