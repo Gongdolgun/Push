@@ -60,8 +60,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "PlayerList")
 		TArray<FPlayerList> PlayerListData;
 
+	UPROPERTY(EditAnywhere, Category = "PlayerList")
+		TArray<FPlayerList> PlayerListData_Sorted;
+
 	UPROPERTY(BlueprintReadWrite)
 		TArray<class APlayerController*> AllPC;
 
-	FPlayerList PlayerData;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class ARing> ring; // 경기 중 줄어드는 링
 };
