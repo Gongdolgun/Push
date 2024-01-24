@@ -8,42 +8,30 @@
 void ABuffInstance_Freezing::OnEffect()
 {
 	Super::OnEffect();
-	if (!Owner.IsValid())
-		return;
 
-	OnSnapshot_Server();
+	FreezeON_Server();
 }
 
 void ABuffInstance_Freezing::OffEffect()
-{
+{	
 	Super::OffEffect();
-	OffSnapshot_Server();
+	FreezeOFF_Server();
 }
 
-void ABuffInstance_Freezing::OnSnapshot_Server_Implementation()
+void ABuffInstance_Freezing::FreezeOFF_Server_Implementation()
 {
-	OnSnapshot_NMC();
+	FreezeOFF_NMC();
 }
 
-void ABuffInstance_Freezing::OnSnapshot_NMC_Implementation()
+void ABuffInstance_Freezing::FreezeOFF_NMC_Implementation()
 {
-	MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
-	AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
-	if (AnimInstance == nullptr || MoveComponent == nullptr)
+	UMoveComponent* MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
+	UAnimInstance_PushCharacter* AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
+	if (!MoveComponent)
 		return;
 
-	AnimInstance->SavePoseSnapshot("Freezing");
-	AnimInstance->IsSnapshot = true;
-	MoveComponent->Stop();
-}
+	MoveComponent->Move();
 
-void ABuffInstance_Freezing::OffSnapshot_Server_Implementation()
-{
-	OffSnapshot_NMC();
-}
-
-void ABuffInstance_Freezing::OffSnapshot_NMC_Implementation()
-{
 	MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
 	AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
 	if (AnimInstance == nullptr)
@@ -51,5 +39,27 @@ void ABuffInstance_Freezing::OffSnapshot_NMC_Implementation()
 
 	AnimInstance->IsSnapshot = false;
 	MoveComponent->Move();
-
 }
+
+void ABuffInstance_Freezing::FreezeON_Server_Implementation()
+{
+	FreezeON_NMC();
+}
+
+void ABuffInstance_Freezing::FreezeON_NMC_Implementation()
+{
+	if (!Owner.IsValid())
+		return;
+	UMoveComponent* MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
+	UAnimInstance_PushCharacter* AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
+	if (!MoveComponent)
+		return;
+	MoveComponent->Stop();
+	if (!AnimInstance || !MoveComponent)
+		return;
+
+	AnimInstance->SavePoseSnapshot("Freezing");
+	AnimInstance->IsSnapshot = true;
+	MoveComponent->Stop();
+}
+

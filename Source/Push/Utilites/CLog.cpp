@@ -111,3 +111,45 @@ void CLog::Print(const FString& InFileName, const FString& InFuncName, int32 InL
 	FString str = FString::Printf(L"%s, %s, %d", *fileName, *InFuncName, InLineNumber);
 	GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Blue, str);
 }
+
+void CLog::LogAndPrint(int32 InValue)
+{
+	Log(InValue);
+	Print(InValue);
+}
+
+void CLog::LogAndPrint(float InValue)
+{
+	Log(InValue);
+	Print(InValue);
+}
+
+void CLog::LogAndPrint(const FString& InValue)
+{
+	Log(InValue);
+	Print(InValue);
+}
+
+void CLog::LogAndPrint(const FVector& InValue)
+{
+	Log(InValue);
+	Print(InValue);
+}
+
+void CLog::LogAndPrint(const FRotator& InValue)
+{
+	Log(InValue);
+	Print(InValue);
+}
+
+void CLog::LogAndPrint(const UObject* InValue)
+{
+	Log(InValue);
+	Print(InValue);
+}
+
+void CLog::LogAndPrint(const FString& InFileName, const FString& InFuncName, int32 InLineNumber)
+{
+	Log(InFileName, InFuncName, InLineNumber);
+	Print(InFileName, InFuncName, InLineNumber);
+}

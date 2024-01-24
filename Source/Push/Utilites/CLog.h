@@ -24,4 +24,12 @@ public:
 	static void Print(const FRotator& InValue, int32 InKey = -1, float InDuration = 10, FColor InColor = FColor::Blue);
 	static void Print(const UObject* InValue, int32 InKey = -1, float InDuration = 10, FColor InColor = FColor::Blue);
 	static void Print(const FString& InFileName, const FString& InFuncName, int32 InLineNumber);
+
+	static void LogAndPrint(int32 InValue);
+	static void LogAndPrint(float InValue);
+	static void LogAndPrint(const FString& InValue);
+	static void LogAndPrint(const FVector& InValue);
+	static void LogAndPrint(const FRotator& InValue);
+	static void LogAndPrint(const UObject* InValue);
+	static void LogAndPrint(const FString& InFileName, const FString& InFuncName, int32 InLineNumber);
 };

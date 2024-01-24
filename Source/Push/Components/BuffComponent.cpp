@@ -6,9 +6,7 @@
 
 UBuffComponent::UBuffComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
 }
-
 
 void UBuffComponent::BeginPlay()
 {
@@ -31,30 +29,12 @@ void UBuffComponent::BeginPlay()
 
 }
 
-
-void UBuffComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-}
-
 //2024.01.05 이현중
 //버프 자료형을 집어넣으면 그에 따른 엑터를 생성후 OnEffect를 호출
 void UBuffComponent::AddBuff(TSubclassOf<ABuffInstance> BuffClass)
 {
-	if (!Owner.Get() || !BuffClass)
-		return;
-
-	FActorSpawnParameters param;
-	param.Owner = Owner.Get();
-
-	ABuffInstance* temp = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass,0,0, param));
-	if (!temp || !Widget)
-		return;
-
-	temp->OnEffect();
-	Widget->AddBuff(temp->GetWidget());
-	Buffs.Add(temp);
+	CLog::Log("AddBuff_CallServer");
+	AddBuff_Server(BuffClass);
 }
 
 void UBuffComponent::RemoveBuff(ABuffInstance* removeBuff)
@@ -65,6 +45,27 @@ void UBuffComponent::RemoveBuff(ABuffInstance* removeBuff)
 	Widget->SubWidget(removeBuff->GetWidget());
 
 	Buffs.Remove(removeBuff);
+}
+
+void UBuffComponent::AddBuff_Server_Implementation(TSubclassOf<ABuffInstance> BuffClass)
+{
+	AddBuff_NMC(BuffClass);
+}
+
+void UBuffComponent::AddBuff_NMC_Implementation(TSubclassOf<ABuffInstance> BuffClass)
+{
+	if (!Owner.Get() || !BuffClass)
+		return;
+
+	CLog::Log("AddBuff_NMC");
+	FActorSpawnParameters param;
+	param.Owner = Owner.Get();
+
+	ABuffInstance* buffInstance = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param));
+	if (!buffInstance || !Widget)
+		return;
+
+	Buffs.Add(buffInstance);
 }
 
 

@@ -35,24 +35,6 @@ void ARing::BeginPlay()
 	RingCapsule->OnComponentBeginOverlap.AddDynamic(this, &ARing::OnBeginOverlap);
 	RingCapsule->OnComponentEndOverlap.AddDynamic(this, &ARing::OnEndOverlap);
 
-	for(AActor* actor : GetWorld()->GetCurrentLevel()->Actors)
-	{
-		APushCharacter* character = Cast<APushCharacter>(actor);
-
-		if (character == nullptr)
-			continue;
-
-		APlayerController* controller = Cast<APlayerController>(character->GetController());
-
-		if (controller == nullptr)
-			continue;
-
-		UWDG_EffectBase* widget = CreateWidget<UWDG_EffectBase>(controller, DamageEffectWidget);
-		widget->AddToViewport();
-		widget->SetVisibility(ESlateVisibility::Visible);
-
-		character->widget = widget;
-	}
 }
 
 void ARing::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -75,14 +57,15 @@ void ARing::Tick(float DeltaTime)
 
 		APlayerController* controller = Cast<APlayerController>(character->GetController());
 
-		if (controller == nullptr)
-			return;
+		if (controller == nullptr) continue;
 
+		// Ring ¹Ù±ùÀÌ¸é È­¸é ±ô¹Ú°Å¸²
 		AMainHUD* hud = Cast<AMainHUD>(controller->GetHUD());
-
-		if (hud == nullptr)
-			return;
-
+		if (hud == nullptr) continue;
+		if (hud->CheckWidget("Ring"))
+		{
+			hud->GetWidget<UWDG_EffectBase>("Ring")->PlayEffect();
+		}
 	}
 }
 
@@ -118,7 +101,7 @@ void ARing::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 {
 	APushCharacter* character = Cast<APushCharacter>(OtherActor);
 
-	if (!ensure(character != nullptr))
+	if (character == nullptr)
 		return;
 
 	if(OverlappedCharacters.Contains(character))
@@ -130,7 +113,7 @@ void ARing::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 {
 	APushCharacter* character = Cast<APushCharacter>(OtherActor);
 
-	if (!ensure(character != nullptr))
+	if (character == nullptr)
 		return;
 
 	OverlappedCharacters.AddUnique(character);

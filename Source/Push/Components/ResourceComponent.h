@@ -13,6 +13,10 @@ class PUSH_API UResourceComponent : public UActorComponent
 public:
 	UResourceComponent();
 
+protected:
+	virtual void BeginPlay() override;
+
+public:
 	FORCEINLINE float GetHP() { return HP; }
 	FORCEINLINE float GetMaxHP() { return MaxHP; }
 
@@ -43,26 +47,39 @@ public:
 	void OffKillDeathUI();
 
 	// 2024_01_15 ¹®ÀÎ¼ö - Gold
-	UFUNCTION(Server, Reliable)
+	UFUNCTION(Server, Reliable, BlueprintCallable)
 		void SetGold_Server(int InValue);
 
 	UFUNCTION(NetMulticast, Reliable)
 		void SetGold_NMC(int InValue);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-		int GetGold();
+		int32 GetGold();
 
 	UFUNCTION(Server, Reliable, BlueprintCallable)
-		void AdjustGold_Server(int InValue);
+		void AdjustGold_Server(int32 InValue);
 
 	UFUNCTION(NetMulticast, Reliable)
-		void AdjustGold_NMC(int InValue);
+		void AdjustGold_NMC(int32 InValue);
 
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	// Kill, Death
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		int32 GetKill();
 
-protected:
-	virtual void BeginPlay() override;
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+		void AdjustKill_Server(int32 InValue);
 
+	UFUNCTION(NetMulticast, Reliable)
+		void AdjustKill_NMC(int32 InValue);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+		int32 GetDeath();
+
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+		void AdjustDeath_Server(int32 InValue);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void AdjustDeath_NMC(int32 InValue);
 
 private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
@@ -74,10 +91,21 @@ private:
 		float MaxHP = 100.0f;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
-		meta = (AllowPrivateAccess), Replicated)
+		meta = (AllowPrivateAccess))
 		int32 Gold = 0;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
+		meta = (AllowPrivateAccess))
+		int32 Kill = 0;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
+		meta = (AllowPrivateAccess))
+		int32 Death = 0;
+
+	class APushGameMode* PushGameMode;
 
 	UPROPERTY()
 	class AMainHUD* MainHUD;
 
+	TWeakObjectPtr<class APushCharacter> Owner;
 };

@@ -1,6 +1,5 @@
 #include "Push/GameState/PushGameState.h"
 #include "Net/UnrealNetwork.h"
-#include "Global.h"
 
 APushGameState::APushGameState()
 {

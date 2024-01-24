@@ -23,7 +23,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		class ATracePoint* TracePoint;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		bool bDecal = false;
 
 	UPROPERTY(VisibleAnywhere)

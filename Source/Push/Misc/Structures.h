@@ -117,13 +117,16 @@ public:
         FString PlayerName = TEXT("NNNNNN");
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-        int32 Kill_Death;
+        int32 Kill = 0;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+        int32 Death = 0;
 
     //UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
     //	FTexture Skill_Icon;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-        int32 Gold;
+        int32 Gold = 0;
 };
 
 UCLASS()

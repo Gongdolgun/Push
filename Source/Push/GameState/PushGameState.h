@@ -29,5 +29,4 @@ public:
 
     UFUNCTION()
 	void OnRep_TimeChanged();
-
 };

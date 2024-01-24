@@ -22,6 +22,11 @@ void UItemComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
+void UItemComponent::UseItem(TSubclassOf<AItemBase> ItemClass)
+{
+	UseItem_Server(ItemClass);
+}
+
 void UItemComponent::UseItem_Server_Implementation(TSubclassOf<AItemBase> ItemClass)
 {
 	UseItem_NMC(ItemClass);
@@ -32,6 +37,7 @@ void UItemComponent::UseItem_NMC_Implementation(TSubclassOf<AItemBase> ItemClass
 {
 	if (!Owner.IsValid() || !ItemClass)
 		return;
+
 
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
