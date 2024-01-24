@@ -113,9 +113,6 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     FVector launch = FVector(InHitData.xLaunchPower * direction.X, InHitData.xLaunchPower * direction.Y, InHitData.zLaunchPower);
 
-    CLog::Log(InAttacker->GetActorLocation());
-    CLog::Log(launch);
-
     if(ResourceComponent != nullptr)
     {
 		ResourceComponent->AdjustHP_Server(-InHitData.Damage);
@@ -146,6 +143,11 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
     {
         UGameplayStatics::SpawnSoundAtLocation(GetWorld(), InHitData.Sound, InHitData.Location);
     }
+}
+
+void APushCharacter::SetLocation_Implementation(FVector InLocation)
+{
+    SetActorLocation(InLocation);
 }
 
 void APushCharacter::Create_DynamicMaterial()
