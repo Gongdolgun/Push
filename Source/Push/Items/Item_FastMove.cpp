@@ -16,6 +16,7 @@ void AItem_FastMove::Tick(float DeltaTime)
 
 void AItem_FastMove::UseItem_Implementation()
 {
+	Super::UseItem_Implementation();
 	if (!Owner.IsValid())
 		return;
 	APlayerController* controller = Cast<APlayerController>(Owner->GetController());
@@ -28,3 +29,8 @@ void AItem_FastMove::UseItem_Implementation()
 		Destroy();
 	}
 }
+
+
+//void AItem_FastMove::UseItem_Implementation()
+//{
+//}

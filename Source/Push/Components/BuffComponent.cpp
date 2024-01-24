@@ -33,6 +33,7 @@ void UBuffComponent::BeginPlay()
 //버프 자료형을 집어넣으면 그에 따른 엑터를 생성후 OnEffect를 호출
 void UBuffComponent::AddBuff(TSubclassOf<ABuffInstance> BuffClass)
 {
+	CLog::Log("AddBuff_CallServer");
 	AddBuff_Server(BuffClass);
 }
 
@@ -56,7 +57,7 @@ void UBuffComponent::AddBuff_NMC_Implementation(TSubclassOf<ABuffInstance> BuffC
 	if (!Owner.Get() || !BuffClass)
 		return;
 
-	CLog::Log("AddBuff");
+	CLog::Log("AddBuff_NMC");
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
 

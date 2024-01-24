@@ -8,8 +8,9 @@ void AItem_DotItem::BeginPlay()
 
 }
 
-void AItem_DotItem::UseItem()
+void AItem_DotItem::UseItem_Implementation()
 {
+	Super::UseItem_Implementation();
 	if (Owner == nullptr)
 		return;
 
@@ -34,10 +35,5 @@ void AItem_DotItem::UseItem()
 		return;
 
 	//TODO : 2024.01.23 - 이부분에서 문제 () 
-	if (!!controller && controller->IsLocalController())
-	{
-		CLog::Log("Call AddBuff");
-		buffComponent->AddBuff(BuffClass);
-	}
+	buffComponent->AddBuff(BuffClass);
 }
-

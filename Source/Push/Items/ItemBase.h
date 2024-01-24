@@ -19,7 +19,8 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
-	virtual void UseItem(){};
+	UFUNCTION(Client, Reliable)
+		virtual void UseItem();
 
 public:
 	TWeakObjectPtr<ACharacter> Owner;
