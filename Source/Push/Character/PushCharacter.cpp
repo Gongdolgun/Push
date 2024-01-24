@@ -175,12 +175,8 @@ void APushCharacter::Change_Color(FLinearColor InColor)
 
 void APushCharacter::LaunchServer_Implementation(FVector InLaunch)
 {
-    LaunchNMC_Implementation(InLaunch);
-}
-
-void APushCharacter::LaunchNMC_Implementation(FVector InLaunch)
-{
     LaunchCharacter(InLaunch, false, false);
+    CLog::Log("LaunchCall");
 }
 
 void APushCharacter::Test()

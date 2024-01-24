@@ -78,9 +78,6 @@ public:
 	UFUNCTION(Server, Reliable)
 		void LaunchServer(FVector InLaunch);
 
-	UFUNCTION(NetMulticast, Reliable)
-		void LaunchNMC(FVector InLaunch);
-
 	// 2024_01_05 Material Change Àû¿ë
 	void Create_DynamicMaterial();
 	void Change_Color(FLinearColor InColor);
