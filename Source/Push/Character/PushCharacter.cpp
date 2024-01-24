@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PushCharacter.h"
+
+#include <GameFramework/PlayerStart.h>
+
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -118,7 +121,21 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(ResourceComponent != nullptr)
     {
-		ResourceComponent->AdjustHP_Server(-InHitData.Damage);
+        if (ResourceComponent->GetHP() <= 0.0f)
+        {
+            return;
+        }
+
+        if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
+        {
+            ResourceComponent->SetHP_Server(0.0f);
+            Ragdoll();
+            StateComponent->SetDeadMode();
+        }
+        else
+        {
+            ResourceComponent->AdjustHP_Server(-InHitData.Damage);
+        }
     }
 
     if(launch.X + launch.Y + launch.Z > 0.0f)
@@ -146,6 +163,11 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
     {
         UGameplayStatics::SpawnSoundAtLocation(GetWorld(), InHitData.Sound, InHitData.Location);
     }
+}
+
+void APushCharacter::SetLocation_Implementation(FVector InLocation)
+{
+    SetActorLocation(InLocation);
 }
 
 void APushCharacter::Create_DynamicMaterial()
@@ -219,6 +241,59 @@ void APushCharacter::OnRep_CustomPlayerName()
 
 }
 
+void APushCharacter::Ragdoll()
+{
+    if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision) return;
+
+    GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+    GetMesh()->SetCollisionProfileName("Ragdoll");
+    GetMesh()->SetSimulatePhysics(true);
+
+    FVector ImpulseDirection = GetActorRotation().Vector() * -1.0f;
+    ImpulseDirection.Normalize();
+
+    //충돌 세기
+    float ImpulseStrength = 5000.0f;
+
+    FVector FinalImpulse = ImpulseDirection * ImpulseStrength;
+
+    //GetMesh()->SetPhysicsLinearVelocity(FVector::ZeroVector);
+    GetMesh()->AddImpulseToAllBodiesBelow(FinalImpulse, NAME_None);
+
+
+    ////** 죽은 후 위치 랜덤으로 스폰
+    //FTimerHandle TimerHandle;
+    //GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &APushCharacter::SetSpawnPoint, 1.5f, false, 1.5f);
+}
+
+void APushCharacter::SetSpawnPoint()
+{
+    TArray<AActor*> temp;
+    UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
+
+    TArray<APlayerStart*> PlayerStarts;
+    for (auto Start : temp)
+    {
+        APlayerStart* startLoc = Cast<APlayerStart>(Start);
+        if (IsValid(startLoc))
+        {
+        	PlayerStarts.Add(startLoc);
+        }
+    }
+    if (PlayerStarts.Num() > 0)
+    {
+        TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
+        SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
+    }
+
+    // 분리된 capsule 다시 붙이기
+    GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+    // 기본 상태로 되돌림
+    StateComponent->SetIdleMode();
+}
+
 void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayerName)
 {
     CustomPlayerName = NewPlayerName;
@@ -237,5 +312,6 @@ void APushCharacter::BeginPlay()
 void APushCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+
 
 }
