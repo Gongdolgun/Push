@@ -23,5 +23,6 @@ void ABuffInstance_DotDamage::Active()
 	if (!resourceComponent)
 		return;
 
-	resourceComponent->AdjustHP(-Damage);
+	if(HasAuthority())	
+		resourceComponent->AdjustHP(-Damage);
 }

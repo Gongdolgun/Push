@@ -14,8 +14,7 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
-
-	virtual void UseItem()  override;
+	virtual void UseItem_Implementation() override;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "BuffClass")

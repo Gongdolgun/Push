@@ -13,9 +13,14 @@ public:
 	virtual void OffEffect() override;
 
 	UFUNCTION(Reliable, Server)
-		void Test_S();
+		void FreezeON_Server();
 	UFUNCTION(NetMulticast, Reliable)
-		void Test_N();
-private:
-	// class UAnimInstance_PushCharacter* AnimInstance;
+		void FreezeON_NMC();
+
+	UFUNCTION(Reliable, Server)
+		void FreezeOFF_Server();
+	UFUNCTION(NetMulticast, Reliable)
+		void FreezeOFF_NMC();
+
+
 };
