@@ -33,7 +33,6 @@ void UBuffComponent::BeginPlay()
 //버프 자료형을 집어넣으면 그에 따른 엑터를 생성후 OnEffect를 호출
 void UBuffComponent::AddBuff(TSubclassOf<ABuffInstance> BuffClass)
 {
-	CLog::Log("AddBuff_CallServer");
 	AddBuff_Server(BuffClass);
 }
 

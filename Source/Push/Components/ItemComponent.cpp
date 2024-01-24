@@ -2,7 +2,7 @@
 #include "Components/ItemComponent.h"
 #include "Items/ItemBase.h"
 #include "Global.h"
-#include "Items/Item_FastMove.h"
+#include "Items/Item_BuffSelf.h"
 
 UItemComponent::UItemComponent()
 {

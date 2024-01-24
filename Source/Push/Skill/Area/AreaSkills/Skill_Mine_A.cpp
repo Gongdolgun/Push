@@ -2,6 +2,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Global.h"
 #include "Buffs/BuffInstance.h"
+#include "Character/PushCharacter.h"
 #include "Components/BuffComponent.h"
 #include "Components/SkillComponent.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -57,6 +58,9 @@ void ASkill_Mine_A::OnActivateOverlap(UPrimitiveComponent* OverlappedComponent, 
 	if (!Cast<IDamageable>(OtherActor) || OtherActor->IsA(StaticClass()))
 		return;
 
+	
+
+	CLog::LogAndPrint(Cast<APushCharacter>(OtherActor)->CustomPlayerName);
 	ActivationCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	//DelayTime이후 ActiveExplosion함수(폭발 이펙트와 판정) 호출
 	FTimerHandle tempTimer;
