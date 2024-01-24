@@ -10,6 +10,6 @@ class PUSH_API UWDG_EffectBase : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintImplementableEvent)
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 		void PlayEffect();
 };

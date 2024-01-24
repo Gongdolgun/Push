@@ -5,10 +5,22 @@
 #include "Widgets/KillDeathUI.h"
 #include "Net/UnrealNetwork.h"
 #include "Global.h"
+#include "GameMode/PushGameMode.h"
 #include "Widgets/MainUI.h"
 
 UResourceComponent::UResourceComponent()
 {
+
+}
+
+void UResourceComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	Owner = Cast<APushCharacter>(GetOwner());
+	if (Owner.IsValid() == false) return;
+
+	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(Owner->GetWorld()));
 }
 
 void UResourceComponent::SetHP_Server_Implementation(float hp)
@@ -52,7 +64,6 @@ void UResourceComponent::AdjustHP(int InValue)
 
 void UResourceComponent::OnKillDeathUI()
 {
-	TWeakObjectPtr<APushCharacter> Owner = Cast<APushCharacter>(GetOwner());
 	TWeakObjectPtr<APushPlayerController> playerController = Cast<APushPlayerController>(Owner->GetController());
 
 	if (false == playerController.IsValid()) return;
@@ -69,7 +80,6 @@ void UResourceComponent::OnKillDeathUI()
 
 void UResourceComponent::OffKillDeathUI()
 {
-	TWeakObjectPtr<APushCharacter> Owner = Cast<APushCharacter>(GetOwner());
 	TWeakObjectPtr<APushPlayerController> playerController = Cast<APushPlayerController>(Owner->GetController());
 
 	if (false == playerController.IsValid()) return;
@@ -110,20 +120,49 @@ void UResourceComponent::AdjustGold_NMC_Implementation(int InValue)
 	// 골드제한 할거면 Clamp 추가
 	Gold += InValue;
 
-	CLog::Log(Gold);
+	// 위젯 업데이트
+	if (PushGameMode)
+		PushGameMode->UpdatePlayerList();
 }
 
-
-void UResourceComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+int UResourceComponent::GetKill()
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(UResourceComponent, Gold);
+	return Kill;
 }
 
-void UResourceComponent::BeginPlay()
+void UResourceComponent::AdjustKill_Server_Implementation(int32 InValue)
 {
-	Super::BeginPlay();
-
-
+	AdjustKill_NMC(InValue);
 }
+
+void UResourceComponent::AdjustKill_NMC_Implementation(int32 InValue)
+{
+	if (InValue <= 0) return;
+
+	Kill += InValue;
+
+	if (PushGameMode)
+		PushGameMode->UpdatePlayerList();
+}
+
+int UResourceComponent::GetDeath()
+{
+	return Death;
+}
+
+void UResourceComponent::AdjustDeath_Server_Implementation(int32 InValue)
+{
+	AdjustDeath_NMC(InValue);
+}
+
+void UResourceComponent::AdjustDeath_NMC_Implementation(int32 InValue)
+{
+	if (InValue <= 0) return;
+
+	Death += InValue;
+
+	if (PushGameMode)
+		PushGameMode->UpdatePlayerList();
+}
+
+
