@@ -8,8 +8,9 @@ void AItem_DotItem::BeginPlay()
 
 }
 
-void AItem_DotItem::UseItem()
+void AItem_DotItem::UseItem_Implementation()
 {
+	Super::UseItem_Implementation();
 	if (Owner == nullptr)
 		return;
 
@@ -23,12 +24,16 @@ void AItem_DotItem::UseItem()
 	if (!result.bBlockingHit)
 		return;
 
-	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(result.Actor.Get());
+	APlayerController* controller = Cast<APlayerController>(Owner->GetController());
+
+	ACharacter* character = Cast<ACharacter>(result.Actor);
+	if (!character)
+		return;
+	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(character);
 
 	if (!buffComponent)
 		return;
 
-	CLog::Log("DebugTest");
+	//TODO : 2024.01.23 - 이부분에서 문제 () 
 	buffComponent->AddBuff(BuffClass);
 }
-

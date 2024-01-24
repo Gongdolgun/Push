@@ -31,18 +31,20 @@ void ABuffInstance::BeginPlay()
 	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
 	if (!controller || !buffComponent)
 		return;
-	/*if (!controller->IsLocalController())
-		return;*/
 	if (HasAuthority())
 		return;
-	//滚橇 困连 积己
-	Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->GetBuffCount()+1);
-	Widget->SetBuffUI(UIImage, &PlayTime, &LifeTime);
-	Widget->AddToViewport();
 
-	buffComponent->Widget->AddBuff(Widget);
 
-	OnEffect();
+	if (controller->IsLocalController())
+	{
+		//滚橇 困连 积己
+		Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->GetBuffCount() + 1);
+		Widget->SetBuffUI(UIImage, &PlayTime, &LifeTime);
+		Widget->AddToViewport();
+
+		buffComponent->Widget->AddBuff(Widget);
+		OnEffect();
+	}
 }
 
 void ABuffInstance::Tick(float DeltaSeconds)
@@ -67,10 +69,26 @@ void ABuffInstance::Tick(float DeltaSeconds)
 			return;
 		}
 		buffComponent->RemoveBuff(this);
-		OffEffect();
 
-		if (!!Widget)
-			Widget->RemoveFromParent();
-		Destroy();
+
+		APlayerController* controller = Cast<APlayerController>(Owner->GetController());
+		if (!HasAuthority())
+		{
+			if (!!controller && controller->IsLocalController())
+			{
+				if (!!Widget)
+					Widget->RemoveFromParent();
+				OffEffect();
+				Destroy();
+				DestroySelf_Server();
+			}
+			else
+				Destroy();
+		}
 	}
+}
+
+void ABuffInstance::DestroySelf_Server_Implementation()
+{
+	Destroy();
 }

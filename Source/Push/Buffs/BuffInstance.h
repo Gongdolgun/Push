@@ -25,6 +25,8 @@ public:
 	UFUNCTION()
 		virtual void OffEffect(){}
 
+	UFUNCTION(Reliable, Server)
+		virtual void DestroySelf_Server();
 protected:
 	TWeakObjectPtr<ACharacter> Owner = nullptr;
 
@@ -34,8 +36,7 @@ protected:
 	UPROPERTY()
 		TSubclassOf<class UWDG_Buff> WidgetClass;
 
-	UPROPERTY()
-		class UWDG_Buff* Widget;
+	class UWDG_Buff* Widget;
 
 	UPROPERTY(EditAnywhere)
 		float LifeTime;

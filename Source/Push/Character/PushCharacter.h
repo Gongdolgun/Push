@@ -81,6 +81,10 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void LaunchNMC(FVector InLaunch);
 
+	// 2024_01_23 캐릭터 위치 변경 _이민학
+	UFUNCTION(Server, Reliable)
+		void SetLocation(FVector InLocation);
+
 	// 2024_01_05 Material Change 적용
 	void Create_DynamicMaterial();
 	void Change_Color(FLinearColor InColor);
@@ -107,7 +111,7 @@ public:
 	UFUNCTION()
 		void OnRep_CustomPlayerName();
 
-
 	void Ragdoll();
+	void SetSpawnPoint();
 };
 

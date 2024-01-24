@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PushCharacter.h"
+
+#include <GameFramework/PlayerStart.h>
+
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -115,20 +118,20 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(ResourceComponent != nullptr)
     {
-        if(ResourceComponent->GetHP() <= 0.0f)
+        if (ResourceComponent->GetHP() <= 0.0f)
         {
             return;
         }
 
-        if(ResourceComponent->GetHP() - InHitData.Damage <= 0)
+        if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
         {
             ResourceComponent->SetHP_Server(0.0f);
-            StateComponent->SetDeadMode();
             Ragdoll();
+            StateComponent->SetDeadMode();
         }
         else
         {
-            ResourceComponent->AdjustHP_Server(-InHitData.Damage);	        
+            ResourceComponent->AdjustHP_Server(-InHitData.Damage);
         }
     }
 
@@ -157,6 +160,11 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
     {
         UGameplayStatics::SpawnSoundAtLocation(GetWorld(), InHitData.Sound, InHitData.Location);
     }
+}
+
+void APushCharacter::SetLocation_Implementation(FVector InLocation)
+{
+    SetActorLocation(InLocation);
 }
 
 void APushCharacter::Create_DynamicMaterial()
@@ -249,6 +257,38 @@ void APushCharacter::Ragdoll()
 
     //GetMesh()->SetPhysicsLinearVelocity(FVector::ZeroVector);
     GetMesh()->AddImpulseToAllBodiesBelow(FinalImpulse, NAME_None);
+
+
+    ////** 죽은 후 위치 랜덤으로 스폰
+    //FTimerHandle TimerHandle;
+    //GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &APushCharacter::SetSpawnPoint, 1.5f, false, 1.5f);
+}
+
+void APushCharacter::SetSpawnPoint()
+{
+    TArray<AActor*> temp;
+    UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
+
+    TArray<APlayerStart*> PlayerStarts;
+    for (auto Start : temp)
+    {
+        APlayerStart* startLoc = Cast<APlayerStart>(Start);
+        if (IsValid(startLoc))
+        {
+        	PlayerStarts.Add(startLoc);
+        }
+    }
+    if (PlayerStarts.Num() > 0)
+    {
+        TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
+        SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
+    }
+
+    // 분리된 capsule 다시 붙이기
+    GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+    // 기본 상태로 되돌림
+    StateComponent->SetIdleMode();
 }
 
 void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayerName)
@@ -269,5 +309,6 @@ void APushCharacter::BeginPlay()
 void APushCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+
 
 }
