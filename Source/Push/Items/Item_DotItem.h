@@ -12,7 +12,7 @@ class PUSH_API AItem_DotItem : public AItemBase
 public:
 	virtual void BeginPlay() override;
 
-	virtual void UseItem()  override;
+	virtual void UseItem_Implementation() override;
 
 
 private:

@@ -43,8 +43,6 @@ void APushPlayerController::BeginPlay()
 
 	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
-	if (PushGameMode)
-		PushGameMode->UpdatePlayerList();
 }
 
 void APushPlayerController::Tick(float DeltaSeconds)
@@ -60,6 +58,7 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
 	resourceComponent = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
+
 }
 
 void APushPlayerController::ClientCheckMatchState_Implementation()
@@ -133,22 +132,11 @@ void APushPlayerController::UpdatePlayerList_Server_Implementation(const TArray<
 void APushPlayerController::UpdatePlayerList_NMC_Implementation(const TArray<FPlayerList>& PlayerList)
 {
 	if (MainHUD == nullptr) return;
-	//if (MainHUD->GetWidget<UKillDeathUI>("LeaderBoard") == nullptr) return;
+	if (MainHUD->GetWidget<UKillDeathUI>("LeaderBoard") == nullptr) return;
 
 	// 정상적으로 호출이 되었으면, PlayerList Update
-	if (MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard")) != nullptr)
-	{
-		MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->UpdatePlayerList(PlayerList);
-	}
-	// 리더보드가 인식이 되지 않았으면 잠시 뒤에 다시 호출
-	else
-	{
-		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this, PlayerList]()
-		{
-			MainHUD->GetWidget<UKillDeathUI>(TEXT("LeaderBoard"))->UpdatePlayerList(PlayerList);
-		}, 0.2f, false);
-	}
+	MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->UpdatePlayerList(PlayerList);
+
 }
 
 void APushPlayerController::OnRep_MatchState()

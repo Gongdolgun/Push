@@ -20,7 +20,13 @@ void ABuffInstance_FastMove::OnEffect()
 
 void ABuffInstance_FastMove::OffEffect()
 {
+	APlayerController* controller = Cast<APlayerController>(Owner->GetController());
+	if (!controller || !controller->IsLocalController())
+		return;
+
 	UMoveComponent* moveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
+
+	CLog::Log("OffEffect_FastMove");
 
 	if (!moveComponent)
 		return;

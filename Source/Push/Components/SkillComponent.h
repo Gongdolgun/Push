@@ -3,6 +3,7 @@
 #include "Components/ActorComponent.h"
 #include "SkillComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCoolDown);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PUSH_API USkillComponent : public UActorComponent
@@ -50,4 +51,8 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 		void SetCurSkillData_NMC(TSubclassOf<class USkillData> SkillData);
+
+public:
+	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
+		FOnCoolDown OnCoolDown;
 };

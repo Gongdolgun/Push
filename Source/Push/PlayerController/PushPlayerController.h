@@ -19,11 +19,11 @@ public:
 	virtual void OnPossess(APawn* InPawn) override; // possed된 Pawn에 접근하는 함수
 
 	void OnMatchStateSet(FName State);
-	
+
 	void SetHUDTime();
 
 	// 24_01_16 문인수
-	// 플레이어 리스트 클라이언트에서 업데이트
+	// 플레이어 리스트 업데이트, 게임모드에서 호출
 	UFUNCTION(Server, Reliable)
 		void UpdatePlayerList_Server(const TArray<FPlayerList>& PlayerList);
 

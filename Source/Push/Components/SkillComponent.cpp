@@ -79,5 +79,7 @@ void USkillComponent::SetCurSkillData_NMC_Implementation(TSubclassOf<class USkil
 	}
 
 	Execute();
+
+	if (OnCoolDown.IsBound() == true)	OnCoolDown.Broadcast();
 }
 

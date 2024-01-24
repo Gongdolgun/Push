@@ -176,6 +176,8 @@ void APushGameMode::UpdatePlayerList()
 
 					PlayerData.PlayerName = pushCharacter->CustomPlayerName;
 					PlayerData.Gold = resource->GetGold();
+					PlayerData.Kill = resource->GetKill();
+					PlayerData.Death = resource->GetDeath();
 
 					PlayerListData.Add(PlayerData);
 				}
