@@ -29,4 +29,14 @@ public:
 
     UFUNCTION()
 	void OnRep_TimeChanged();
+
+
+public:
+	UFUNCTION(Server, Reliable)
+		void AddToRank_Server(class APushPlayerController* InController);
+
+	void GiveGold(TArray<int32> InGoldAmount);
+
+	UPROPERTY(VisibleAnywhere, Replicated)
+		TArray<class APushPlayerController*> RoundRank;
 };

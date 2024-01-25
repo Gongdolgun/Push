@@ -78,9 +78,6 @@ public:
 	UFUNCTION(Server, Reliable)
 		void LaunchServer(FVector InLaunch);
 
-	UFUNCTION(NetMulticast, Reliable)
-		void LaunchNMC(FVector InLaunch);
-
 	// 2024_01_23 캐릭터 위치 변경 _이민학
 	UFUNCTION(Server, Reliable)
 		void SetLocation(FVector InLocation);
