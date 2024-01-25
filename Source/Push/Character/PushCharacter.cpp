@@ -257,15 +257,24 @@ void APushCharacter::Ragdoll()
 
     //GetMesh()->SetPhysicsLinearVelocity(FVector::ZeroVector);
     GetMesh()->AddImpulseToAllBodiesBelow(FinalImpulse, NAME_None);
-
-
-    ////** 죽은 후 위치 랜덤으로 스폰
-    //FTimerHandle TimerHandle;
-    //GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &APushCharacter::SetSpawnPoint, 1.5f, false, 1.5f);
+    
 }
 
-void APushCharacter::SetSpawnPoint()
+void APushCharacter::SetSpawnPoint() // PlayerStart 여러개 중 랜덤으로 스폰
 {
+    // Ragdoll로 분리된 경우 capsule 다시 붙이기
+    if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
+    {
+        GetMesh()->AttachTo(GetCapsuleComponent(), NAME_None, EAttachLocation::Type::SnapToTargetIncludingScale, true);
+        GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.f, -90.f, 0.f));
+    	/*
+        GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+        GetMesh()->SetCollisionProfileName("PhysicsActor");*/
+    }
+
+    StateComponent->SetIdleMode(); // 기본 상태로 되돌림
+    //ResourceComponent->SetHP_Server(100.0f); // HP 100으로 설정
+
     TArray<AActor*> temp;
     UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
 
@@ -284,11 +293,6 @@ void APushCharacter::SetSpawnPoint()
         SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
     }
 
-    // 분리된 capsule 다시 붙이기
-    GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-
-    // 기본 상태로 되돌림
-    StateComponent->SetIdleMode();
 }
 
 void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayerName)

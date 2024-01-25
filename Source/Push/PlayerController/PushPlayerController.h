@@ -33,6 +33,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		class APushGameMode* PushGameMode;
 
+	class APushCharacter* pushCharacter;
+
 protected:
 	virtual void BeginPlay() override;
 

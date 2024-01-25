@@ -1,4 +1,6 @@
 ﻿#include "Push/PlayerController/PushPlayerController.h"
+
+#include <GameFramework/CharacterMovementComponent.h>
 #include "HUD/MainHUD.h"
 #include "GameMode/PushGameMode.h"
 #include "Global.h"
@@ -12,6 +14,7 @@
 #include "Widgets/KillDeathUI.h"
 #include "Widgets/LeaderBoard_List.h"
 #include "Widgets/StoreUI.h"
+#include "Components/MoveComponent.h"
 
 void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -42,7 +45,7 @@ void APushPlayerController::BeginPlay()
 	ClientCheckMatchState();
 
 	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-
+	pushCharacter = Cast<APushCharacter>(GetPawn());
 }
 
 void APushPlayerController::Tick(float DeltaSeconds)
@@ -75,6 +78,7 @@ void APushPlayerController::ClientCheckMatchState_Implementation()
 
 		OnMatchStateSet(MatchState);
 	}
+
 }
 
 void APushPlayerController::OnMatchStateSet(FName State)
@@ -145,5 +149,22 @@ void APushPlayerController::OnRep_MatchState()
 	{
 		tempTime = GetWorld()->GetTimeSeconds();
 	}
-	
+
+	// 상점,결과시간 시 캐릭터 멈추고 스킬시전X, 라운드 시 캐릭터 움직임+스킬O
+	if (MatchState == MatchState::InProgress)
+	{
+		pushCharacter->MoveComponent->Stop();
+		pushCharacter->bCanMove = false;
+		pushCharacter->SetSpawnPoint();
+	}
+	else if (MatchState == MatchState::Round)
+	{
+		pushCharacter->MoveComponent->Move();
+		pushCharacter->bCanMove = true;
+	}
+	else if (MatchState == MatchState::Result)
+	{
+		pushCharacter->MoveComponent->Stop();
+		pushCharacter->bCanMove = false;
+	}
 }

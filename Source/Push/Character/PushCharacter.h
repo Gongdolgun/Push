@@ -74,6 +74,9 @@ public:
 	/*UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* ItemSlots;*/
 
+	UPROPERTY(BlueprintReadOnly)
+		bool bCanMove;
+
 public:
 	UFUNCTION(Server, Reliable)
 		void LaunchServer(FVector InLaunch);
