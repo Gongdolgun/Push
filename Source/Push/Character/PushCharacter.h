@@ -113,5 +113,7 @@ public:
 
 	void Ragdoll();
 	void SetSpawnPoint();
+
+	void ShowKillLog(AActor* InAttacker);
 };
 

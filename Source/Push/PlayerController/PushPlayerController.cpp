@@ -11,6 +11,7 @@
 #include "GameState/PushGameState.h"
 #include "Widgets/KillDeathUI.h"
 #include "Widgets/LeaderBoard_List.h"
+#include "Widgets/MainUI.h"
 #include "Widgets/StoreUI.h"
 
 void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -137,6 +138,21 @@ void APushPlayerController::UpdatePlayerList_NMC_Implementation(const TArray<FPl
 	// 정상적으로 호출이 되었으면, PlayerList Update
 	MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->UpdatePlayerList(PlayerList);
 
+}
+
+void APushPlayerController::ShowKillLog_Server_Implementation(const FString& InKillPlayer, const FString& InDeadPlayer)
+{
+	ShowKillLog_NMC(InKillPlayer, InDeadPlayer);
+}
+
+void APushPlayerController::ShowKillLog_NMC_Implementation(const FString& InKillPlayer, const FString& InDeadPlayer)
+{
+	if (MainHUD == nullptr) return;
+
+	if (MainHUD->CheckWidget("Main"))
+	{
+		MainHUD->GetWidget<UMainUI>("Main")->Add_KillFeed(InKillPlayer, InDeadPlayer);
+	}
 }
 
 void APushPlayerController::OnRep_MatchState()

@@ -16,7 +16,7 @@
 
 namespace MatchState
 {
-	const FName Round = FName("Round"); 
+	const FName Round = FName("Round");
 }
 
 namespace MatchState
@@ -27,7 +27,7 @@ namespace MatchState
 APushGameMode::APushGameMode()
 {
 	bDelayedStart = true; // 캐릭터가 시작부터 끝까지 계속 스폰되어 있어야하므로 MatchState::WaitingToStart를 없애고 bDelayedStart = true로 변경하였다.
-	
+
 }
 
 void APushGameMode::BeginPlay()
@@ -38,7 +38,7 @@ void APushGameMode::BeginPlay()
 
 	APushGameState* pushGameState = Cast<APushGameState>(GameState);
 
-	if(pushGameState == nullptr){ // 예외처리
+	if (pushGameState == nullptr) { // 예외처리
 		CLog::Log("pushGameState == nullptr !!");
 		return;
 	}
@@ -87,7 +87,7 @@ void APushGameMode::Tick(float DeltaSeconds)
 	{
 		// 대기시간 - 현재 시간 + 게임레벨맵에 들어간 시간 + 설정한 경기시간 + 설정한 결과발표시간
 		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime + tempTime;
-		if (CountdownTime <= 0.0f) 
+		if (CountdownTime <= 0.0f)
 		{
 			tempTime = GetWorld()->GetTimeSeconds();
 			SetMatchState(MatchState::InProgress);
@@ -114,7 +114,7 @@ void APushGameMode::OnMatchStateSet()
 void APushGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-	
+
 	APushPlayerController* controller = Cast<APushPlayerController>(NewPlayer);
 
 	if (controller == nullptr)
@@ -129,7 +129,7 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 
 	CLog::Log("Post Login In the Game");
-	
+
 
 	character->BodyColor = Colors[index++];
 
@@ -158,30 +158,22 @@ void APushGameMode::UpdatePlayerList()
 		{
 			APushPlayerController* pushController = Cast<APushPlayerController>(playerContrller);
 			APawn* pawn = playerContrller->GetPawn();
-			// 업데이트가 제대로 안되고 게임이 시작할 경우가 생겨서 0.2초뒤에 다시 함수 실행
-			if (!pawn)
+
+			// Lobby에서 입력된 이름인 CustomPlayerName이 출력되도록 변경
+			APushCharacter* pushCharacter = Cast<APushCharacter>(pawn);
+			if (pushCharacter)
 			{
-				FTimerHandle TimerHandle;
-				GetWorld()->GetTimerManager().SetTimer(
-					TimerHandle, this, &APushGameMode::UpdatePlayerList, 0.2f, false);
+				UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(pushCharacter);
+
+				PlayerData.PlayerName = pushCharacter->CustomPlayerName;
+				PlayerData.Gold = resource->GetGold();
+				PlayerData.Kill = resource->GetKill();
+				PlayerData.Death = resource->GetDeath();
+
+				PlayerListData.Add(PlayerData);
+
 			}
 
-			else
-			{
-				// Lobby에서 입력된 이름인 CustomPlayerName이 출력되도록 변경
-				APushCharacter* pushCharacter = Cast<APushCharacter>(pawn);
-				if (pushCharacter)
-				{
-					UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(pushCharacter);
-
-					PlayerData.PlayerName = pushCharacter->CustomPlayerName;
-					PlayerData.Gold = resource->GetGold();
-					PlayerData.Kill = resource->GetKill();
-					PlayerData.Death = resource->GetDeath();
-
-					PlayerListData.Add(PlayerData);
-				}
-			}
 		}
 	}
 
@@ -191,6 +183,8 @@ void APushGameMode::UpdatePlayerList()
 		APushPlayerController* pushPlayerController = Cast<APushPlayerController>(playerController);
 
 		if (pushPlayerController)
+		{
 			pushPlayerController->UpdatePlayerList_Server(PlayerListData);
+		}
 	}
 }

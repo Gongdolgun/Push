@@ -14,6 +14,9 @@ public:
 		void OpenStoreUI();
 		void OpenStoreUI_Implementation();
 
+	UFUNCTION(BlueprintNativeEvent)
+		void Add_KillFeed(const FString& InKillPlayer, const FString& InDeadPlayer);
+
 public:
 	void GetSkillSlots();
 };

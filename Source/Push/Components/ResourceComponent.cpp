@@ -65,7 +65,6 @@ void UResourceComponent::AdjustHP(int InValue)
 void UResourceComponent::OnKillDeathUI()
 {
 	TWeakObjectPtr<APushPlayerController> playerController = Cast<APushPlayerController>(Owner->GetController());
-
 	if (false == playerController.IsValid()) return;
 
 	MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(playerController->GetHUD()) : MainHUD;
@@ -163,6 +162,29 @@ void UResourceComponent::AdjustDeath_NMC_Implementation(int32 InValue)
 
 	if (PushGameMode)
 		PushGameMode->UpdatePlayerList();
+}
+
+void UResourceComponent::ShowKillLog(AActor* InAttack, APushCharacter* InHitted)
+{
+	if (!InAttack || !InAttack->GetOwner()) return;
+
+	APushCharacter* killPlayer = Cast<APushCharacter>(InAttack->GetOwner());
+
+	FString killerName = killPlayer->CustomPlayerName;
+	FString deadName = InHitted->CustomPlayerName;
+
+	TArray<AActor*> PlayerControllers;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APushPlayerController::StaticClass(), PlayerControllers);
+
+	for (AActor* Actor : PlayerControllers)
+	{
+		APushPlayerController* PlayerController = Cast<APushPlayerController>(Actor);
+		if (PlayerController)
+		{
+			PlayerController->ShowKillLog_NMC(killerName, deadName);
+		}
+	}
+	
 }
 
 

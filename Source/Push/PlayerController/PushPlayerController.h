@@ -33,6 +33,12 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		class APushGameMode* PushGameMode;
 
+	UFUNCTION(Server, Reliable)
+		void ShowKillLog_Server(const FString& InKillPlayer, const FString& InDeadPlayer);
+
+	UFUNCTION(NetMulticast, Reliable)
+		void ShowKillLog_NMC(const FString& InKillPlayer, const FString& InDeadPlayer);
+
 protected:
 	virtual void BeginPlay() override;
 

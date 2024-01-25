@@ -24,6 +24,7 @@
 #include "Components/StateComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameInstance/PushGameInstance.h"
+#include "GameMode/PushGameMode.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "Widgets/SkillSlots.h"
@@ -111,6 +112,9 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 {
+    // 킬 로그 출력
+    ResourceComponent->ShowKillLog(InAttacker, this);
+    
     FVector direction = GetActorLocation() - InAttacker->GetActorLocation();
     direction = direction.GetSafeNormal();
 
@@ -179,7 +183,7 @@ void APushCharacter::Create_DynamicMaterial()
 
 void APushCharacter::Change_Color(FLinearColor InColor)
 {
-    CLog::Print("ChangeColor");
+    //CLog::Print("ChangeColor");
     for(UMaterialInterface* material : this->GetMesh()->GetMaterials())
     {
         UMaterialInstanceDynamic* MaterialDynamic = Cast<UMaterialInstanceDynamic>(material);
@@ -289,6 +293,31 @@ void APushCharacter::SetSpawnPoint()
 
     // 기본 상태로 되돌림
     StateComponent->SetIdleMode();
+}
+
+void APushCharacter::ShowKillLog(AActor* InAttacker)
+{
+    if (!InAttacker || !InAttacker->GetOwner()) return;
+
+    APushCharacter* Attacker = Cast<APushCharacter>(InAttacker->GetOwner());
+    FString AttackerName = Attacker->CustomPlayerName;
+
+    if (Attacker)
+    {
+        CLog::Print(AttackerName);
+
+        TArray<AActor*> PlayerControllers;
+        UGameplayStatics::GetAllActorsOfClass(GetWorld(), APushPlayerController::StaticClass(), PlayerControllers);
+
+        for (AActor* Actor : PlayerControllers)
+        {
+            APushPlayerController* PlayerController = Cast<APushPlayerController>(Actor);
+            if (PlayerController)
+            {
+                PlayerController->ShowKillLog_NMC(AttackerName, CustomPlayerName);
+            }
+        }
+    }
 }
 
 void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayerName)
