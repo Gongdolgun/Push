@@ -13,6 +13,7 @@
 #include "Components/ResourceComponent.h"
 #include "Widgets/StoreUI.h"
 #include "Objects/Ring.h"
+#include "Components/MoveComponent.h"
 
 namespace MatchState
 {
@@ -36,6 +37,7 @@ void APushGameMode::BeginPlay()
 
 	tempTime = GetWorld()->GetTimeSeconds();
 	CountdownTime = WarmupTime;
+	CurrentTime = 0.0f;
 
 	PushGameState = Cast<APushGameState>(GameState);
 
@@ -58,7 +60,7 @@ void APushGameMode::BeginPlay()
 void APushGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
+	PushGameState->SetTime(CurrentTime);
 	if (MatchState == MatchState::InProgress) // 상점
 	{
 		CurrentTime = (CountdownTime - (GetWorld()->GetTimeSeconds() - tempTime));
@@ -67,7 +69,6 @@ void APushGameMode::Tick(float DeltaSeconds)
 			CountdownTime = RoundTime[Round];
 			tempTime = GetWorld()->GetTimeSeconds();
 			SetMatchState(MatchState::Round);
-			OnMatchStateSet();
 		}
 	}
 	else if (MatchState == MatchState::Round) // 라운드s
@@ -81,7 +82,6 @@ void APushGameMode::Tick(float DeltaSeconds)
 				CountdownTime = ResultTime;
 				Round = 0;
 				SetMatchState(MatchState::Result); // 결과발표
-				OnMatchStateSet();
 			}
 			else
 			{
@@ -90,7 +90,6 @@ void APushGameMode::Tick(float DeltaSeconds)
 
 				CountdownTime = RoundTime[++Round];
 				tempTime = GetWorld()->GetTimeSeconds();
-				OnMatchStateSet();
 			}
 		}
 	}
@@ -102,28 +101,6 @@ void APushGameMode::Tick(float DeltaSeconds)
 			tempTime = GetWorld()->GetTimeSeconds();
 			CountdownTime = WarmupTime;
 			SetMatchState(MatchState::InProgress);
-			OnMatchStateSet();
-		}
-	}
-}
-
-void APushGameMode::OnMatchStateSet()
-{
-	Super::OnMatchStateSet();
-
-	// GameState에 시간동기화
-	if (IsValid(PushGameState))
-	{
-		PushGameState->SetTime(CountdownTime, tempTime);
-	}
-
-	// GameMode의 MatchState이 변경되면 서버에서 해당되는 PlayerController를 찾아 MatchState을 설정한다.
-	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-	{
-		TWeakObjectPtr<APushPlayerController> SelectedPlayer = Cast<APushPlayerController>(*It);
-		if (SelectedPlayer.IsValid())
-		{
-			SelectedPlayer->OnMatchStateSet_Client(MatchState);
 		}
 	}
 }

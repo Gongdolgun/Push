@@ -13,17 +13,11 @@ public:
 	APushGameState();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	UPROPERTY(ReplicatedUsing = OnRep_TimeChanged)
-	float TempTime;
-	UPROPERTY(ReplicatedUsing = OnRep_TimeChanged)
-	float CountdownTime;
+	UPROPERTY(Replicated)
+	float CurrentTime;
 
     UFUNCTION()
-	void SetTime(float cdTime, float tmTime);
-
-    UFUNCTION()
-	void OnRep_TimeChanged();
-
+	void SetTime(float InTime);
 
 public:
 	UFUNCTION(Server, Reliable)

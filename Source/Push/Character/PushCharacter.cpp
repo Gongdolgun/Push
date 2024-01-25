@@ -260,20 +260,22 @@ void APushCharacter::Ragdoll()
     
 }
 
-void APushCharacter::SetSpawnPoint() // PlayerStart 여러개 중 랜덤으로 스폰
+void APushCharacter::SetSpawnPoint_Implementation()
 {
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
         GetMesh()->AttachTo(GetCapsuleComponent(), NAME_None, EAttachLocation::Type::SnapToTargetIncludingScale, true);
         GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.f, -90.f, 0.f));
-    	/*
+    	
+        //GetMesh()->SetCollisionProfileName("PhysicsActor");
+        //GetMesh()->SetSimulatePhysics(false);
+        GetMesh()->SetAllBodiesSimulatePhysics(false);
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-        GetMesh()->SetCollisionProfileName("PhysicsActor");*/
     }
 
     StateComponent->SetIdleMode(); // 기본 상태로 되돌림
-    //ResourceComponent->SetHP_Server(100.0f); // HP 100으로 설정
+    ResourceComponent->SetHP_Server(100.0f); // HP 100으로 설정
 
     TArray<AActor*> temp;
     UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);

@@ -14,14 +14,11 @@ class PUSH_API APushPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
-	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void OnPossess(APawn* InPawn) override; // possed된 Pawn에 접근하는 함수
 
-	UFUNCTION(Client, Reliable)
-	void OnMatchStateSet_Client(FName State);
-
 	void SetHUDTime();
+	void UpdateCharacterMovement(const FName& matchState);
 
 	// 24_01_16 문인수
 	// 플레이어 리스트 업데이트, 게임모드에서 호출
@@ -39,9 +36,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UFUNCTION(Client, Reliable) // Client RPC
-		void ClientCheckMatchState(); // Client가 게임에 들어왔을때 Client에게 MatchState을 알리는 함수
-
 private:
 	UPROPERTY()
 		class APushGameState* GameState;
@@ -51,16 +45,13 @@ private:
 		class UResourceComponent* resourceComponent;
 
 	float CurrentTime; // 게임레벨맵에 들어간 시간
-	float CountdownTime;
-	float tempTime;
+	
+	FName MatchState;
 
-	UPROPERTY(ReplicatedUsing = OnRep_MatchState)
-		FName MatchState;
-
-	UFUNCTION()
-		void OnRep_MatchState();
+	bool bEnableSpawn = true;
 
 public:
 	float HUDHealth;
 	float HUDMaxHealth;
+	float TimeLeft;
 };

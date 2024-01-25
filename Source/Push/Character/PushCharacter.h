@@ -115,6 +115,8 @@ public:
 		void OnRep_CustomPlayerName();
 
 	void Ragdoll();
-	void SetSpawnPoint();
+
+	UFUNCTION(Server, Reliable)
+		void SetSpawnPoint();
 };
 

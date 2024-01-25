@@ -7,26 +7,20 @@
 
 APushGameState::APushGameState()
 {
+	CurrentTime = 0.0f;
 }
 
 void APushGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(APushGameState, TempTime);
-	DOREPLIFETIME(APushGameState, CountdownTime);
+	DOREPLIFETIME(APushGameState, CurrentTime);
 	DOREPLIFETIME(APushGameState, RoundRank);
 }
 
-void APushGameState::SetTime(float cdTime, float tmTime)
+void APushGameState::SetTime(float InTime)
 {
-	CountdownTime = cdTime;
-	TempTime = tmTime;
-}
-
-void APushGameState::OnRep_TimeChanged()
-{
-	
+	CurrentTime = InTime;
 }
 
 void APushGameState::GiveGold(TArray<int32> InGoldAmount)
