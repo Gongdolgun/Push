@@ -1,6 +1,4 @@
 ﻿#include "Push/PlayerController/PushPlayerController.h"
-
-#include <GameFramework/CharacterMovementComponent.h>
 #include "HUD/MainHUD.h"
 #include "GameMode/PushGameMode.h"
 #include "Global.h"
@@ -42,9 +40,8 @@ void APushPlayerController::BeginPlay()
 			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
 	}
 
-	ClientCheckMatchState();
-
 	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	GameState = Cast<APushGameState>(UGameplayStatics::GetGameState(this));
 	pushCharacter = Cast<APushCharacter>(GetPawn());
 }
 
@@ -61,29 +58,32 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
 	resourceComponent = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
-
 }
 
 void APushPlayerController::ClientCheckMatchState_Implementation()
 {
-	GameState = Cast<APushGameState>(UGameplayStatics::GetGameState(this));
-	if (IsValid(GameState))
-	{
-		// PushGameState.h의 값을 가져다가 넣어준다.
-		MatchState = GameState->GetMatchState();
-		WarmupTime = GameState->WarmupTime;
-		MatchTime = GameState->MatchTime;
-		ResultTime = GameState->ResultTime;
-		LevelStartingTime = GameState->LevelStartingTime;
+	//GameState = Cast<APushGameState>(UGameplayStatics::GetGameState(this));
+	//if (IsValid(GameState))
+	//{
+	//	// PushGameState.h의 값을 가져다가 넣어준다.
+	//	MatchState = GameState->GetMatchState();
+	//	WarmupTime = GameState->WarmupTime;
+	//	ResultTime = GameState->ResultTime;
+	//	CurrentTime = GameState->CurrentTime;
+	//	tempTime = GameState->TempTime;
 
-		OnMatchStateSet(MatchState);
-	}
-
+	//	OnMatchStateSet(MatchState);
+	//}
 }
 
-void APushPlayerController::OnMatchStateSet(FName State)
+void APushPlayerController::OnMatchStateSet_Client_Implementation(FName State)
 {
 	MatchState = State;  // GameMode에서 건내받는 FName State으로 MatchState 설정
+	if (IsValid(GameState))
+	{
+		CountdownTime = GameState->CountdownTime;
+		tempTime = GameState->TempTime;
+	}
 }
 
 void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
@@ -91,27 +91,29 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	if (MainHUD == nullptr) return;
 	if (MainHUD->GetWidget<UResource>("Resource") == nullptr) return;
 
-	float TimeLeft = 0.0f;
+	float TimeLeft = CountdownTime;
 	if (MatchState == MatchState::InProgress) // 대기
 	{
-		TimeLeft = WarmupTime + LevelStartingTime + tempTime - GetWorld()->GetTimeSeconds();
+		TimeLeft = CountdownTime - (GetWorld()->GetTimeSeconds() - tempTime);
 	}
 	else if (MatchState == MatchState::Round) // 경기
 	{
-		TimeLeft = WarmupTime + LevelStartingTime + MatchTime + tempTime - GetWorld()->GetTimeSeconds();
+		TimeLeft = CountdownTime - (GetWorld()->GetTimeSeconds() - tempTime);
+
 	}
 	else if (MatchState == MatchState::Result) // 결과
 	{
-		TimeLeft = WarmupTime + LevelStartingTime + MatchTime + ResultTime + tempTime - GetWorld()->GetTimeSeconds();
+		TimeLeft = CountdownTime - (GetWorld()->GetTimeSeconds() - tempTime);
+
 	}
 
-	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
+	uint32 Countdown = FMath::CeilToInt(TimeLeft);
 
 	// 시간 띄우기
 	if (MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText)
 	{
-		int32 Minutes = FMath::FloorToInt(CountdownTime / 60.f);
-		int32 Seconds = CountdownTime - Minutes * 60;
+		int32 Minutes = FMath::FloorToInt(Countdown / 60.f);
+		int32 Seconds = Countdown - Minutes * 60;
 
 		FString CountdownText = FString::Printf(TEXT("%02d:%02d"), Minutes, Seconds);
 		MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText->SetText(FText::FromString(CountdownText));

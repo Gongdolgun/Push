@@ -18,7 +18,8 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void OnPossess(APawn* InPawn) override; // possed된 Pawn에 접근하는 함수
 
-	void OnMatchStateSet(FName State);
+	UFUNCTION(Client, Reliable)
+	void OnMatchStateSet_Client(FName State);
 
 	void SetHUDTime();
 
@@ -49,10 +50,8 @@ private:
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess))
 		class UResourceComponent* resourceComponent;
 
-	float LevelStartingTime; // 게임레벨맵에 들어간 시간
-	float WarmupTime;   // 대기 시간
-	float MatchTime;      // 경기 시간
-	float ResultTime;   // 결과 시간
+	float CurrentTime; // 게임레벨맵에 들어간 시간
+	float CountdownTime;
 	float tempTime;
 
 	UPROPERTY(ReplicatedUsing = OnRep_MatchState)

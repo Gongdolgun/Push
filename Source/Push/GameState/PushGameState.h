@@ -14,19 +14,23 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	UPROPERTY(ReplicatedUsing = OnRep_TimeChanged)
-	float WarmupTime; // 대기시간 
+	float TempTime;
 	UPROPERTY(ReplicatedUsing = OnRep_TimeChanged)
-	float MatchTime; // 경기시간
-	UPROPERTY(ReplicatedUsing = OnRep_TimeChanged)
-	float ResultTime; // 결과발표시간
-	UPROPERTY(ReplicatedUsing = OnRep_TimeChanged)
-	float LevelStartingTime; // 게임레벨맵에 들어간 시간
-
-	float CountdownTime = 0.0f;
+	float CountdownTime;
 
     UFUNCTION()
-	void SetTime(float wTime, float mTime, float rTime, float lTime);
+	void SetTime(float cdTime, float tmTime);
 
     UFUNCTION()
 	void OnRep_TimeChanged();
+
+
+public:
+	UFUNCTION(Server, Reliable)
+		void AddToRank_Server(class APushPlayerController* InController);
+
+	void GiveGold(TArray<int32> InGoldAmount);
+
+	UPROPERTY(VisibleAnywhere, Replicated)
+		TArray<class APushPlayerController*> RoundRank;
 };
