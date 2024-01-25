@@ -65,8 +65,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UWidgetComponent* WidgetComponent;
 
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ASkill> SkillClass;
+	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
+		TSubclassOf<UCameraShakeBase> CameraShakeBase;
 
 	/*UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* SkillSlots;*/
@@ -87,6 +87,8 @@ public:
 	// 2024_01_23 캐릭터 위치 변경 _이민학
 	UFUNCTION(Server, Reliable)
 		void SetLocation(FVector InLocation);
+
+	void DoCameraShake(float Damage);
 
 	// 2024_01_05 Material Change 적용
 	void Create_DynamicMaterial();

@@ -135,6 +135,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
         }
     }
 
+    DoCameraShake(InHitData.Damage);
+
     if(launch.X + launch.Y + launch.Z > 0.0f)
     {
     	LaunchServer(launch);
@@ -165,6 +167,14 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 void APushCharacter::SetLocation_Implementation(FVector InLocation)
 {
     SetActorLocation(InLocation);
+}
+
+void APushCharacter::DoCameraShake(float Damage)
+{
+    float Velocity = Damage / 10;
+
+    if (CameraShakeBase != nullptr)
+        GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(CameraShakeBase, Velocity);
 }
 
 void APushCharacter::Create_DynamicMaterial()
