@@ -69,22 +69,19 @@ void ABuffInstance::Tick(float DeltaSeconds)
 			return;
 		}
 		buffComponent->RemoveBuff(this);
-
+		//객체 버프가 안지워지는 문제 발생
 
 		APlayerController* controller = Cast<APlayerController>(Owner->GetController());
-		if (!HasAuthority())
+		if (!!controller && controller->IsLocalController())
 		{
-			if (!!controller && controller->IsLocalController())
-			{
-				if (!!Widget)
-					Widget->RemoveFromParent();
-				OffEffect();
-				Destroy();
-				DestroySelf_Server();
-			}
-			else
-				Destroy();
+			if (!!Widget)
+				Widget->RemoveFromParent();
+			OffEffect();
+			Destroy();
+			DestroySelf_Server();
 		}
+		else
+			Destroy();
 	}
 }
 

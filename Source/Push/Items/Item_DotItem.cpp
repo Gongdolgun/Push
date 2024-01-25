@@ -34,6 +34,5 @@ void AItem_DotItem::UseItem_Implementation()
 	if (!buffComponent)
 		return;
 
-	//TODO : 2024.01.23 - 이부분에서 문제 () 
 	buffComponent->AddBuff(BuffClass);
 }
