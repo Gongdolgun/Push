@@ -295,31 +295,6 @@ void APushCharacter::SetSpawnPoint()
     StateComponent->SetIdleMode();
 }
 
-void APushCharacter::ShowKillLog(AActor* InAttacker)
-{
-    if (!InAttacker || !InAttacker->GetOwner()) return;
-
-    APushCharacter* Attacker = Cast<APushCharacter>(InAttacker->GetOwner());
-    FString AttackerName = Attacker->CustomPlayerName;
-
-    if (Attacker)
-    {
-        CLog::Print(AttackerName);
-
-        TArray<AActor*> PlayerControllers;
-        UGameplayStatics::GetAllActorsOfClass(GetWorld(), APushPlayerController::StaticClass(), PlayerControllers);
-
-        for (AActor* Actor : PlayerControllers)
-        {
-            APushPlayerController* PlayerController = Cast<APushPlayerController>(Actor);
-            if (PlayerController)
-            {
-                PlayerController->ShowKillLog_NMC(AttackerName, CustomPlayerName);
-            }
-        }
-    }
-}
-
 void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayerName)
 {
     CustomPlayerName = NewPlayerName;
