@@ -14,6 +14,12 @@ ASkill_Boom_P::ASkill_Boom_P()
 void ASkill_Boom_P::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if(SpawnParticle != nullptr)
+	{
+		UGameplayStatics::SpawnEmitterAttached(SpawnParticle, Root);
+	}
+
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &ASkill_Boom_P::FOnBeginOverlap);
 }
 

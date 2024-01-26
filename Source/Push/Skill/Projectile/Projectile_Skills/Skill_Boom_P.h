@@ -17,10 +17,13 @@ public:
 	virtual void Destroyed() override;
 
 public:
+	UPROPERTY(EditAnywhere, Category = "Spawn Particle")
+		class UParticleSystem* SpawnParticle;
+
 	UPROPERTY(EditAnywhere, Category = "Explosion Particle")
 		class UParticleSystem* Explosion;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class USphereComponent* DetectTarget;
 
 	UPROPERTY(EditAnywhere)
