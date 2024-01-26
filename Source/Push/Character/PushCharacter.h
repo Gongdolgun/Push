@@ -68,6 +68,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
 		TSubclassOf<UCameraShakeBase> CameraShakeBase;
 
+	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
+		TSubclassOf<UCameraShakeBase> CameraShakeBase;
+
 	/*UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* SkillSlots;*/
 
@@ -117,6 +120,10 @@ public:
 		void OnRep_CustomPlayerName();
 
 	void Ragdoll();
-	void SetSpawnPoint();
+
+	UFUNCTION(Server, Reliable)
+		void SetSpawnPoint();
+	UFUNCTION(NetMulticast, Reliable)
+		void SetSpawnPointNMC();
 };
 

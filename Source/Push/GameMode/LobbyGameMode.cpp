@@ -74,7 +74,8 @@ void ALobbyGameMode::EnterMap()
 	TWeakObjectPtr<UWorld> World = GetWorld();
 	if (World.IsValid())
 	{
-		World->ServerTravel(FString("/Game/SW/Maps/TestLevelMap"));
-		CLog::Log("When 'Num of Players = 3', Dedicated Server entered TestLevelMap!!");
+		//World->ServerTravel(FString("/Game/SW/Maps/TestLevelMap"));
+		World->ServerTravel(FString("/Game/Maps/MainMap"));
+		CLog::Log("Dedicated Server entered MainMap!!");
 	}
 }

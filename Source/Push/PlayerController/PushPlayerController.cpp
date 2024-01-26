@@ -1,6 +1,4 @@
 ﻿#include "Push/PlayerController/PushPlayerController.h"
-
-#include <GameFramework/CharacterMovementComponent.h>
 #include "HUD/MainHUD.h"
 #include "GameMode/PushGameMode.h"
 #include "Global.h"
@@ -15,13 +13,6 @@
 #include "Widgets/LeaderBoard_List.h"
 #include "Widgets/StoreUI.h"
 #include "Components/MoveComponent.h"
-
-void APushPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(APushPlayerController, MatchState); // replicated 되도록 MatchState 등록
-}
 
 void APushPlayerController::BeginPlay()
 {
@@ -42,8 +33,6 @@ void APushPlayerController::BeginPlay()
 			MainHUD->GetWidget<UStoreUI>("Store")->SetVisibility(ESlateVisibility::Hidden);
 	}
 
-	ClientCheckMatchState();
-
 	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	pushCharacter = Cast<APushCharacter>(GetPawn());
 }
@@ -61,29 +50,6 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
 	resourceComponent = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
-
-}
-
-void APushPlayerController::ClientCheckMatchState_Implementation()
-{
-	GameState = Cast<APushGameState>(UGameplayStatics::GetGameState(this));
-	if (IsValid(GameState))
-	{
-		// PushGameState.h의 값을 가져다가 넣어준다.
-		MatchState = GameState->GetMatchState();
-		WarmupTime = GameState->WarmupTime;
-		MatchTime = GameState->MatchTime;
-		ResultTime = GameState->ResultTime;
-		LevelStartingTime = GameState->LevelStartingTime;
-
-		OnMatchStateSet(MatchState);
-	}
-
-}
-
-void APushPlayerController::OnMatchStateSet(FName State)
-{
-	MatchState = State;  // GameMode에서 건내받는 FName State으로 MatchState 설정
 }
 
 void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
@@ -91,27 +57,22 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	if (MainHUD == nullptr) return;
 	if (MainHUD->GetWidget<UResource>("Resource") == nullptr) return;
 
-	float TimeLeft = 0.0f;
-	if (MatchState == MatchState::InProgress) // 대기
+	GameState = Cast<APushGameState>(UGameplayStatics::GetGameState(this));
+	if (IsValid(GameState))
 	{
-		TimeLeft = WarmupTime + LevelStartingTime + tempTime - GetWorld()->GetTimeSeconds();
-	}
-	else if (MatchState == MatchState::Round) // 경기
-	{
-		TimeLeft = WarmupTime + LevelStartingTime + MatchTime + tempTime - GetWorld()->GetTimeSeconds();
-	}
-	else if (MatchState == MatchState::Result) // 결과
-	{
-		TimeLeft = WarmupTime + LevelStartingTime + MatchTime + ResultTime + tempTime - GetWorld()->GetTimeSeconds();
+		TimeLeft = GameState->CurrentTime;
+		MatchState = GameState->GetMatchState();
+
+		UpdateCharacterMovement(MatchState);
 	}
 
-	uint32 CountdownTime = FMath::CeilToInt(TimeLeft);
+	uint32 Countdown = FMath::CeilToInt(TimeLeft);
 
 	// 시간 띄우기
 	if (MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText)
 	{
-		int32 Minutes = FMath::FloorToInt(CountdownTime / 60.f);
-		int32 Seconds = CountdownTime - Minutes * 60;
+		int32 Minutes = FMath::FloorToInt(Countdown / 60.f);
+		int32 Seconds = Countdown - Minutes * 60;
 
 		FString CountdownText = FString::Printf(TEXT("%02d:%02d"), Minutes, Seconds);
 		MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText->SetText(FText::FromString(CountdownText));
@@ -143,28 +104,28 @@ void APushPlayerController::UpdatePlayerList_NMC_Implementation(const TArray<FPl
 
 }
 
-void APushPlayerController::OnRep_MatchState()
+void APushPlayerController::UpdateCharacterMovement(const FName& matchState)
 {
-	if (MatchState == MatchState::InProgress)
-	{
-		tempTime = GetWorld()->GetTimeSeconds();
-	}
-
 	// 상점,결과시간 시 캐릭터 멈추고 스킬시전X, 라운드 시 캐릭터 움직임+스킬O
-	if (MatchState == MatchState::InProgress)
+	if (matchState == MatchState::InProgress)
 	{
 		pushCharacter->MoveComponent->Stop();
 		pushCharacter->bCanMove = false;
-		pushCharacter->SetSpawnPoint();
+		if(bEnableSpawn)
+		{
+			pushCharacter->SetSpawnPoint();
+			bEnableSpawn = false;
+		}
 	}
-	else if (MatchState == MatchState::Round)
+	else if (matchState == MatchState::Round)
 	{
 		pushCharacter->MoveComponent->Move();
 		pushCharacter->bCanMove = true;
 	}
-	else if (MatchState == MatchState::Result)
+	else if (matchState == MatchState::Result)
 	{
 		pushCharacter->MoveComponent->Stop();
 		pushCharacter->bCanMove = false;
+		bEnableSpawn = true;
 	}
 }

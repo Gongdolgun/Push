@@ -28,7 +28,6 @@ void UResourceComponent::SetHP_Server_Implementation(float hp)
 	SetHP_NMC(hp);
 }
 
-
 void UResourceComponent::SetHP_NMC_Implementation(float hp)
 {
 	HP = hp;
