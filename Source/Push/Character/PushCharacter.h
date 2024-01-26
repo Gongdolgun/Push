@@ -113,5 +113,6 @@ public:
 
 	void Ragdoll();
 	void SetSpawnPoint();
+
 };
 

@@ -73,7 +73,7 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
     Helpers::CreateActorComponent<UWidgetComponent>(this, &WidgetComponent, "PlayerNameTag");
 
-
+    
 	/*if (ResourceComponent != nullptr)
 	{
 		ResourceComponent->SetNetAddressable();
@@ -112,9 +112,6 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 {
-    // 킬 로그 출력
-    ResourceComponent->ShowKillLog(InAttacker, this);
-    
     FVector direction = GetActorLocation() - InAttacker->GetActorLocation();
     direction = direction.GetSafeNormal();
 
@@ -129,6 +126,9 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
         if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
         {
+            // 킬 로그 출력
+            ResourceComponent->ShowKillLog(InAttacker, this);
+
             ResourceComponent->SetHP_Server(0.0f);
             Ragdoll();
             StateComponent->SetDeadMode();
@@ -212,6 +212,7 @@ void APushCharacter::Test()
         return;
     if (SkillComponent->curSkillData == nullptr)
         return;
+
     SkillComponent->curSkillData->Play(this);
 }
 
@@ -308,11 +309,12 @@ void APushCharacter::BeginPlay()
     Change_Color(BodyColor);
 
     SetUpLocalName();
+
+    
 }
 
 void APushCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-
 
 }
