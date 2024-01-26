@@ -60,8 +60,8 @@ void UBuffComponent::AddBuff_NMC_Implementation(TSubclassOf<ABuffInstance> BuffC
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
 
-	ABuffInstance* buffInstance = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param));
-	
+	//ABuffInstance* buffInstance = Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param));
+	Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param);
 	/*if (!buffInstance || !Widget)
 		return;*/
 

@@ -23,6 +23,7 @@ void ABuffInstance::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = Cast<ACharacter>(GetOwner());
+	CLog::Log("CreateBuff");
 
 	if (!Owner.IsValid())
 		return;
@@ -31,12 +32,10 @@ void ABuffInstance::BeginPlay()
 	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
 	if (!controller || !buffComponent)
 		return;
-	if (HasAuthority())
-		return;
-
 
 	if (controller->IsLocalController())
 	{
+		CLog::Log("LocalClientCreate");
 		//버프 위젯 생성
 		Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->GetBuffCount() + 1);
 		Widget->SetBuffUI(UIImage, &PlayTime, &LifeTime);
@@ -45,6 +44,8 @@ void ABuffInstance::BeginPlay()
 		buffComponent->Widget->AddBuff(Widget);
 		OnEffect();
 	}
+	else
+		CLog::Log("OtherClientCreate");
 }
 
 void ABuffInstance::Tick(float DeltaSeconds)
@@ -72,20 +73,34 @@ void ABuffInstance::Tick(float DeltaSeconds)
 		//객체 버프가 안지워지는 문제 발생
 
 		APlayerController* controller = Cast<APlayerController>(Owner->GetController());
-		if (!!controller && controller->IsLocalController())
+		if (!HasAuthority())
 		{
-			if (!!Widget)
-				Widget->RemoveFromParent();
-			OffEffect();
-			Destroy();
-			DestroySelf_Server();
+			if (!!controller && controller->IsLocalController())
+			{
+				if (!!Widget)
+				{
+					Widget->RemoveFromParent();
+				}
+				CLog::Log("LocalClientRemove");
+				OffEffect();
+				Destroy();
+			}
+			else
+			{
+				CLog::Log("OtherClientRemove");
+				OffEffect();
+				Destroy();
+			}
 		}
 		else
+		{
 			Destroy();
+		}
 	}
 }
 
 void ABuffInstance::DestroySelf_Server_Implementation()
 {
+	CLog::Log("ServerRemove");
 	Destroy();
 }

@@ -26,7 +26,7 @@ public:
 		virtual void OffEffect(){}
 
 	UFUNCTION(Reliable, Server)
-		virtual void DestroySelf_Server();
+		void DestroySelf_Server();
 protected:
 	TWeakObjectPtr<ACharacter> Owner = nullptr;
 

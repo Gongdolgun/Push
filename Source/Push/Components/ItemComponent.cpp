@@ -38,7 +38,6 @@ void UItemComponent::UseItem_NMC_Implementation(TSubclassOf<AItemBase> ItemClass
 	if (!Owner.IsValid() || !ItemClass)
 		return;
 
-
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
 	Item = Cast<AItemBase>(Owner->GetWorld()->SpawnActor(ItemClass, 0, 0, param));
