@@ -22,4 +22,12 @@ public:
 		class UTextBlock* MatchStateTypeText; 
 	UPROPERTY(meta = (BindWidget))
 		class UTextBlock* MatchCountdownText; // ½Ã°£
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* GoldText;
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* KillText;
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* DeathText;
+	UPROPERTY(meta = (BindWidget))
+		class UTextBlock* GameText;
 };

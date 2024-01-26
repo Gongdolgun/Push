@@ -40,7 +40,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void OnMatchStateSet() override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 
@@ -78,7 +77,17 @@ public:
 	UPROPERTY(EditAnywhere)
 		TArray<float> RingRadius;
 
+	UPROPERTY(EditAnywhere)
+		uint8 TotalNumOfGames = 0;
+
 	uint8 Round = 0;
+	uint8 Games = 1;
+
+	//24-01-26 서동주 플레이어 죽음 확인
+	UFUNCTION()
+		void PlayerDead(APushPlayerController* InController);
+
+	uint8 NumofDeadPlayers = 0;
 
 	//24-01-24 서동주 골드 관련
 	UPROPERTY(EditAnywhere)
@@ -86,8 +95,6 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		int32 BaseMoney = 10;
-
-	virtual void SetMatchState(FName NewState) override;
 
 	class APushGameState* PushGameState;
 };

@@ -24,6 +24,8 @@
 #include "Components/StateComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameInstance/PushGameInstance.h"
+#include "GameMode/PushGameMode.h"
+#include "GameState/PushGameState.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "Widgets/SkillSlots.h"
@@ -127,6 +129,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
         {
             ResourceComponent->SetHP_Server(0.0f);
             Ragdoll();
+            Dead_Server();
             StateComponent->SetDeadMode();
         }
         else
@@ -189,7 +192,6 @@ void APushCharacter::Change_Color(FLinearColor InColor)
             MaterialDynamic->SetVectorParameterValue("BodyColor", InColor);
         }
     }
-
 }
 
 void APushCharacter::LaunchServer_Implementation(FVector InLaunch)
@@ -285,6 +287,21 @@ void APushCharacter::SetSpawnPoint()
 
     // 기본 상태로 되돌림
     StateComponent->SetIdleMode();
+}
+
+void APushCharacter::Dead_Server_Implementation()
+{
+    APushGameMode* GameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+    if (GameMode == nullptr)
+        return;
+
+    APushPlayerController* controller = Cast<APushPlayerController>(GetController());
+
+    if (controller == nullptr)
+        return;
+
+    GameMode->PlayerDead(controller);
 }
 
 void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayerName)

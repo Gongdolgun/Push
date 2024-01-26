@@ -110,5 +110,8 @@ public:
 
 	void Ragdoll();
 	void SetSpawnPoint();
+
+	UFUNCTION(BlueprintCallable, Server, Reliable)
+		void Dead_Server();
 };
 
