@@ -53,6 +53,7 @@ void APushGameMode::BeginPlay()
 		if (IsValid(RingClass))
 		{
 			Ring = world->SpawnActor<ARing>(RingClass);
+			Ring->SetActorLocation(FVector(-45800.f, 15700.f, -24000.f));
 		}
 	}
 }
