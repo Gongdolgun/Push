@@ -262,12 +262,17 @@ void APushCharacter::Ragdoll()
 
 void APushCharacter::SetSpawnPoint_Implementation()
 {
+    SetSpawnPointNMC();
+}
+
+void APushCharacter::SetSpawnPointNMC_Implementation()
+{
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
         GetMesh()->AttachTo(GetCapsuleComponent(), NAME_None, EAttachLocation::Type::SnapToTargetIncludingScale, true);
         GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.f, -90.f, 0.f));
-    	
+
         //GetMesh()->SetCollisionProfileName("PhysicsActor");
         //GetMesh()->SetSimulatePhysics(false);
         GetMesh()->SetAllBodiesSimulatePhysics(false);
@@ -275,7 +280,8 @@ void APushCharacter::SetSpawnPoint_Implementation()
     }
 
     StateComponent->SetIdleMode(); // 기본 상태로 되돌림
-    ResourceComponent->SetHP_Server(100.0f); // HP 100으로 설정
+    //ResourceComponent->SetMaxHP_Server(100.f);
+    ResourceComponent->SetHP_Server(100.f); // HP 100으로 설정
 
     TArray<AActor*> temp;
     UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
@@ -286,7 +292,7 @@ void APushCharacter::SetSpawnPoint_Implementation()
         APlayerStart* startLoc = Cast<APlayerStart>(Start);
         if (IsValid(startLoc))
         {
-        	PlayerStarts.Add(startLoc);
+            PlayerStarts.Add(startLoc);
         }
     }
     if (PlayerStarts.Num() > 0)

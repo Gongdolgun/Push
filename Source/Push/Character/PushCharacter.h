@@ -118,5 +118,7 @@ public:
 
 	UFUNCTION(Server, Reliable)
 		void SetSpawnPoint();
+	UFUNCTION(NetMulticast, Reliable)
+		void SetSpawnPointNMC();
 };
 
