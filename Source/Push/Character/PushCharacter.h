@@ -68,9 +68,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
 		TSubclassOf<UCameraShakeBase> CameraShakeBase;
 
-	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
-		TSubclassOf<UCameraShakeBase> CameraShakeBase;
-
 	/*UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* SkillSlots;*/
 
