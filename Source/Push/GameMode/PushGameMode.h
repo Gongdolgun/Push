@@ -10,6 +10,8 @@
  *   대기시간 > 경기시간 > 결과시간
  */
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundEnd);
+
 namespace MatchState
 {
 	extern PUSH_API const FName Round; // 경기시간
@@ -97,4 +99,11 @@ public:
 		int32 BaseMoney = 10;
 
 	class APushGameState* PushGameState;
+
+
+public:
+	UPROPERTY(BlueprintReadWrite)
+		FOnRoundEnd OnRoundEnd;
+
+	void RoundEnd();
 };

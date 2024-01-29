@@ -115,5 +115,4 @@ void APushGameState::GiveGold(TArray<int32> InGoldAmount, int32 InBaseMoney)
 void APushGameState::AddToRank(APushPlayerController* InController)
 {
 	RoundRank.Push(InController);
-	CLog::Log("AddToRank");
 }

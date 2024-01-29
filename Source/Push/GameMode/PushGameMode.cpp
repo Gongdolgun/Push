@@ -11,6 +11,7 @@
 #include "Utilites/CLog.h"
 #include "Global.h"
 #include "Components/ResourceComponent.h"
+#include "Components/StateComponent.h"
 #include "Widgets/StoreUI.h"
 #include "Objects/Ring.h"
 
@@ -58,6 +59,8 @@ void APushGameMode::BeginPlay()
 			Ring = world->SpawnActor<ARing>(RingClass);
 		}
 	}
+
+	OnRoundEnd.AddDynamic(this, &APushGameMode::RoundEnd);
 }
 
 void APushGameMode::Tick(float DeltaSeconds)
@@ -113,9 +116,8 @@ void APushGameMode::Tick(float DeltaSeconds)
 		{
 			tempTime = GetWorld()->GetTimeSeconds();
 			CountdownTime = WarmupTime;
-			PushGameState->GiveGold(MoneyPerRank, BaseMoney);
-			PushGameState->UpdateGameNum(++Games);
-			Ring->Reset();
+			if (OnRoundEnd.IsBound() == true)
+				OnRoundEnd.Broadcast();
 			SetMatchState(MatchState::InProgress);
 		}
 	}
@@ -209,12 +211,43 @@ void APushGameMode::PlayerDead(APushPlayerController* InController)
 {
 	PushGameState->AddToRank(InController);
 
-	if(++NumofDeadPlayers >= PushGameState->PlayerArray.Num())
+	if(++NumofDeadPlayers >= (PushGameState->PlayerArray.Num() - 1))
 	{
+		for(APlayerState* player : PushGameState->PlayerArray)
+		{
+			APushCharacter* character = Cast<APushCharacter>(player->GetPawn());
+
+			if (character == nullptr)
+				continue;
+
+			UStateComponent* state = Helpers::GetComponent<UStateComponent>(character);
+
+			if (state == nullptr)
+				continue;
+
+			if(!state->IsDeadMode())
+			{
+				APushPlayerController* controller = Cast<APushPlayerController>(character->GetController());
+
+				if (controller == nullptr)
+					continue;
+
+				PushGameState->AddToRank(controller);
+				break;
+			}
+		}
 		tempTime = GetWorld()->GetTimeSeconds();
 		CountdownTime = ResultTime;
 		Round = 0;
 		SetMatchState(MatchState::Result); // 결과발표
 	}
+
+}
+
+void APushGameMode::RoundEnd()
+{
+	PushGameState->GiveGold(MoneyPerRank, BaseMoney);
+	PushGameState->UpdateGameNum(++Games);
+	Ring->Reset();
 }
 

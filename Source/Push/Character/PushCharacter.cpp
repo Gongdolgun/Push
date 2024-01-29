@@ -129,8 +129,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
         {
             ResourceComponent->SetHP_Server(0.0f);
             Ragdoll();
-            Dead_Server();
             StateComponent->SetDeadMode();
+            Dead_Server();
         }
         else
         {
