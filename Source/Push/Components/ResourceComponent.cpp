@@ -25,9 +25,8 @@ void UResourceComponent::BeginPlay()
 
 void UResourceComponent::SetHP_Server_Implementation(float hp)
 {
-	SetMaxHP_NMC(hp);
+	SetHP_NMC(hp);
 }
-
 
 void UResourceComponent::SetHP_NMC_Implementation(float hp)
 {
