@@ -19,9 +19,9 @@ void AItem_BuffSelf::UseItem_Implementation()
 	Super::UseItem_Implementation();
 	if (!Owner.IsValid())
 		return;
-	APlayerController* controller = Cast<APlayerController>(Owner->GetController());
 
 	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
+
 
 	if (!!buffComponent)
 	{

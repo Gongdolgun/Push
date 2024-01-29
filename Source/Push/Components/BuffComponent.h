@@ -39,5 +39,7 @@ public:
 		TSubclassOf<class UWDG_BuffBoard> WidgetClass;
 	UWDG_BuffBoard* Widget;
 
+	int BuffCount = 0;
+
 };
 

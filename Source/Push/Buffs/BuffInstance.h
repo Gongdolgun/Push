@@ -9,8 +9,8 @@ class PUSH_API ABuffInstance : public AActor
 {
 	GENERATED_BODY()
 
-	friend class UBuffComponent;
 public:
+	friend class UBuffComponent;
 	ABuffInstance();
 	 ~ABuffInstance();
 
