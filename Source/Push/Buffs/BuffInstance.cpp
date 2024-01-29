@@ -34,6 +34,7 @@ void ABuffInstance::BeginPlay()
 
 	if (controller->IsLocalController())
 	{
+		OnEffect();
 		CLog::Log("LocalClientCreate");
 	}
 	CLog::Log("CreateBuff");
@@ -51,7 +52,7 @@ void ABuffInstance::BeginPlay()
 		Widget->AddToViewport();
 
 		buffComponent->Widget->AddBuff(Widget);
-		OnEffect();
+		//OnEffect();
 	}
 	else
 		CLog::Log("OtherClientCreate");
