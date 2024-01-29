@@ -74,7 +74,7 @@ void ASkill_Meteor_A::OnSkillClicked()
 
 	// Meteor Trace
 	UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), SkillComponent->SpawnLocation, DecalLocation,
-		ETraceTypeQuery::TraceTypeQuery1, false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
+		ETraceTypeQuery::TraceTypeQuery1, false, ignores, DrawDebug, HitResult, true);
 
 	// Spawn Decal
 	OnSpawnPointDecal(DecalLocation);

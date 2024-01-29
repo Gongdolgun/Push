@@ -72,7 +72,6 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
-    Helpers::CreateActorComponent<UWidgetComponent>(this, &WidgetComponent, "PlayerNameTag");
     
 	/*if (ResourceComponent != nullptr)
 	{
@@ -132,6 +131,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
             ResourceComponent->SetHP_Server(0.0f);
             Ragdoll();
             StateComponent->SetDeadMode();
+            Dead_Server();
         }
         else
         {
@@ -178,7 +178,7 @@ void APushCharacter::DoCameraShake(float Damage)
     float Velocity = Damage / 10;
 
     if (CameraShakeBase != nullptr)
-        GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(CameraShakeBase, Velocity);
+        GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeBase, Velocity);
 }
 
 void APushCharacter::Create_DynamicMaterial()
@@ -244,16 +244,6 @@ void APushCharacter::SetUpLocalName()
     }
 }
 
-void APushCharacter::OnRep_CustomPlayerName()
-{
-    UPlayerNameTag* playerTag = Cast<UPlayerNameTag>(WidgetComponent->GetWidget());
-
-    if (playerTag)
-		playerTag->SetPlayerName(CustomPlayerName);
-
-    
-}
-
 void APushCharacter::Ragdoll()
 {
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision) return;
@@ -281,12 +271,28 @@ void APushCharacter::SetSpawnPoint_Implementation()
     SetSpawnPointNMC();
 }
 
+void APushCharacter::Dead_Server_Implementation()
+{
+    APushGameMode* GameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+    if (GameMode == nullptr)
+        return;
+
+    APushPlayerController* controller = Cast<APushPlayerController>(GetController());
+
+    if (controller == nullptr)
+        return;
+
+    GameMode->PlayerDead(controller);
+}
+
 void APushCharacter::SetSpawnPointNMC_Implementation()
 {
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
-        GetMesh()->AttachTo(GetCapsuleComponent(), NAME_None, EAttachLocation::Type::SnapToTargetIncludingScale, true);
+        //GetCapsuleComponent(), NAME_None, EAttachLocation::Type::SnapToTargetIncludingScale, true
+        GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
         GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.f, -90.f, 0.f));
 
         //GetMesh()->SetCollisionProfileName("PhysicsActor");
