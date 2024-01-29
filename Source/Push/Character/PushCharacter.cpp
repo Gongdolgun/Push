@@ -12,6 +12,7 @@
 #include "Components/BuffComponent.h"
 #include "Components/ItemComponent.h"
 #include "Components/ShopComponent.h"
+#include "Components/ChatComponent.h"
 #include "Engine/DecalActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -24,6 +25,7 @@
 #include "Components/StateComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameInstance/PushGameInstance.h"
+#include "GameMode/PushGameMode.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "Widgets/SkillSlots.h"
@@ -71,8 +73,7 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
     Helpers::CreateActorComponent<UWidgetComponent>(this, &WidgetComponent, "PlayerNameTag");
-
-
+    
 	/*if (ResourceComponent != nullptr)
 	{
 		ResourceComponent->SetNetAddressable();
@@ -125,6 +126,9 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
         if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
         {
+            // 킬 로그 출력
+            ResourceComponent->ShowKillLog(InAttacker, this);
+
             ResourceComponent->SetHP_Server(0.0f);
             Ragdoll();
             StateComponent->SetDeadMode();
@@ -189,7 +193,7 @@ void APushCharacter::Create_DynamicMaterial()
 
 void APushCharacter::Change_Color(FLinearColor InColor)
 {
-    CLog::Print("ChangeColor");
+    //CLog::Print("ChangeColor");
     for(UMaterialInterface* material : this->GetMesh()->GetMaterials())
     {
         UMaterialInstanceDynamic* MaterialDynamic = Cast<UMaterialInstanceDynamic>(material);
@@ -218,6 +222,7 @@ void APushCharacter::Test()
         return;
     if (SkillComponent->curSkillData == nullptr)
         return;
+
     SkillComponent->curSkillData->Play(this);
 }
 
@@ -246,6 +251,7 @@ void APushCharacter::OnRep_CustomPlayerName()
     if (playerTag)
 		playerTag->SetPlayerName(CustomPlayerName);
 
+    
 }
 
 void APushCharacter::Ragdoll()
@@ -325,11 +331,12 @@ void APushCharacter::BeginPlay()
     Change_Color(BodyColor);
 
     SetUpLocalName();
+
+    
 }
 
 void APushCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-
 
 }

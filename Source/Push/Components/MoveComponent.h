@@ -81,8 +81,7 @@ private:
 		float ViewMaxPitch = 90;
 	UPROPERTY(EditAnywhere, Category = "Mouse_Property")
 		float ViewMinPitch = -90;
-
-
+	
 
 private:
 	TWeakObjectPtr<ACharacter> Owner;

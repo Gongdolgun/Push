@@ -81,6 +81,8 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 		void AdjustDeath_NMC(int32 InValue);
 
+	void ShowKillLog(AActor* InAttack, class APushCharacter* InHitted);
+
 private:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Property",
 		meta = (AllowPrivateAccess))
