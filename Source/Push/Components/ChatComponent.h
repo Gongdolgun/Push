@@ -5,7 +5,7 @@
 #include "ChatComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Blueprintable)
 class PUSH_API UChatComponent : public UActorComponent
 {
 	GENERATED_BODY()

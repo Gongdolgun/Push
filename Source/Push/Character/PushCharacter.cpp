@@ -12,6 +12,7 @@
 #include "Components/BuffComponent.h"
 #include "Components/ItemComponent.h"
 #include "Components/ShopComponent.h"
+#include "Components/ChatComponent.h"
 #include "Engine/DecalActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -72,7 +73,6 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
     Helpers::CreateActorComponent<UWidgetComponent>(this, &WidgetComponent, "PlayerNameTag");
-
     
 	/*if (ResourceComponent != nullptr)
 	{
@@ -241,6 +241,7 @@ void APushCharacter::OnRep_CustomPlayerName()
     if (playerTag)
 		playerTag->SetPlayerName(CustomPlayerName);
 
+    
 }
 
 void APushCharacter::Ragdoll()

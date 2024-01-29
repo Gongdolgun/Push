@@ -1,4 +1,3 @@
-
 #include "Components/ChatComponent.h"
 
 UChatComponent::UChatComponent()

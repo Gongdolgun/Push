@@ -100,7 +100,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 
 	// 24_01_17 ¹®ÀÎ¼ö
-	UPROPERTY(ReplicatedUsing= OnRep_CustomPlayerName)
+	UPROPERTY(ReplicatedUsing= OnRep_CustomPlayerName, BlueprintReadOnly)
 		FString CustomPlayerName;
 
 	void SetUpLocalName();
