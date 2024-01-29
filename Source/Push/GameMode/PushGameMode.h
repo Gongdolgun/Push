@@ -105,5 +105,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		FOnRoundEnd OnRoundEnd;
 
-	void RoundEnd();
+	UFUNCTION()
+		void RoundEnd();
 };
