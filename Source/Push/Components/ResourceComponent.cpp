@@ -6,7 +6,8 @@
 #include "Net/UnrealNetwork.h"
 #include "Global.h"
 #include "GameMode/PushGameMode.h"
-#include "Widgets/MainUI.h"
+#include "HUD/Resource.h"
+#include "Components/TextBlock.h"
 
 UResourceComponent::UResourceComponent()
 {
@@ -121,6 +122,21 @@ void UResourceComponent::AdjustGold_NMC_Implementation(int InValue)
 	// 위젯 업데이트
 	if (PushGameMode)
 		PushGameMode->UpdatePlayerList();
+
+	TWeakObjectPtr<APushPlayerController> playerController = Cast<APushPlayerController>(Owner->GetController());
+
+	if (false == playerController.IsValid()) return;
+
+	MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(playerController->GetHUD()) : MainHUD;
+
+	if (false == IsValid(MainHUD)) return;
+
+	if(MainHUD->CheckWidget("Resource"))
+	{
+		FText gold = FText::FromString(FString::FromInt(Gold));
+		MainHUD->GetWidget<UResource>("Resource")->GoldText->SetText(gold);
+	}
+
 }
 
 int UResourceComponent::GetKill()
@@ -141,6 +157,20 @@ void UResourceComponent::AdjustKill_NMC_Implementation(int32 InValue)
 
 	if (PushGameMode)
 		PushGameMode->UpdatePlayerList();
+
+	TWeakObjectPtr<APushPlayerController> playerController = Cast<APushPlayerController>(Owner->GetController());
+
+	if (false == playerController.IsValid()) return;
+
+	MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(playerController->GetHUD()) : MainHUD;
+
+	if (false == IsValid(MainHUD)) return;
+
+	if (MainHUD->CheckWidget("Resource"))
+	{
+		FText kill = FText::FromString(FString::FromInt(Kill));
+		MainHUD->GetWidget<UResource>("Resource")->KillText->SetText(kill);
+	}
 }
 
 int UResourceComponent::GetDeath()
@@ -161,6 +191,21 @@ void UResourceComponent::AdjustDeath_NMC_Implementation(int32 InValue)
 
 	if (PushGameMode)
 		PushGameMode->UpdatePlayerList();
+
+	TWeakObjectPtr<APushPlayerController> playerController = Cast<APushPlayerController>(Owner->GetController());
+
+	if (false == playerController.IsValid()) return;
+
+	MainHUD = MainHUD == nullptr ? Cast<AMainHUD>(playerController->GetHUD()) : MainHUD;
+
+	if (false == IsValid(MainHUD)) return;
+
+	if (MainHUD->CheckWidget("Resource"))
+	{
+		FText death = FText::FromString(FString::FromInt(Death));
+		MainHUD->GetWidget<UResource>("Resource")->DeathText->SetText(death);
+	}
+
 }
 
 void UResourceComponent::ShowKillLog(AActor* InAttack, APushCharacter* InHitted)
