@@ -14,6 +14,7 @@
 #include "Components/StateComponent.h"
 #include "Widgets/StoreUI.h"
 #include "Objects/Ring.h"
+#include "Widgets/MainUI.h"
 
 namespace MatchState
 {
@@ -251,3 +252,17 @@ void APushGameMode::RoundEnd()
 	Ring->Reset();
 }
 
+void APushPlayerController::ShowKillLog_Server_Implementation(const FString& InKillPlayer, const FString& InDeadPlayer)
+{
+	ShowKillLog_NMC(InKillPlayer, InDeadPlayer);
+}
+
+void APushPlayerController::ShowKillLog_NMC_Implementation(const FString& InKillPlayer, const FString& InDeadPlayer)
+{
+	if (MainHUD == nullptr) return;
+
+	if (MainHUD->CheckWidget("Main"))
+	{
+		MainHUD->GetWidget<UMainUI>("Main")->Add_KillFeed(InKillPlayer, InDeadPlayer);
+	}
+}
