@@ -256,8 +256,6 @@ void APushCharacter::SetUpLocalName()
 
 void APushCharacter::Ragdoll()
 {
-    if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision) return;
-
     GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
     GetMesh()->SetCollisionProfileName("Ragdoll");
