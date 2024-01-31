@@ -36,30 +36,40 @@ void UStateComponent::EndAction()
 
 void UStateComponent::SetIdleMode()
 {
-	ChangeType(EStateType::ES_Idle);
+	ChangeType_Server(EStateType::ES_Idle);
 }
 
 void UStateComponent::SetActionMode()
 {
-	ChangeType(EStateType::ES_Action);
+	ChangeType_Server(EStateType::ES_Action);
 }
 
 void UStateComponent::SetHittedMode()
 {
-	ChangeType(EStateType::ES_Hitted);
+	ChangeType_Server(EStateType::ES_Hitted);
 }
 
 void UStateComponent::SetDeadMode()
 {
-	ChangeType(EStateType::ES_Dead);
+	ChangeType_Server(EStateType::ES_Dead);
 }
 
-void UStateComponent::ChangeType(EStateType InType)
+bool UStateComponent::IsDeadMode()
+{
+	return StateType == EStateType::ES_Dead;
+}
+
+void UStateComponent::ChangeType_NMC_Implementation(EStateType InType)
 {
 	EStateType prevType = StateType;
 	StateType = InType;
 
 	if (OnStateTypeChanged.IsBound())
 		OnStateTypeChanged.Broadcast(prevType, StateType);
+}
+
+void UStateComponent::ChangeType_Server_Implementation(EStateType InType)
+{
+	ChangeType_NMC(InType);
 }
 

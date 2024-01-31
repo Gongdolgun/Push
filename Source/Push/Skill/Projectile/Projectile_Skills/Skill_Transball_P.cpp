@@ -28,12 +28,20 @@ void ASkill_Transball_P::FOnBeginOverlap(UPrimitiveComponent* OverlappedComponen
 	if (Owner == nullptr || HittedCharacter == nullptr || HittedCharacter == Owner)
 		return;
 
+	CLog::Print(HittedCharacter);
+
 	FVector OwnerLocation, HittedLocation;
 	HittedLocation = HittedCharacter->GetActorLocation();
 	OwnerLocation = Owner->GetActorLocation();
 
 	Ownertmp->SetLocation(HittedLocation);
 	HittedCharacter->SetLocation(OwnerLocation);
+
+	if(TransParticle != nullptr)
+	{
+		UGameplayStatics::SpawnEmitterAttached(TransParticle, HittedCharacter->GetMesh(), FName("Root"));
+		UGameplayStatics::SpawnEmitterAttached(TransParticle, Ownertmp->GetMesh(), FName("Root"));
+	}
 
 	Destroy();
 }

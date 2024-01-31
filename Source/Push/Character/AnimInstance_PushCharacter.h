@@ -35,10 +35,9 @@ public:
 	void NativeUpdateAnimation(float DeltaSeconds) override;
 
 private:
-	class ACharacter* OwnerCharacter;
+	class APushCharacter* OwnerCharacter;
 	class UMoveComponent* Movement;
 
 	FRotator PrevRotation;
-
 
 };

@@ -11,8 +11,18 @@
 #include "GameState/PushGameState.h"
 #include "Widgets/KillDeathUI.h"
 #include "Widgets/LeaderBoard_List.h"
+#include "Widgets/MainUI.h"
 #include "Widgets/StoreUI.h"
-#include "Components/MoveComponent.h"
+#include "Widgets/Rank.h"
+
+void APushPlayerController::ShowRank_Client_Implementation(uint8 InRank, TSubclassOf<URank> InRankWidget)
+{
+	URank* RankWidget = CreateWidget<URank>(this, InRankWidget);
+
+	FText text = FText::FromString(FString::FromInt(InRank));
+	RankWidget->RankText->SetText(text);
+	RankWidget->AddToViewport();
+}
 
 void APushPlayerController::BeginPlay()
 {
@@ -34,7 +44,7 @@ void APushPlayerController::BeginPlay()
 	}
 
 	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	pushCharacter = Cast<APushCharacter>(GetPawn());
+
 }
 
 void APushPlayerController::Tick(float DeltaSeconds)
@@ -50,6 +60,12 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 
 	TWeakObjectPtr<APushCharacter> PushCharacter = Cast<APushCharacter>(InPawn);
 	resourceComponent = Helpers::GetComponent<UResourceComponent>(PushCharacter.Get());
+
+}
+
+void APushPlayerController::OnMatchStateSet(FName State)
+{
+	MatchState= State;  // GameMode에서 건내받는 FName State으로 MatchState 설정
 }
 
 void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
@@ -62,8 +78,6 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	{
 		TimeLeft = GameState->CurrentTime;
 		MatchState = GameState->GetMatchState();
-
-		UpdateCharacterMovement(MatchState);
 	}
 
 	uint32 Countdown = FMath::CeilToInt(TimeLeft);
@@ -89,6 +103,15 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	}
 }
 
+void APushPlayerController::UpdateGameNum_Client_Implementation(uint8 InNumofGames)
+{
+	if (MainHUD == nullptr) return;
+	if (MainHUD->CheckWidget("Resource") == false) return;
+
+	FText text = FText::FromString(FString::FromInt(InNumofGames));
+	MainHUD->GetWidget<UResource>("Resource")->GameText->SetText(text);
+}
+
 void APushPlayerController::UpdatePlayerList_Server_Implementation(const TArray<FPlayerList>& PlayerList)
 {
 	UpdatePlayerList_NMC(PlayerList);
@@ -104,28 +127,17 @@ void APushPlayerController::UpdatePlayerList_NMC_Implementation(const TArray<FPl
 
 }
 
-void APushPlayerController::UpdateCharacterMovement(const FName& matchState)
+void APushPlayerController::ShowKillLog_Server_Implementation(const FString& InKillPlayer, const FString& InDeadPlayer)
 {
-	// 상점,결과시간 시 캐릭터 멈추고 스킬시전X, 라운드 시 캐릭터 움직임+스킬O
-	if (matchState == MatchState::InProgress)
+	ShowKillLog_NMC(InKillPlayer, InDeadPlayer);
+}
+
+void APushPlayerController::ShowKillLog_NMC_Implementation(const FString& InKillPlayer, const FString& InDeadPlayer)
+{
+	if (MainHUD == nullptr) return;
+
+	if (MainHUD->CheckWidget("Main"))
 	{
-		pushCharacter->MoveComponent->Stop();
-		pushCharacter->bCanMove = false;
-		if(bEnableSpawn)
-		{
-			pushCharacter->SetSpawnPoint();
-			bEnableSpawn = false;
-		}
-	}
-	else if (matchState == MatchState::Round)
-	{
-		pushCharacter->MoveComponent->Move();
-		pushCharacter->bCanMove = true;
-	}
-	else if (matchState == MatchState::Result)
-	{
-		pushCharacter->MoveComponent->Stop();
-		pushCharacter->bCanMove = false;
-		bEnableSpawn = true;
+		MainHUD->GetWidget<UMainUI>("Main")->Add_KillFeed(InKillPlayer, InDeadPlayer);
 	}
 }

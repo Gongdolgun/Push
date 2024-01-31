@@ -29,8 +29,9 @@ void ASkill_Fireball_P::FOnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	Super::FOnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 
 	IDamageable* character = Cast<IDamageable>(OtherActor);
+	APushCharacter* OwnerCharacter = Cast<APushCharacter>(OtherActor);
 
-	if (character == nullptr)
+	if (character == nullptr || OwnerCharacter == Owner)
 		return;
 	
 	character->Hit(this, HitData);

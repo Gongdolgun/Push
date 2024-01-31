@@ -14,17 +14,26 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	UPROPERTY(Replicated)
-	float CurrentTime;
+		float CurrentTime;
 
-    UFUNCTION()
-	void SetTime(float InTime);
+	UFUNCTION()
+		void SetTime(float InTime);
 
 public:
-	UFUNCTION(Server, Reliable)
-		void AddToRank_Server(class APushPlayerController* InController);
+	UFUNCTION(BlueprintCallable)
+		void AddToRank(class APushPlayerController* InController);
 
-	void GiveGold(TArray<int32> InGoldAmount);
+	UFUNCTION()
+		void UpdateGameNum(uint8 InNumofGames);
+
+	UFUNCTION()
+		void ShowTotalRank();
+
+	void GiveGold(TArray<int32> InGoldAmount, int32 InBaseMoney);
 
 	UPROPERTY(VisibleAnywhere, Replicated)
 		TArray<class APushPlayerController*> RoundRank;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class URank> RankWidget;
 };

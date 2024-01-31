@@ -24,8 +24,10 @@ void UMoveComponent::BeginPlay()
 	{
 		return;
 	}
+
 	playerController->PlayerCameraManager->ViewPitchMax = ViewMaxPitch;
 	playerController->PlayerCameraManager->ViewPitchMin = ViewMinPitch;
+
 	UpdateSpeed_Server();
 }
 

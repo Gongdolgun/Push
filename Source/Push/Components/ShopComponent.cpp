@@ -42,6 +42,4 @@ void UShopComponent::OpenStoreUI()
 		MainUI = MainHUD->GetWidget<UMainUI>("Main");
 
 	MainUI->OpenStoreUI();
-
-	
 }

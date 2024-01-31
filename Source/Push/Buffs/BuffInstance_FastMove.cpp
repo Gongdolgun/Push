@@ -25,9 +25,7 @@ void ABuffInstance_FastMove::OffEffect()
 		return;
 
 	UMoveComponent* moveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
-
-	CLog::Log("OffEffect_FastMove");
-
+	CLog::Log("speedDown");
 	if (!moveComponent)
 		return;
 

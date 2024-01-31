@@ -29,8 +29,6 @@ public:
 	UPROPERTY(VisibleInstanceOnly)
 		class UWDG_EffectBase* widget;
 
-	class ASkill* SkillActor;
-
 	//2024_01_02 서동주 Hit Interface 적용
 	virtual void Hit(AActor* InAttacker, const FHitData& InHitData) override;
 
@@ -61,12 +59,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UStateComponent* StateComponent;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		class UWidgetComponent* WidgetComponent;
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ASkill> SkillClass;
 
 	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
 		TSubclassOf<UCameraShakeBase> CameraShakeBase;
@@ -108,7 +100,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 
 	// 24_01_17 문인수
-	UPROPERTY(ReplicatedUsing= OnRep_CustomPlayerName)
+	UPROPERTY(Replicated)
 		FString CustomPlayerName;
 
 	void SetUpLocalName();
@@ -116,8 +108,6 @@ public:
 	UFUNCTION(Server, Reliable)
 		void SetPlayerNameServer(const FString& NewPlayerName);
 
-	UFUNCTION()
-		void OnRep_CustomPlayerName();
 
 	void Ragdoll();
 
@@ -125,5 +115,8 @@ public:
 		void SetSpawnPoint();
 	UFUNCTION(NetMulticast, Reliable)
 		void SetSpawnPointNMC();
+
+	UFUNCTION(BlueprintCallable, Server, Reliable)
+		void Dead_Server();
 };
 

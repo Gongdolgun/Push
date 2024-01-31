@@ -12,6 +12,6 @@ class PUSH_API UKillFeed : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		void Add_Killfeed(FPlayerList InPlayerData);
+		void Add_Killfeed(const FString& InKillPlayer, const FString& InDeadPlayer);
 	
 };

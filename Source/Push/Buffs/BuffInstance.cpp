@@ -31,20 +31,31 @@ void ABuffInstance::BeginPlay()
 	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
 	if (!controller || !buffComponent)
 		return;
-	if (HasAuthority())
-		return;
-
 
 	if (controller->IsLocalController())
 	{
+		OnEffect();
+		CLog::Log("LocalClientCreate");
+	}
+	CLog::Log("CreateBuff");
+
+	if (controller->IsLocalController() && !HasAuthority())
+	{
+		CLog::Log("LocalServerToClientCreate");
+		return;
+	}
+	if (controller->IsLocalController())
+	{
 		//버프 위젯 생성
-		Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->GetBuffCount() + 1);
+		Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->BuffCount++);
 		Widget->SetBuffUI(UIImage, &PlayTime, &LifeTime);
 		Widget->AddToViewport();
 
 		buffComponent->Widget->AddBuff(Widget);
-		OnEffect();
+		//OnEffect();
 	}
+	else
+		CLog::Log("OtherClientCreate");
 }
 
 void ABuffInstance::Tick(float DeltaSeconds)
@@ -70,25 +81,37 @@ void ABuffInstance::Tick(float DeltaSeconds)
 		}
 		buffComponent->RemoveBuff(this);
 
-
 		APlayerController* controller = Cast<APlayerController>(Owner->GetController());
 		if (!HasAuthority())
 		{
 			if (!!controller && controller->IsLocalController())
 			{
 				if (!!Widget)
+				{
 					Widget->RemoveFromParent();
+				}
+				CLog::Log("LocalClientRemove");
 				OffEffect();
-				Destroy();
 				DestroySelf_Server();
+				Destroy();
 			}
 			else
+			{
+				CLog::Log("OtherClientRemove");
+				OffEffect();
 				Destroy();
+			}
+		}
+		else
+		{
+			OffEffect();
+			Destroy();
 		}
 	}
 }
 
 void ABuffInstance::DestroySelf_Server_Implementation()
 {
+	CLog::Log("ServerRemove");
 	Destroy();
 }

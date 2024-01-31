@@ -9,8 +9,8 @@ class PUSH_API ABuffInstance : public AActor
 {
 	GENERATED_BODY()
 
-	friend class UBuffComponent;
 public:
+	friend class UBuffComponent;
 	ABuffInstance();
 	 ~ABuffInstance();
 
@@ -26,7 +26,7 @@ public:
 		virtual void OffEffect(){}
 
 	UFUNCTION(Reliable, Server)
-		virtual void DestroySelf_Server();
+		void DestroySelf_Server();
 protected:
 	TWeakObjectPtr<ACharacter> Owner = nullptr;
 

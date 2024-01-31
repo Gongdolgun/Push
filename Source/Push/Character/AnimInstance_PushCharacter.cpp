@@ -3,12 +3,13 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/MoveComponent.h"
 #include "Global.h"
+#include "PushCharacter.h"
 
 void UAnimInstance_PushCharacter::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 
-	OwnerCharacter = Cast<ACharacter>(TryGetPawnOwner());
+	OwnerCharacter = Cast<APushCharacter>(TryGetPawnOwner());
 
 	if (!OwnerCharacter) return;
 
@@ -31,5 +32,19 @@ void UAnimInstance_PushCharacter::NativeUpdateAnimation(float DeltaSeconds)
 	PrevRotation = UKismetMathLibrary::RInterpTo(PrevRotation, delta, DeltaSeconds, 25);
 	Direction = PrevRotation.Yaw;
 
-	Pitch = UKismetMathLibrary::FInterpTo(Pitch, OwnerCharacter->GetBaseAimRotation().Pitch, DeltaSeconds, 25);
+	//Pitch = UKismetMathLibrary::FInterpTo(Pitch, OwnerCharacter->GetBaseAimRotation().Pitch, DeltaSeconds, 25);
+
+	Pitch = OwnerCharacter->GetBaseAimRotation().Pitch;
+	if (Pitch > 90.0f)
+	{
+		FVector2D InRange(270.0f, 360.0f);
+		FVector2D OutRange(-90.0f, 0.0f);
+
+		Pitch = FMath::GetMappedRangeValueClamped(InRange, OutRange, Pitch);
+	}
+
+	//FString Message = FString::Printf(TEXT("%s : , %f"), *OwnerCharacter->CustomPlayerName, Pitch);
+	//CLog::Print(Message);
+
+
 }
