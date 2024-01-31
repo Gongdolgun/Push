@@ -4,9 +4,6 @@
 #include "Skill/Area/Area.h"
 #include "Skill_Ground_A.generated.h"
 
-/** 바닥에 스폰되어 범위 데미지 + 스폰 위치 기준에서 바깥쪽으로 튕겨(런치)됨
- * 
- */
 UCLASS()
 class PUSH_API ASkill_Ground_A : public AArea
 {
@@ -19,7 +16,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable)
-		virtual void OnSkillClicked() override; // 스킬 버튼 누르기
+		virtual void OnSkillClicked() override; 
 
 	virtual void OnSpawnPointDecal(FVector InLocation) override;
 	virtual void OnDestroy(FVector InLocation) override;
