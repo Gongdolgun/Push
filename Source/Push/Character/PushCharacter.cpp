@@ -172,6 +172,7 @@ void APushCharacter::SetLocation_Implementation(FVector InLocation)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 void APushCharacter::DoCameraShake(float Damage)
 {
     float Velocity = Damage / 10;
@@ -180,6 +181,8 @@ void APushCharacter::DoCameraShake(float Damage)
         GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeBase, Velocity);
 }
 
+=======
+>>>>>>> parent of 60a9500 (240126_박성우_카메라 세이크 적용)
 =======
 >>>>>>> parent of 60a9500 (240126_박성우_카메라 세이크 적용)
 void APushCharacter::Create_DynamicMaterial()

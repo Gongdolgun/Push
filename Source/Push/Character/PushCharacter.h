@@ -69,6 +69,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class ASkill> SkillClass;
+<<<<<<< HEAD
+>>>>>>> parent of 60a9500 (240126_박성우_카메라 세이크 적용)
+=======
 >>>>>>> parent of 60a9500 (240126_박성우_카메라 세이크 적용)
 
 	/*UPROPERTY(BlueprintReadWrite)
