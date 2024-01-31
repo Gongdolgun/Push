@@ -29,8 +29,6 @@ public:
 	UPROPERTY(VisibleInstanceOnly)
 		class UWDG_EffectBase* widget;
 
-	class ASkill* SkillActor;
-
 	//2024_01_02 서동주 Hit Interface 적용
 	virtual void Hit(AActor* InAttacker, const FHitData& InHitData) override;
 
@@ -62,17 +60,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UStateComponent* StateComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		class UWidgetComponent* WidgetComponent;
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ASkill> SkillClass;
+	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
+		TSubclassOf<UCameraShakeBase> CameraShakeBase;
 
 	/*UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* SkillSlots;*/
 
 	/*UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* ItemSlots;*/
+
+	UPROPERTY(BlueprintReadOnly)
+		bool bCanMove;
 
 public:
 	UFUNCTION(Server, Reliable)
@@ -84,6 +82,8 @@ public:
 	// 2024_01_23 캐릭터 위치 변경 _이민학
 	UFUNCTION(Server, Reliable)
 		void SetLocation(FVector InLocation);
+
+	void DoCameraShake(float Damage);
 
 	// 2024_01_05 Material Change 적용
 	void Create_DynamicMaterial();
@@ -100,7 +100,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 
 	// 24_01_17 문인수
-	UPROPERTY(ReplicatedUsing= OnRep_CustomPlayerName, BlueprintReadOnly)
+	UPROPERTY(Replicated)
 		FString CustomPlayerName;
 
 	void SetUpLocalName();
@@ -108,11 +108,15 @@ public:
 	UFUNCTION(Server, Reliable)
 		void SetPlayerNameServer(const FString& NewPlayerName);
 
-	UFUNCTION()
-		void OnRep_CustomPlayerName();
 
 	void Ragdoll();
-	void SetSpawnPoint();
 
+	UFUNCTION(Server, Reliable)
+		void SetSpawnPoint();
+	UFUNCTION(NetMulticast, Reliable)
+		void SetSpawnPointNMC();
+
+	UFUNCTION(BlueprintCallable, Server, Reliable)
+		void Dead_Server();
 };
 

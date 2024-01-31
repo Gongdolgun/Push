@@ -2,21 +2,20 @@
 #include "Character/PushCharacter.h"
 #include "GameFramework/GameStateBase.h"
 #include "GameFramework/PlayerState.h"
-#include "UObject/ConstructorHelpers.h"
 #include "PlayerController/PushPlayerController.h"
-#include "GameInstance/PushGameInstance.h"
 #include "GameState/PushGameState.h"
 #include "Kismet/KismetArrayLibrary.h"
-#include "Net/UnrealNetwork.h"
 #include "Utilites/CLog.h"
 #include "Global.h"
 #include "Components/ResourceComponent.h"
-#include "Widgets/StoreUI.h"
+#include "Components/StateComponent.h"
 #include "Objects/Ring.h"
+#include "Widgets/MainUI.h"
+#include "HUD/MainHUD.h"
 
 namespace MatchState
 {
-	const FName Round = FName("Round");
+	const FName Round = FName("Round"); 
 }
 
 namespace MatchState
@@ -24,89 +23,103 @@ namespace MatchState
 	const FName Result = FName("Result"); // 결과발표. 내장되지 않은 MatchState을 사용시 명시해서 사용
 }
 
+namespace MatchState
+{
+	const FName TotalResult = FName("TotalResult"); // 최종 결과 발표
+}
+
 APushGameMode::APushGameMode()
 {
 	bDelayedStart = true; // 캐릭터가 시작부터 끝까지 계속 스폰되어 있어야하므로 MatchState::WaitingToStart를 없애고 bDelayedStart = true로 변경하였다.
-
+	
 }
 
 void APushGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LevelStartingTime = GetWorld()->GetTimeSeconds();
+	tempTime = GetWorld()->GetTimeSeconds();
+	CountdownTime = WarmupTime;
+	CurrentTime = 0.0f;
 
-	APushGameState* pushGameState = Cast<APushGameState>(GameState);
+	PushGameState = Cast<APushGameState>(GameState);
 
-	if (pushGameState == nullptr) { // 예외처리
+	if(PushGameState == nullptr){ // 예외처리
 		CLog::Log("pushGameState == nullptr !!");
 		return;
-	}
-
-	// GameState에 시간동기화
-	if (IsValid(pushGameState))
-	{
-		pushGameState->SetTime(WarmupTime, MatchTime, ResultTime, LevelStartingTime);
 	}
 
 	TWeakObjectPtr<UWorld> world = GetWorld();
 
 	if (world.IsValid())
 	{
-		if (IsValid(ring))
+		if (IsValid(RingClass))
 		{
-			world->SpawnActor<ARing>(ring);
+			Ring = world->SpawnActor<ARing>(RingClass);
+			Ring->SetActorLocation(FVector(-45800.f, 15700.f, -24000.f));
 		}
 	}
+
+	OnRoundEnd.AddDynamic(this, &APushGameMode::RoundEnd);
 }
+
 
 void APushGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	//** '대기시간 > 경기시간 > 결과시간'을 반복
-	if (MatchState == MatchState::InProgress) // 대기
+	PushGameState->SetTime(CurrentTime);
+	if (MatchState == MatchState::InProgress) // 상점
 	{
-		// 대기시간 - 현재시간 + 게임레벨맵에 들어간 시간
-		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + tempTime;
-		if (CountdownTime <= 0.0f) // 대기시간이 끝나면 경기시작
+		CurrentTime = (CountdownTime - (GetWorld()->GetTimeSeconds() - tempTime));
+		if (CurrentTime <= 0.0f)
 		{
+			CountdownTime = RoundTime[Round];
+			tempTime = GetWorld()->GetTimeSeconds();
 			SetMatchState(MatchState::Round);
 		}
 	}
-	else if (MatchState == MatchState::Round) // 경기
+	else if (MatchState == MatchState::Round) // 라운드s
 	{
-		// 대기시간 - 현재시간 + 게임레벨맵에 들어간 시간 + 설정한 경기시간
-		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + tempTime;
-		if (CountdownTime <= 0.0f)
+		CurrentTime = (CountdownTime - (GetWorld()->GetTimeSeconds() - tempTime));
+		if (CurrentTime <= 0.0f)
 		{
-			SetMatchState(MatchState::Result); // 결과발표
+			if (RoundTime.Num() - 1 <= Round)
+			{
+				tempTime = GetWorld()->GetTimeSeconds();
+				CountdownTime = ResultTime;
+				Round = 0;
+
+				if (Games >= TotalNumOfGames)
+				{
+					SetMatchState(MatchState::TotalResult);
+					PushGameState->ShowTotalRank();
+					SetActorTickEnabled(false);
+					CurrentTime = 0.0f;
+					return;
+				}
+
+				SetMatchState(MatchState::Result); // 결과발표
+			}
+			else
+			{
+				if (Ring.Get() != nullptr)
+					Ring.Get()->Shrink(RingRadius[Round], ShrinkRate);
+
+				CountdownTime = RoundTime[++Round];
+				tempTime = GetWorld()->GetTimeSeconds();
+			}
 		}
 	}
 	else if (MatchState == MatchState::Result) // 결과발표
 	{
-		// 대기시간 - 현재 시간 + 게임레벨맵에 들어간 시간 + 설정한 경기시간 + 설정한 결과발표시간
-		CountdownTime = WarmupTime - GetWorld()->GetTimeSeconds() + LevelStartingTime + MatchTime + ResultTime + tempTime;
-		if (CountdownTime <= 0.0f)
+		CurrentTime = (CountdownTime - (GetWorld()->GetTimeSeconds() - tempTime));
+		if (CurrentTime <= 0.0f)
 		{
 			tempTime = GetWorld()->GetTimeSeconds();
+			CountdownTime = WarmupTime;
+			if (OnRoundEnd.IsBound() == true)
+				OnRoundEnd.Broadcast();
 			SetMatchState(MatchState::InProgress);
-		}
-	}
-
-}
-
-void APushGameMode::OnMatchStateSet()
-{
-	Super::OnMatchStateSet();
-
-	// GameMode의 MatchState이 변경되면 서버에서 해당되는 PlayerController를 찾아 MatchState을 설정한다.
-	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-	{
-		TWeakObjectPtr<APushPlayerController> SelectedPlayer = Cast<APushPlayerController>(*It);
-		if (SelectedPlayer.IsValid())
-		{
-			SelectedPlayer->OnMatchStateSet(MatchState);
 		}
 	}
 }
@@ -114,7 +127,7 @@ void APushGameMode::OnMatchStateSet()
 void APushGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-
+	
 	APushPlayerController* controller = Cast<APushPlayerController>(NewPlayer);
 
 	if (controller == nullptr)
@@ -129,7 +142,7 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 
 	CLog::Log("Post Login In the Game");
-
+	
 
 	character->BodyColor = Colors[index++];
 
@@ -152,28 +165,36 @@ void APushGameMode::UpdatePlayerList()
 	// 플레이어 리스트를 비워주고, GameState에서 Player의 이름을 가져와서 세팅
 	PlayerListData.Empty();
 
-	for (APlayerController* playerContrller : AllPC)
+	for (APlayerController* PlayerController : AllPC)
 	{
-		if (playerContrller)
+		if (PlayerController)
 		{
-			APushPlayerController* pushController = Cast<APushPlayerController>(playerContrller);
-			APawn* pawn = playerContrller->GetPawn();
-
-			// Lobby에서 입력된 이름인 CustomPlayerName이 출력되도록 변경
-			APushCharacter* pushCharacter = Cast<APushCharacter>(pawn);
-			if (pushCharacter)
+			APushPlayerController* pushController = Cast<APushPlayerController>(PlayerController);
+			APawn* pawn = PlayerController->GetPawn();
+			// 업데이트가 제대로 안되고 게임이 시작할 경우가 생겨서 0.2초뒤에 다시 함수 실행
+			if (!pawn)
 			{
-				UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(pushCharacter);
-
-				PlayerData.PlayerName = pushCharacter->CustomPlayerName;
-				PlayerData.Gold = resource->GetGold();
-				PlayerData.Kill = resource->GetKill();
-				PlayerData.Death = resource->GetDeath();
-
-				PlayerListData.Add(PlayerData);
-
+				FTimerHandle TimerHandle;
+				GetWorld()->GetTimerManager().SetTimer(
+					TimerHandle, this, &APushGameMode::UpdatePlayerList, 0.2f, false);
 			}
 
+			else
+			{
+				// Lobby에서 입력된 이름인 CustomPlayerName이 출력되도록 변경
+				APushCharacter* pushCharacter = Cast<APushCharacter>(pawn);
+				if (pushCharacter)
+				{
+					UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(pushCharacter);
+
+					PlayerData.PlayerName = pushCharacter->CustomPlayerName;
+					PlayerData.Gold = resource->GetGold();
+					PlayerData.Kill = resource->GetKill();
+					PlayerData.Death = resource->GetDeath();
+
+					PlayerListData.Add(PlayerData);
+				}
+			}
 		}
 	}
 
@@ -183,8 +204,50 @@ void APushGameMode::UpdatePlayerList()
 		APushPlayerController* pushPlayerController = Cast<APushPlayerController>(playerController);
 
 		if (pushPlayerController)
-		{
 			pushPlayerController->UpdatePlayerList_Server(PlayerListData);
-		}
 	}
+}
+
+void APushGameMode::PlayerDead(APushPlayerController* InController)
+{
+	PushGameState->AddToRank(InController);
+
+	if (++NumofDeadPlayers >= (PushGameState->PlayerArray.Num() - 1))
+	{
+		for (APlayerState* player : PushGameState->PlayerArray)
+		{
+			APushCharacter* character = Cast<APushCharacter>(player->GetPawn());
+
+			if (character == nullptr)
+				continue;
+
+			UStateComponent* state = Helpers::GetComponent<UStateComponent>(character);
+
+			if (state == nullptr)
+				continue;
+
+			if (!state->IsDeadMode())
+			{
+				APushPlayerController* controller = Cast<APushPlayerController>(character->GetController());
+
+				if (controller == nullptr)
+					continue;
+
+				PushGameState->AddToRank(controller);
+				break;
+			}
+		}
+		tempTime = GetWorld()->GetTimeSeconds();
+		CountdownTime = ResultTime;
+		Round = 0;
+		SetMatchState(MatchState::Result); // 결과발표
+	}
+
+}
+
+void APushGameMode::RoundEnd()
+{
+	PushGameState->GiveGold(MoneyPerRank, BaseMoney);
+	PushGameState->UpdateGameNum(++Games);
+	Ring->Reset();
 }

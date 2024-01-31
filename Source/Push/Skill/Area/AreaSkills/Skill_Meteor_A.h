@@ -51,5 +51,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "PointDecal")
 		TSubclassOf<class APointDecal> PointDecal_Class;
 
+	UPROPERTY(EditAnywhere, Category = "DebugType")
+		TEnumAsByte<ETraceTypeQuery> CollisionType;
+
+	UPROPERTY(EditAnywhere, Category = "DebugType")
+		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectType;
+
 	class USkillComponent* SkillComponent;
+
+	TArray<ACharacter*> Hitted;
 };

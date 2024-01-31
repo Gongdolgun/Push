@@ -10,6 +10,8 @@
  *   대기시간 > 경기시간 > 결과시간
  */
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundEnd);
+
 namespace MatchState
 {
 	extern PUSH_API const FName Round; // 경기시간
@@ -30,25 +32,21 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	UPROPERTY(EditDefaultsOnly)
-	float WarmupTime = 5.0f; // 대기시간 
+		float WarmupTime = 15.0f; // 상점시간 
 	UPROPERTY(EditDefaultsOnly)
-	float MatchTime = 30.0f; // 경기시간
-	UPROPERTY(EditDefaultsOnly)
-	float ResultTime = 5.0f; // 결과발표시간
+		float ResultTime = 5.0f; // 결과시간
 
-	float LevelStartingTime = 0.0f; // 게임레벨맵에 들어간 시간
-
+	float CurrentTime = 0.0f; // 게임레벨맵에 들어간 시간
 	float CountdownTime = 0.0f;
 	float tempTime = 0.0f;
 
 protected:
 	virtual void BeginPlay() override;
-	virtual void OnMatchStateSet() override;
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 
 private:
-	FLinearColor Colors[4] = {FLinearColor::Red, FLinearColor::Blue, FLinearColor::Green, FLinearColor::Black};
+	FLinearColor Colors[4] = { FLinearColor::Red, FLinearColor::Blue, FLinearColor::Green, FLinearColor::Black };
 	uint8 index = 0;
 	TArray<class APushPlayerController*> Controllers;
 
@@ -60,15 +58,52 @@ public:
 	UPROPERTY(EditAnywhere, Category = "PlayerList")
 		TArray<FPlayerList> PlayerListData;
 
-	UPROPERTY(EditAnywhere, Category = "PlayerList")
-		TArray<FPlayerList> PlayerListData_Sorted;
-
 	UPROPERTY(BlueprintReadWrite)
 		TArray<class APlayerController*> AllPC;
 
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ARing> ring; // 경기 중 줄어드는 링
+	UPROPERTY(EditAnywhere, Category = "Ring")
+		TSubclassOf<class ARing> RingClass; // 경기 중 줄어드는 링
+
+	UPROPERTY(EditAnywhere, Category = "Ring")
+		float ShrinkRate;
+
+	TWeakObjectPtr<class ARing> Ring;
 
 	FPlayerList PlayerData;
 
+public:
+	//24-01-24 서동주 라운드 분할
+	UPROPERTY(EditAnywhere)
+		TArray<float> RoundTime;
+
+	UPROPERTY(EditAnywhere)
+		TArray<float> RingRadius;
+
+	UPROPERTY(EditAnywhere)
+		uint8 TotalNumOfGames = 0;
+
+	uint8 Round = 0;
+	uint8 Games = 1;
+
+	//24-01-26 서동주 플레이어 죽음 확인
+	UFUNCTION()
+		void PlayerDead(APushPlayerController* InController);
+
+	uint8 NumofDeadPlayers = 0;
+
+	//24-01-24 서동주 골드 관련
+	UPROPERTY(EditAnywhere)
+		TArray<int32> MoneyPerRank;
+
+	UPROPERTY(EditAnywhere)
+		int32 BaseMoney = 10;
+
+	class APushGameState* PushGameState;
+
+
+public:
+	UPROPERTY(BlueprintReadWrite)
+		FOnRoundEnd OnRoundEnd;
+
+	void RoundEnd();
 };

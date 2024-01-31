@@ -35,14 +35,19 @@ public:
 	void SetHittedMode();
 	void SetDeadMode();
 
+	bool IsDeadMode();
+
 public:
 	EStateType StateType;
 
 	FStateTypeChanged OnStateTypeChanged;
 
 private:
-	void ChangeType(EStateType InType);
+	UFUNCTION(Server, Reliable)
+		void ChangeType_Server(EStateType InType);
 
+	UFUNCTION(NetMulticast, Reliable)
+		void ChangeType_NMC(EStateType InType);
 
 private:
 	class ACharacter* Owner;

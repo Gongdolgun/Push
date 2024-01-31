@@ -34,7 +34,7 @@ void ARing::BeginPlay()
 
 	RingCapsule->OnComponentBeginOverlap.AddDynamic(this, &ARing::OnBeginOverlap);
 	RingCapsule->OnComponentEndOverlap.AddDynamic(this, &ARing::OnEndOverlap);
-
+	StartRadius = RingCapsule->GetUnscaledCapsuleRadius();
 }
 
 void ARing::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -94,6 +94,14 @@ void ARing::Refresh()
 	RingCapsule->SetCapsuleRadius(radius);
 
 	float scale = radius / Base;
+	RingMesh->SetWorldScale3D(FVector(scale, scale, scale * 100));
+}
+
+void ARing::Reset()
+{
+	RingCapsule->SetCapsuleRadius(StartRadius);
+
+	float scale = StartRadius / Base;
 	RingMesh->SetWorldScale3D(FVector(scale, scale, scale * 100));
 }
 

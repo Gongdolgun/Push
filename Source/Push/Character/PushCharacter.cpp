@@ -72,7 +72,6 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
-    Helpers::CreateActorComponent<UWidgetComponent>(this, &WidgetComponent, "PlayerNameTag");
     
 	/*if (ResourceComponent != nullptr)
 	{
@@ -132,12 +131,15 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
             ResourceComponent->SetHP_Server(0.0f);
             Ragdoll();
             StateComponent->SetDeadMode();
+            Dead_Server();
         }
         else
         {
             ResourceComponent->AdjustHP_Server(-InHitData.Damage);
         }
     }
+
+    DoCameraShake(InHitData.Damage);
 
     if(launch.X + launch.Y + launch.Z > 0.0f)
     {
@@ -169,6 +171,14 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 void APushCharacter::SetLocation_Implementation(FVector InLocation)
 {
     SetActorLocation(InLocation);
+}
+
+void APushCharacter::DoCameraShake(float Damage)
+{
+    float Velocity = Damage / 10;
+
+    if (CameraShakeBase != nullptr)
+        GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeBase, Velocity);
 }
 
 void APushCharacter::Create_DynamicMaterial()
@@ -234,16 +244,6 @@ void APushCharacter::SetUpLocalName()
     }
 }
 
-void APushCharacter::OnRep_CustomPlayerName()
-{
-    UPlayerNameTag* playerTag = Cast<UPlayerNameTag>(WidgetComponent->GetWidget());
-
-    if (playerTag)
-		playerTag->SetPlayerName(CustomPlayerName);
-
-    
-}
-
 void APushCharacter::Ragdoll()
 {
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision) return;
@@ -263,15 +263,47 @@ void APushCharacter::Ragdoll()
 
     //GetMesh()->SetPhysicsLinearVelocity(FVector::ZeroVector);
     GetMesh()->AddImpulseToAllBodiesBelow(FinalImpulse, NAME_None);
-
-
-    ////** 죽은 후 위치 랜덤으로 스폰
-    //FTimerHandle TimerHandle;
-    //GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &APushCharacter::SetSpawnPoint, 1.5f, false, 1.5f);
+    
 }
 
-void APushCharacter::SetSpawnPoint()
+void APushCharacter::SetSpawnPoint_Implementation()
 {
+    SetSpawnPointNMC();
+}
+
+void APushCharacter::Dead_Server_Implementation()
+{
+    APushGameMode* GameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+    if (GameMode == nullptr)
+        return;
+
+    APushPlayerController* controller = Cast<APushPlayerController>(GetController());
+
+    if (controller == nullptr)
+        return;
+
+    GameMode->PlayerDead(controller);
+}
+
+void APushCharacter::SetSpawnPointNMC_Implementation()
+{
+    // Ragdoll로 분리된 경우 capsule 다시 붙이기
+    if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
+    {
+        //GetCapsuleComponent(), NAME_None, EAttachLocation::Type::SnapToTargetIncludingScale, true
+        GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+        GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.f, -90.f, 0.f));
+
+        //GetMesh()->SetCollisionProfileName("PhysicsActor");
+        //GetMesh()->SetSimulatePhysics(false);
+        GetMesh()->SetAllBodiesSimulatePhysics(false);
+        GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    }
+
+    StateComponent->SetIdleMode(); // 기본 상태로 되돌림
+    ResourceComponent->SetHP_Server(100.f); // HP 100으로 설정
+
     TArray<AActor*> temp;
     UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
 
@@ -281,7 +313,7 @@ void APushCharacter::SetSpawnPoint()
         APlayerStart* startLoc = Cast<APlayerStart>(Start);
         if (IsValid(startLoc))
         {
-        	PlayerStarts.Add(startLoc);
+            PlayerStarts.Add(startLoc);
         }
     }
     if (PlayerStarts.Num() > 0)
@@ -290,11 +322,6 @@ void APushCharacter::SetSpawnPoint()
         SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
     }
 
-    // 분리된 capsule 다시 붙이기
-    GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-
-    // 기본 상태로 되돌림
-    StateComponent->SetIdleMode();
 }
 
 void APushCharacter::SetPlayerNameServer_Implementation(const FString& NewPlayerName)
