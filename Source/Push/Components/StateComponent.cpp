@@ -36,22 +36,26 @@ void UStateComponent::EndAction()
 
 void UStateComponent::SetIdleMode()
 {
-	ChangeType_Server(EStateType::ES_Idle);
+	if (Owner->IsLocallyControlled())
+		ChangeType_Server(EStateType::ES_Idle);
 }
 
 void UStateComponent::SetActionMode()
 {
-	ChangeType_Server(EStateType::ES_Action);
+	if(Owner->IsLocallyControlled())
+		ChangeType_Server(EStateType::ES_Action);
 }
 
 void UStateComponent::SetHittedMode()
 {
-	ChangeType_Server(EStateType::ES_Hitted);
+	if (Owner->IsLocallyControlled())
+		ChangeType_Server(EStateType::ES_Hitted);
 }
 
 void UStateComponent::SetDeadMode()
 {
-	ChangeType_Server(EStateType::ES_Dead);
+	if (Owner->IsLocallyControlled())
+		ChangeType_Server(EStateType::ES_Dead);
 }
 
 bool UStateComponent::IsDeadMode()

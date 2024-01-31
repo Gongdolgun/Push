@@ -128,14 +128,16 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
             // 킬 로그 출력
             ResourceComponent->ShowKillLog(InAttacker, this);
 
-            ResourceComponent->SetHP_Server(0.0f);
             Ragdoll();
             StateComponent->SetDeadMode();
-            Dead_Server();
+
+            if(IsLocallyControlled())
+				Dead_Server();
         }
         else
         {
-            ResourceComponent->AdjustHP_Server(-InHitData.Damage);
+            if(IsLocallyControlled())
+				ResourceComponent->AdjustHP_Server(-InHitData.Damage);
         }
     }
 
@@ -143,7 +145,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(launch.X + launch.Y + launch.Z > 0.0f)
     {
-    	LaunchServer(launch);
+        if(IsLocallyControlled())
+    		LaunchServer(launch);
     }
 
     if(InHitData.Effect != nullptr)
