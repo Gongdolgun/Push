@@ -1,4 +1,6 @@
 #include "MoveComponent.h"
+
+#include "StateComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "../Global.h"
@@ -72,14 +74,15 @@ void UMoveComponent::OnMoveRight(float InAxis)
 // OnTurnAt, OnLookUp 마우스에 따른 시점 이동
 void UMoveComponent::OnTurnAt(float Rate)
 {
-	if (!Owner.IsValid())
+	if (bCanMove == false || !Owner.IsValid())
 		return;
+
 	Owner->AddControllerYawInput(Rate * MouseSenceX * GetWorld()->GetDeltaSeconds());
 }
 
 void UMoveComponent::OnLookUp(float Rate)
 {
-	if (!Owner.IsValid())
+	if (bCanMove == false || !Owner.IsValid())
 		return;
 	Owner->AddControllerPitchInput(Rate * MouseSenceY * GetWorld()->GetDeltaSeconds());
 }

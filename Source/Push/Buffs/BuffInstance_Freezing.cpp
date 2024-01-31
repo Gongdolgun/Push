@@ -48,6 +48,8 @@ void ABuffInstance_Freezing::FreezeON_Server_Implementation()
 
 void ABuffInstance_Freezing::FreezeON_NMC_Implementation()
 {
+	CLog::Log("NMC_Freezing");
+
 	if (!Owner.IsValid())
 		return;
 	UMoveComponent* MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
@@ -55,11 +57,10 @@ void ABuffInstance_Freezing::FreezeON_NMC_Implementation()
 	if (!MoveComponent)
 		return;
 	MoveComponent->Stop();
-	if (!AnimInstance || !MoveComponent)
+	if (!AnimInstance)
 		return;
 
 	AnimInstance->SavePoseSnapshot("Freezing");
 	AnimInstance->IsSnapshot = true;
-	MoveComponent->Stop();
 }
 
