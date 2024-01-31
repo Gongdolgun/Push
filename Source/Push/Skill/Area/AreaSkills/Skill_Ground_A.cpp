@@ -14,9 +14,9 @@ ASkill_Ground_A::ASkill_Ground_A()
 	Helpers::CreateComponent(this, &SphereComponent, "Collision", Root);
 	SphereComponent->SetSphereRadius(128.0f);
 
-	//Helpers::CreateActorComponent(this, &ProjectileComponent, "ProjectileComponent");
-	//ProjectileComponent->InitialSpeed = 1000.0f;
-	//ProjectileComponent->ProjectileGravityScale = 0.0f;
+	Helpers::CreateActorComponent(this, &ProjectileComponent, "ProjectileComponent");
+	ProjectileComponent->InitialSpeed = 1000.0f;
+	ProjectileComponent->ProjectileGravityScale = 0.0f;
 
 	Helpers::CreateComponent(this, &Particle, "Particle", Root);
 	Particle->bAutoActivate = false;
@@ -45,17 +45,17 @@ void ASkill_Ground_A::OnSkillClicked()
 
 	DecalLocation = SkillComponent->SpawnLocation - SkillComponent->curSkillData->RelativeLocation;
 
-	//// Meteor Direction
-	//FVector direction = (SkillComponent->SpawnLocation - DecalLocation).GetSafeNormal();
-	//ProjectileComponent->Velocity = ProjectileComponent->InitialSpeed * (-direction);
+	// Meteor Direction
+	FVector direction = (SkillComponent->SpawnLocation - DecalLocation).GetSafeNormal();
+	ProjectileComponent->Velocity = ProjectileComponent->InitialSpeed * (-direction);
 
-	//FHitResult HitResult;
-	//TArray<AActor*> ignores;
-	//ignores.Add(Owner);
+	FHitResult HitResult;
+	TArray<AActor*> ignores;
+	ignores.Add(Owner);
 
-	//// Meteor Trace
-	//UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), SkillComponent->SpawnLocation, DecalLocation,
-	//	ETraceTypeQuery::TraceTypeQuery1, false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
+	// Meteor Trace
+	UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), SkillComponent->SpawnLocation, DecalLocation,
+		ETraceTypeQuery::TraceTypeQuery1, false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
 
 	// Spawn Decal
 	OnSpawnPointDecal(DecalLocation);
@@ -90,10 +90,9 @@ void ASkill_Ground_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCom
 {
 	FVector CollisionLocation = SkillComponent->SpawnLocation - SkillComponent->curSkillData->RelativeLocation;
 
-
-	//if (Cast<APawn>(OtherActor))
+	// 땅에 닿을 때, 캐릭터가 아니여야함
+	if (!Cast<APawn>(OtherActor))
 	{
-		// TODO: 람다로 OnDestroy 호출 시기 1초 뒤로 설정
 		OnDestroy(CollisionLocation);
 
 		FVector start = CollisionLocation;
