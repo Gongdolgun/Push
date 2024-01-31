@@ -118,7 +118,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(ResourceComponent != nullptr)
     {
-        if (ResourceComponent->GetHP() <= 0.0f)
+        if (StateComponent->IsDeadMode() == true)
         {
             return;
         }
@@ -178,7 +178,17 @@ void APushCharacter::DoCameraShake(float Damage)
     float Velocity = Damage / 10;
 
     if (CameraShakeBase != nullptr)
-        GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeBase, Velocity);
+    {
+        APushPlayerController* OwnController = Cast<APushPlayerController>(GetController());
+
+        if(OwnController != nullptr)
+        {
+	        if(OwnController->IsLocalController())
+	        {
+                OwnController->ClientPlayCameraShake(CameraShakeBase, Velocity);
+	        }
+        }
+    }
 }
 
 void APushCharacter::Create_DynamicMaterial()
@@ -246,8 +256,6 @@ void APushCharacter::SetUpLocalName()
 
 void APushCharacter::Ragdoll()
 {
-    if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision) return;
-
     GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
     GetMesh()->SetCollisionProfileName("Ragdoll");

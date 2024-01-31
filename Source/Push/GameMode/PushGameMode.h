@@ -102,8 +102,9 @@ public:
 
 
 public:
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
 		FOnRoundEnd OnRoundEnd;
 
-	void RoundEnd();
+	UFUNCTION()
+		void RoundEnd();
 };

@@ -59,8 +59,8 @@ void UBuffComponent::AddBuff_NMC_Implementation(TSubclassOf<ABuffInstance> BuffC
 	CLog::Log("AddBuff_NMC");
 	FActorSpawnParameters param;
 	param.Owner = Owner.Get();
-	Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param);
-	//Buffs.Add(Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param)));
+	//Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param);
+	Buffs.Add(Cast<ABuffInstance>(Owner->GetWorld()->SpawnActor(BuffClass, 0, 0, param)));
 	BuffCount++;
 }
 
