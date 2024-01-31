@@ -1,5 +1,6 @@
 #include "BuffInstance.h"
 
+#include "BuffInstance_Freezing.h"
 #include "Components/BuffComponent.h"
 #include "Widgets/WDG_Buff.h"
 #include "Global.h"
