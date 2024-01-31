@@ -74,7 +74,7 @@ void ASkill_Meteor_A::OnSkillClicked()
 
 	// Meteor Trace
 	UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), SkillComponent->SpawnLocation, DecalLocation,
-		ETraceTypeQuery::TraceTypeQuery1, false, ignores, DrawDebug, HitResult, true);
+		CollisionType, false, ignores, DrawDebug, HitResult, true);
 
 	// Spawn Decal
 	OnSpawnPointDecal(DecalLocation);
@@ -112,32 +112,40 @@ void ASkill_Meteor_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedCom
 {
 	FVector CollisionLocation = SkillComponent->SpawnLocation - SkillComponent->curSkillData->RelativeLocation;
 
-	// 땅에 닿을 때, 캐릭터가 아니여야함
-	if (!Cast<APawn>(OtherActor))
+	OnDestroy(CollisionLocation);
+
+	FVector start = CollisionLocation;
+	FVector end = CollisionLocation;
+	float radius = 150.0f;
+
+	TArray<FHitResult> HitResult;
+	TArray<AActor*> ignores;
+	ignores.Add(Owner);
+
+	UKismetSystemLibrary::SphereTraceMultiForObjects(Owner->GetWorld(), start, end, radius,
+		ObjectType, false, ignores, DrawDebug, HitResult, true);
+
+	for (FHitResult hitResult : HitResult)
 	{
-		OnDestroy(CollisionLocation);
+		APushCharacter* OwnerCharacter = Cast<APushCharacter>(hitResult.GetActor());
 
-		FVector start = CollisionLocation;
-		FVector end = CollisionLocation;
-		float radius = 150.0f;
+		if (OwnerCharacter == nullptr)
+			continue;
 
-		TArray<FHitResult> HitResult;
-		TArray<AActor*> ignores;
-		ignores.Add(Owner);
+		if (Hitted.Contains(OwnerCharacter))
+			continue;
 
-		UKismetSystemLibrary::SphereTraceMulti(Owner->GetWorld(), start, end, radius,
-			ETraceTypeQuery::TraceTypeQuery1, false, ignores, DrawDebug, HitResult, true);
-
-		for (FHitResult hitResult : HitResult)
-		{
-			IDamageable* character = Cast<IDamageable>(hitResult.GetActor());
-
-			if (character == nullptr)
-				continue;
-
-			character->Hit(this, HitData);
-		}
+		Hitted.AddUnique(OwnerCharacter);
 	}
+
+	SphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	for (ACharacter* hitted : Hitted)
+	{
+		APushCharacter* character = Cast<APushCharacter>(hitted);
+		character->Hit(this, HitData);
+	}
+	
 }
 
 void ASkill_Meteor_A::OnDestroy(FVector InLocation)
@@ -147,6 +155,8 @@ void ASkill_Meteor_A::OnDestroy(FVector InLocation)
 	// 폭발 파티클 소환
 	if (Explosion)
 	{
+		Hitted.Empty();
+
 		FTransform explosionTramsform;
 		explosionTramsform.SetLocation(InLocation);
 		explosionTramsform.SetScale3D(ExplosionScale);

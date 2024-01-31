@@ -139,6 +139,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
         }
     }
 
+    DoCameraShake(InHitData.Damage);
+
     if(launch.X + launch.Y + launch.Z > 0.0f)
     {
     	LaunchServer(launch);
@@ -171,8 +173,6 @@ void APushCharacter::SetLocation_Implementation(FVector InLocation)
     SetActorLocation(InLocation);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 void APushCharacter::DoCameraShake(float Damage)
 {
     float Velocity = Damage / 10;
@@ -181,10 +181,6 @@ void APushCharacter::DoCameraShake(float Damage)
         GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeBase, Velocity);
 }
 
-=======
->>>>>>> parent of 60a9500 (240126_ë°•ì„±ìš°_ì¹´ë©”ë¼ ì„¸ì´í¬ ì ìš©)
-=======
->>>>>>> parent of 60a9500 (240126_ë°•ì„±ìš°_ì¹´ë©”ë¼ ì„¸ì´í¬ ì ìš©)
 void APushCharacter::Create_DynamicMaterial()
 {
     for (int32 i = 0; i < this->GetMesh()->GetMaterials().Num(); i++)
@@ -306,7 +302,6 @@ void APushCharacter::SetSpawnPointNMC_Implementation()
     }
 
     StateComponent->SetIdleMode(); // ±âº» »óÅÂ·Î µÇµ¹¸²
-    //ResourceComponent->SetMaxHP_Server(100.f);
     ResourceComponent->SetHP_Server(100.f); // HP 100À¸·Î ¼³Á¤
 
     TArray<AActor*> temp;

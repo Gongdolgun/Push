@@ -60,19 +60,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UStateComponent* StateComponent;
 
-<<<<<<< HEAD
 	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
 		TSubclassOf<UCameraShakeBase> CameraShakeBase;
-=======
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		class UWidgetComponent* WidgetComponent;
-
-	UPROPERTY(EditAnywhere)
-		TSubclassOf<class ASkill> SkillClass;
-<<<<<<< HEAD
->>>>>>> parent of 60a9500 (240126_ë°•ì„±ìš°_ì¹´ë©”ë¼ ì„¸ì´í¬ ì ìš©)
-=======
->>>>>>> parent of 60a9500 (240126_ë°•ì„±ìš°_ì¹´ë©”ë¼ ì„¸ì´í¬ ì ìš©)
 
 	/*UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* SkillSlots;*/
@@ -93,6 +82,8 @@ public:
 	// 2024_01_23 Ä³¸¯ÅÍ À§Ä¡ º¯°æ _ÀÌ¹ÎÇĞ
 	UFUNCTION(Server, Reliable)
 		void SetLocation(FVector InLocation);
+
+	void DoCameraShake(float Damage);
 
 	// 2024_01_05 Material Change Àû¿ë
 	void Create_DynamicMaterial();
