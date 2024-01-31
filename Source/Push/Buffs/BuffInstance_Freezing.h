@@ -9,6 +9,7 @@ class PUSH_API ABuffInstance_Freezing : public ABuffInstance
 {
 	GENERATED_BODY()
 public:
+	virtual void BeginPlay() override;
 	virtual void OnEffect() override;
 	virtual void OffEffect() override;
 

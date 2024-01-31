@@ -5,6 +5,34 @@
 #include "Global.h"
 #include "Character/AnimInstance_PushCharacter.h"
 
+
+void ABuffInstance_Freezing::BeginPlay()
+{
+	AActor::BeginPlay();
+	Owner = Cast<ACharacter>(GetOwner());
+
+	if (!Owner.IsValid())
+		return;
+
+
+	OnEffect();
+
+	APlayerController* controller = Cast<APlayerController>(Owner->GetController());
+	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
+	if (!controller || !buffComponent)
+		return;
+
+	if (controller->IsLocalController() && !!HasAuthority())
+	{
+		//버프 위젯 생성
+		Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->BuffCount++);
+		Widget->SetBuffUI(UIImage, &PlayTime, &LifeTime);
+		Widget->AddToViewport();
+
+		buffComponent->Widget->AddBuff(Widget);
+	}
+}
+
 void ABuffInstance_Freezing::OnEffect()
 {
 	Super::OnEffect();
@@ -32,13 +60,10 @@ void ABuffInstance_Freezing::FreezeOFF_NMC_Implementation()
 
 	MoveComponent->Move();
 
-	MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
-	AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
 	if (AnimInstance == nullptr)
 		return;
 
 	AnimInstance->IsSnapshot = false;
-	MoveComponent->Move();
 }
 
 void ABuffInstance_Freezing::FreezeON_Server_Implementation()
@@ -49,7 +74,6 @@ void ABuffInstance_Freezing::FreezeON_Server_Implementation()
 void ABuffInstance_Freezing::FreezeON_NMC_Implementation()
 {
 	CLog::Log("NMC_Freezing");
-
 	if (!Owner.IsValid())
 		return;
 	UMoveComponent* MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
