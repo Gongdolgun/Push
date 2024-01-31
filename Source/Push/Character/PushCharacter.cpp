@@ -118,7 +118,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(ResourceComponent != nullptr)
     {
-        if (ResourceComponent->GetHP() <= 0.0f)
+        if (StateComponent->IsDeadMode() == true)
         {
             return;
         }
