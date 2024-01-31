@@ -14,6 +14,7 @@
 #include "Widgets/MainUI.h"
 #include "Widgets/StoreUI.h"
 #include "Widgets/Rank.h"
+#include "Components/MoveComponent.h"
 
 void APushPlayerController::ShowRank_Client_Implementation(uint8 InRank, TSubclassOf<URank> InRankWidget)
 {
@@ -52,6 +53,14 @@ void APushPlayerController::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	
 	SetHUDTime(); // 시간
+
+	if(bEnableSpawn)
+	{
+		if (Countdown <= 0)
+		{
+			pushCharacter->SetSpawnPoint();
+		}		
+	}
 }
 
 void APushPlayerController::OnPossess(APawn* InPawn)
@@ -80,7 +89,7 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 		MatchState = GameState->GetMatchState();
 	}
 
-	uint32 Countdown = FMath::CeilToInt(TimeLeft);
+	Countdown = FMath::CeilToInt(TimeLeft);
 
 	// 시간 띄우기
 	if (MainHUD->GetWidget<UResource>("Resource")->MatchCountdownText)
@@ -100,6 +109,32 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 		else if (MatchState == MatchState::Result) name = FText::FromString("Result");
 
 		MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText->SetText(name);
+	}
+}
+
+void APushPlayerController::UpdateCharacterMovement(const FName& matchState)
+{
+	// 상점,결과시간 시 캐릭터 멈추고 스킬시전X, 라운드 시 캐릭터 움직임+스킬O
+	if (matchState == MatchState::InProgress)
+	{
+		pushCharacter->MoveComponent->Stop();
+		pushCharacter->bCanMove = false;
+		if (bEnableSpawn)
+		{
+			//pushCharacter->SetSpawnPoint();
+			bEnableSpawn = true;
+		}
+	}
+	else if (matchState == MatchState::Round)
+	{
+		pushCharacter->MoveComponent->Move();
+		pushCharacter->bCanMove = true;
+	}
+	else if (matchState == MatchState::Result)
+	{
+		pushCharacter->MoveComponent->Stop();
+		pushCharacter->bCanMove = false;
+		//bEnableSpawn = true;
 	}
 }
 

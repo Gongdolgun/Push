@@ -295,8 +295,8 @@ void APushCharacter::SetSpawnPointNMC_Implementation()
         GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
         GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.f, -90.f, 0.f));
 
-        //GetMesh()->SetCollisionProfileName("PhysicsActor");
-        //GetMesh()->SetSimulatePhysics(false);
+        GetMesh()->SetCollisionProfileName("PhysicsActor");
+        GetMesh()->SetSimulatePhysics(false);
         GetMesh()->SetAllBodiesSimulatePhysics(false);
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     }
@@ -337,8 +337,6 @@ void APushCharacter::BeginPlay()
     Change_Color(BodyColor);
 
     SetUpLocalName();
-
-    
 }
 
 void APushCharacter::Tick(float DeltaSeconds)
