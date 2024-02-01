@@ -14,6 +14,7 @@
 #include "Widgets/MainUI.h"
 #include "Widgets/StoreUI.h"
 #include "Widgets/Rank.h"
+#include "Components/MoveComponent.h"
 
 void APushPlayerController::ShowRank_Client_Implementation(uint8 InRank, TSubclassOf<URank> InRankWidget)
 {
@@ -44,13 +45,16 @@ void APushPlayerController::BeginPlay()
 	}
 
 	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-
+	GameState = Cast<APushGameState>(UGameplayStatics::GetGameState(this));
+	pushCharacter = Cast<APushCharacter>(GetPawn());
 }
 
 void APushPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	
+	if (GameState == nullptr) return;
+
 	SetHUDTime(); // 시간
 }
 
@@ -65,20 +69,18 @@ void APushPlayerController::OnPossess(APawn* InPawn)
 
 void APushPlayerController::OnMatchStateSet(FName State)
 {
-	MatchState= State;  // GameMode에서 건내받는 FName State으로 MatchState 설정
+	MatchState = State;  // GameMode에서 건내받는 FName State으로 MatchState 설정
 }
 
 void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 {
 	if (MainHUD == nullptr) return;
 	if (MainHUD->GetWidget<UResource>("Resource") == nullptr) return;
+	
+	TimeLeft = GameState->CurrentTime;
+	MatchState = GameState->GetMatchState();
 
-	GameState = Cast<APushGameState>(UGameplayStatics::GetGameState(this));
-	if (IsValid(GameState))
-	{
-		TimeLeft = GameState->CurrentTime;
-		MatchState = GameState->GetMatchState();
-	}
+	UpdateCharacterMovement(MatchState);
 
 	uint32 Countdown = FMath::CeilToInt(TimeLeft);
 
@@ -100,6 +102,31 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 		else if (MatchState == MatchState::Result) name = FText::FromString("Result");
 
 		MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText->SetText(name);
+	}
+	
+	if (TimeLeft <= 0.1)
+	{
+		pushCharacter->SetSpawnPoint();
+	}	
+}
+
+void APushPlayerController::UpdateCharacterMovement(const FName& matchState)
+{
+	// 상점,결과시간 시 캐릭터 멈추고 스킬시전X, 라운드 시 캐릭터 움직임+스킬O
+	if (matchState == MatchState::InProgress)
+	{
+		pushCharacter->MoveComponent->Stop();
+		pushCharacter->bCanMove = false;
+	}
+	else if (matchState == MatchState::Round)
+	{
+		pushCharacter->MoveComponent->Move();
+		pushCharacter->bCanMove = true;		
+	}
+	else if (matchState == MatchState::Result)
+	{
+		pushCharacter->MoveComponent->Stop();
+		pushCharacter->bCanMove = false;
 	}
 }
 
@@ -124,7 +151,6 @@ void APushPlayerController::UpdatePlayerList_NMC_Implementation(const TArray<FPl
 
 	// 정상적으로 호출이 되었으면, PlayerList Update
 	MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->UpdatePlayerList(PlayerList);
-
 }
 
 void APushPlayerController::ShowKillLog_Server_Implementation(const FString& InKillPlayer, const FString& InDeadPlayer)

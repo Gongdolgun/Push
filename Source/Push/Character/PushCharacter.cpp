@@ -302,13 +302,13 @@ void APushCharacter::SetSpawnPointNMC_Implementation()
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
-        //GetCapsuleComponent(), NAME_None, EAttachLocation::Type::SnapToTargetIncludingScale, true
-        GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+        GetMesh()->SetSimulatePhysics(false);
+        GetMesh()->SetAllBodiesSimulatePhysics(false);
+
+        GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
         GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.f, -90.f, 0.f));
 
-        //GetMesh()->SetCollisionProfileName("PhysicsActor");
-        //GetMesh()->SetSimulatePhysics(false);
-        GetMesh()->SetAllBodiesSimulatePhysics(false);
+        GetMesh()->SetCollisionProfileName("PhysicsActor");
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     }
 
