@@ -118,7 +118,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(ResourceComponent != nullptr)
     {
-        if (ResourceComponent->GetHP() <= 0.0f)
+        if (StateComponent->IsDeadMode() == true)
         {
             return;
         }
@@ -128,14 +128,16 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
             // 킬 로그 출력
             ResourceComponent->ShowKillLog(InAttacker, this);
 
-            ResourceComponent->SetHP_Server(0.0f);
             Ragdoll();
             StateComponent->SetDeadMode();
-            Dead_Server();
+
+            if(IsLocallyControlled())
+				Dead_Server();
         }
         else
         {
-            ResourceComponent->AdjustHP_Server(-InHitData.Damage);
+            if(IsLocallyControlled())
+				ResourceComponent->AdjustHP_Server(-InHitData.Damage);
         }
     }
 
@@ -143,7 +145,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     if(launch.X + launch.Y + launch.Z > 0.0f)
     {
-    	LaunchServer(launch);
+        if(IsLocallyControlled())
+    		LaunchServer(launch);
     }
 
     if(InHitData.Effect != nullptr)
@@ -178,7 +181,17 @@ void APushCharacter::DoCameraShake(float Damage)
     float Velocity = Damage / 10;
 
     if (CameraShakeBase != nullptr)
-        GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(CameraShakeBase, Velocity);
+    {
+        APushPlayerController* OwnController = Cast<APushPlayerController>(GetController());
+
+        if(OwnController != nullptr)
+        {
+	        if(OwnController->IsLocalController())
+	        {
+                OwnController->ClientPlayCameraShake(CameraShakeBase, Velocity);
+	        }
+        }
+    }
 }
 
 void APushCharacter::Create_DynamicMaterial()
@@ -246,8 +259,6 @@ void APushCharacter::SetUpLocalName()
 
 void APushCharacter::Ragdoll()
 {
-    if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision) return;
-
     GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
     GetMesh()->SetCollisionProfileName("Ragdoll");
@@ -291,13 +302,13 @@ void APushCharacter::SetSpawnPointNMC_Implementation()
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
-        //GetCapsuleComponent(), NAME_None, EAttachLocation::Type::SnapToTargetIncludingScale, true
-        GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+        GetMesh()->SetSimulatePhysics(false);
+        GetMesh()->SetAllBodiesSimulatePhysics(false);
+
+        GetMesh()->AttachToComponent(GetCapsuleComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
         GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.f, -90.f, 0.f));
 
-        //GetMesh()->SetCollisionProfileName("PhysicsActor");
-        //GetMesh()->SetSimulatePhysics(false);
-        GetMesh()->SetAllBodiesSimulatePhysics(false);
+        GetMesh()->SetCollisionProfileName("PhysicsActor");
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     }
 

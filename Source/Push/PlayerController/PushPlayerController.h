@@ -20,6 +20,7 @@ public:
 	void OnMatchStateSet(FName State);
 
 	void SetHUDTime();
+	void UpdateCharacterMovement(const FName& matchState);
 
 	// 24_01_16 문인수
 	// 플레이어 리스트 업데이트, 게임모드에서 호출
@@ -48,6 +49,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		class UResourceComponent* resourceComponent;
 
+	UPROPERTY()
+	class APushCharacter* pushCharacter;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -56,7 +60,6 @@ private:
 		class APushGameState* GameState;
 	UPROPERTY()
 		class AMainHUD* MainHUD;
-
 
 	float CurrentTime;
 	FName MatchState;

@@ -27,7 +27,7 @@ protected:
 public:
 	//2024.01.16 이현중
 	//빙결상태를 위한 Snapshot
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
 		bool IsSnapshot = false;
 
 public:

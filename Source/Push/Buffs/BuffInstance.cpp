@@ -1,5 +1,6 @@
 #include "BuffInstance.h"
 
+#include "BuffInstance_Freezing.h"
 #include "Components/BuffComponent.h"
 #include "Widgets/WDG_Buff.h"
 #include "Global.h"
@@ -35,13 +36,10 @@ void ABuffInstance::BeginPlay()
 	if (controller->IsLocalController())
 	{
 		OnEffect();
-		CLog::Log("LocalClientCreate");
 	}
-	CLog::Log("CreateBuff");
 
 	if (controller->IsLocalController() && !HasAuthority())
 	{
-		CLog::Log("LocalServerToClientCreate");
 		return;
 	}
 	if (controller->IsLocalController())
@@ -52,10 +50,7 @@ void ABuffInstance::BeginPlay()
 		Widget->AddToViewport();
 
 		buffComponent->Widget->AddBuff(Widget);
-		//OnEffect();
 	}
-	else
-		CLog::Log("OtherClientCreate");
 }
 
 void ABuffInstance::Tick(float DeltaSeconds)
@@ -90,14 +85,12 @@ void ABuffInstance::Tick(float DeltaSeconds)
 				{
 					Widget->RemoveFromParent();
 				}
-				CLog::Log("LocalClientRemove");
 				OffEffect();
 				DestroySelf_Server();
 				Destroy();
 			}
 			else
 			{
-				CLog::Log("OtherClientRemove");
 				OffEffect();
 				Destroy();
 			}
@@ -112,6 +105,5 @@ void ABuffInstance::Tick(float DeltaSeconds)
 
 void ABuffInstance::DestroySelf_Server_Implementation()
 {
-	CLog::Log("ServerRemove");
 	Destroy();
 }
