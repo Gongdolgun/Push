@@ -1,0 +1,18 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{B7BD5394-4757-8FE6-DAAC-D3AAAF9BC096}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "Push",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"UMG",
+				"CoreUObject"
+			]
+		}
+	]
+}
