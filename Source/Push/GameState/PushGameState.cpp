@@ -49,7 +49,6 @@ void APushGameState::ShowTotalRank()
 {
 	TArray<APushPlayerController*> Controllers;
 
-	CLog::Log("ShowRank");
 
 	for (APlayerState* player : PlayerArray)
 	{
@@ -64,7 +63,6 @@ void APushGameState::ShowTotalRank()
 			continue;
 
 		Controllers.Add(controller);
-		CLog::Log("Controller Add");
 	}
 
 	Controllers.Sort([](APushPlayerController& A, APushPlayerController& B)
@@ -91,8 +89,6 @@ void APushGameState::ShowTotalRank()
 			Rank++;
 			CurrentKill = thisKill;
 		}
-		CLog::Log("ShowRankClient");
-		CLog::Log(Rank);
 
 		controller->ShowRank_Client(Rank, RankWidget);
 	}
