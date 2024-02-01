@@ -4,87 +4,88 @@
 #include "Components/MoveComponent.h"
 #include "Global.h"
 #include "Character/AnimInstance_PushCharacter.h"
+#include "Components/BuffComponent.h"
+#include "Widgets/WDG_BuffBoard.h"
 
 
 void ABuffInstance_Freezing::BeginPlay()
 {
-	AActor::BeginPlay();
-	Owner = Cast<ACharacter>(GetOwner());
+    AActor::BeginPlay();
+    Owner = Cast<ACharacter>(GetOwner());
 
-	if (!Owner.IsValid())
-		return;
+    if (!Owner.IsValid())
+        return;
 
 
-	OnEffect();
+    OnEffect();
 
-	APlayerController* controller = Cast<APlayerController>(Owner->GetController());
-	UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
-	if (!controller || !buffComponent)
-		return;
+    APlayerController* controller = Cast<APlayerController>(Owner->GetController());
+    UBuffComponent* buffComponent = Helpers::GetComponent<UBuffComponent>(Owner.Get());
+    if (!controller || !buffComponent)
+        return;
 
-	if (controller->IsLocalController() && !!HasAuthority())
-	{
-		//滚橇 困连 积己
-		Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->BuffCount++);
-		Widget->SetBuffUI(UIImage, &PlayTime, &LifeTime);
-		Widget->AddToViewport();
+    if (controller->IsLocalController() && !!HasAuthority())
+    {
+        //滚橇 困连 积己
+        Widget = CreateWidget<UWDG_Buff>(controller, WidgetClass, "BuffWidget" + buffComponent->BuffCount++);
+        Widget->SetBuffUI(UIImage, &PlayTime, &LifeTime);
+        Widget->AddToViewport();
 
-		buffComponent->Widget->AddBuff(Widget);
-	}
+        buffComponent->Widget->AddBuff(Widget);
+    }
 }
 
 void ABuffInstance_Freezing::OnEffect()
 {
-	Super::OnEffect();
+    Super::OnEffect();
 
-	FreezeON_Server();
+    FreezeON_Server();
 }
 
 void ABuffInstance_Freezing::OffEffect()
-{	
-	Super::OffEffect();
-	FreezeOFF_Server();
+{
+    Super::OffEffect();
+    FreezeOFF_Server();
 }
 
 void ABuffInstance_Freezing::FreezeOFF_Server_Implementation()
 {
-	FreezeOFF_NMC();
+    FreezeOFF_NMC();
 }
 
 void ABuffInstance_Freezing::FreezeOFF_NMC_Implementation()
 {
-	UMoveComponent* MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
-	UAnimInstance_PushCharacter* AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
-	if (!MoveComponent)
-		return;
+    UMoveComponent* MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
+    UAnimInstance_PushCharacter* AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
+    if (!MoveComponent)
+        return;
 
-	MoveComponent->Move();
+    MoveComponent->Move();
 
-	if (AnimInstance == nullptr)
-		return;
+    if (AnimInstance == nullptr)
+        return;
 
-	AnimInstance->IsSnapshot = false;
+    AnimInstance->IsSnapshot = false;
 }
 
 void ABuffInstance_Freezing::FreezeON_Server_Implementation()
 {
-	FreezeON_NMC();
+    FreezeON_NMC();
 }
 
 void ABuffInstance_Freezing::FreezeON_NMC_Implementation()
 {
-	CLog::Log("NMC_Freezing");
-	if (!Owner.IsValid())
-		return;
-	UMoveComponent* MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
-	UAnimInstance_PushCharacter* AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
-	if (!MoveComponent)
-		return;
-	MoveComponent->Stop();
-	if (!AnimInstance)
-		return;
+    CLog::Log("NMC_Freezing");
+    if (!Owner.IsValid())
+        return;
+    UMoveComponent* MoveComponent = Helpers::GetComponent<UMoveComponent>(Owner.Get());
+    UAnimInstance_PushCharacter* AnimInstance = Cast<UAnimInstance_PushCharacter>(Owner->GetMesh()->GetAnimInstance());
+    if (!MoveComponent)
+        return;
+    MoveComponent->Stop();
+    if (!AnimInstance)
+        return;
 
-	AnimInstance->SavePoseSnapshot("Freezing");
-	AnimInstance->IsSnapshot = true;
+    AnimInstance->SavePoseSnapshot("Freezing");
+    AnimInstance->IsSnapshot = true;
 }
-
