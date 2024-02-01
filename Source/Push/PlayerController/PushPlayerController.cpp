@@ -104,7 +104,7 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 		MainHUD->GetWidget<UResource>("Resource")->MatchStateTypeText->SetText(name);
 	}
 	
-	if (TimeLeft <= 0)
+	if (TimeLeft <= 0.1)
 	{
 		pushCharacter->SetSpawnPoint();
 	}	
