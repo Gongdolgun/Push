@@ -38,7 +38,8 @@ public:
 	bool IsDeadMode();
 
 public:
-	EStateType StateType;
+	UPROPERTY(BlueprintReadWrite)
+		EStateType StateType;
 
 	FStateTypeChanged OnStateTypeChanged;
 
