@@ -19,16 +19,17 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 public:	
 	virtual void Tick(float DeltaTime) override;
 
 public:
 	//Collision을 담당하는 Capsule
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Replicated)
 		class UCapsuleComponent* RingCapsule;
 
 	//자기장 생김새를 담당하는 Mesh
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Replicated)
 		class UStaticMeshComponent* RingMesh;
 
 	//자기장 피해량
