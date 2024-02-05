@@ -116,6 +116,16 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     FVector launch = FVector(InHitData.xLaunchPower * direction.X, InHitData.xLaunchPower * direction.Y, InHitData.zLaunchPower);
 
+    if (InAttacker->GetOwner() != nullptr)
+    {
+        APushCharacter* attacker = Cast<APushCharacter>(InAttacker->GetOwner());
+        if (attacker != nullptr)
+        {
+            CLog::Log("SetAttacker_Server");
+            SetAttacker_Server(attacker);
+        }
+    }
+
     if(ResourceComponent != nullptr)
     {
         if (StateComponent->IsDeadMode() == true)
@@ -126,7 +136,20 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
         if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
         {
             // 킬 로그 출력
-            ResourceComponent->ShowKillLog(InAttacker, this);
+            if(Attacker != nullptr)
+            {
+                CLog::Log("Attacker Exists");
+                UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(Attacker);
+
+                if (resource != nullptr)
+                    resource->AdjustKill_Server(1);
+
+                ResourceComponent->ShowKillLog(Attacker, this);
+            }
+            else
+            {
+				ResourceComponent->ShowKillLog(InAttacker, this);
+            }
 
             Ragdoll();
             StateComponent->SetDeadMode();
@@ -245,6 +268,7 @@ void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
     DOREPLIFETIME(APushCharacter, BodyColor);
     DOREPLIFETIME(APushCharacter, CustomPlayerName);
+    DOREPLIFETIME(APushCharacter, Attacker);
 }
 
 void APushCharacter::SetUpLocalName()
@@ -275,6 +299,11 @@ void APushCharacter::Ragdoll()
     //GetMesh()->SetPhysicsLinearVelocity(FVector::ZeroVector);
     GetMesh()->AddImpulseToAllBodiesBelow(FinalImpulse, NAME_None);
     
+}
+
+void APushCharacter::SetAttacker_Server_Implementation(APushCharacter* InAttacker)
+{
+    Attacker = InAttacker;
 }
 
 void APushCharacter::SetSpawnPoint_Implementation()

@@ -118,5 +118,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 		void Dead_Server();
+
+private:
+	UPROPERTY(Replicated)
+		APushCharacter* Attacker;
+
+	UFUNCTION(Server, Reliable)
+		void SetAttacker_Server(APushCharacter* InAttacker);
 };
 
