@@ -341,8 +341,11 @@ void APushCharacter::SetSpawnPointNMC_Implementation()
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     }
 
-    StateComponent->SetIdleMode(); // 기본 상태로 되돌림
-    ResourceComponent->SetHP_Server(100.f); // HP 100으로 설정
+    if(IsLocallyControlled())
+    {
+		StateComponent->SetIdleMode(); // 기본 상태로 되돌림
+		ResourceComponent->SetHP_Server(100.f); // HP 100으로 설정
+    }
 
     TArray<AActor*> temp;
     UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
