@@ -210,10 +210,22 @@ void APushGameMode::UpdatePlayerList()
 
 void APushGameMode::PlayerDead(APushPlayerController* InController)
 {
+	if (MatchState == "TotalResult")
+		return;
+
 	PushGameState->AddToRank(InController);
 
 	if (++NumofDeadPlayers >= (PushGameState->PlayerArray.Num() - 1))
 	{
+		if (Games >= TotalNumOfGames)
+		{
+			SetMatchState(MatchState::TotalResult);
+			PushGameState->ShowTotalRank();
+			SetActorTickEnabled(false);
+			CurrentTime = 0.0f;
+			return;
+		}
+
 		for (APlayerState* player : PushGameState->PlayerArray)
 		{
 			APushCharacter* character = Cast<APushCharacter>(player->GetPawn());
