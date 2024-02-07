@@ -283,7 +283,7 @@ void APushCharacter::SetUpLocalName()
 
 void APushCharacter::Ragdoll()
 {
-    GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    GetCapsuleComponent()->SetCollisionProfileName("Dead");
 
     GetMesh()->SetCollisionProfileName("Ragdoll");
     GetMesh()->SetSimulatePhysics(true);
