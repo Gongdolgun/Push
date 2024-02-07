@@ -135,6 +135,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
         if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
         {
+            if (IsLocallyControlled())
+                ResourceComponent->SetHP_Server(0.f);
             // 킬 로그 출력
             if(Attacker != nullptr)
             {
@@ -344,7 +346,7 @@ void APushCharacter::SetSpawnPointNMC_Implementation()
     if(IsLocallyControlled())
     {
 		StateComponent->SetIdleMode(); // 기본 상태로 되돌림
-		ResourceComponent->SetHP_Server(100.f); // HP 100으로 설정
+		ResourceComponent->SetHP_Server(ResourceComponent->GetMaxHP()); // HP 100으로 설정
     }
 
     TArray<AActor*> temp;
