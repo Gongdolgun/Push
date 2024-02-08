@@ -310,7 +310,7 @@ void APushCharacter::SetAttacker_Server_Implementation(APushCharacter* InAttacke
 
 void APushCharacter::SetSpawnPoint_Implementation()
 {
-    SetSpawnPointNMC();
+    //SetSpawnPointNMC();
 }
 
 void APushCharacter::Dead_Server_Implementation()
@@ -328,8 +328,9 @@ void APushCharacter::Dead_Server_Implementation()
     GameMode->PlayerDead(controller);
 }
 
-void APushCharacter::SetSpawnPointNMC_Implementation()
+void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
 {
+    CLog::Log("SetSpawnPoint");
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
@@ -349,23 +350,25 @@ void APushCharacter::SetSpawnPointNMC_Implementation()
 		ResourceComponent->SetHP_Server(ResourceComponent->GetMaxHP()); // HP 100으로 설정
     }
 
-    TArray<AActor*> temp;
-    UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
+    SetActorLocation(InLocation);
 
-    TArray<APlayerStart*> PlayerStarts;
-    for (auto Start : temp)
-    {
-        APlayerStart* startLoc = Cast<APlayerStart>(Start);
-        if (IsValid(startLoc))
-        {
-            PlayerStarts.Add(startLoc);
-        }
-    }
-    if (PlayerStarts.Num() > 0)
-    {
-        TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
-        SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
-    }
+    //TArray<AActor*> temp;
+    //UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
+
+    //TArray<APlayerStart*> PlayerStarts;
+    //for (auto Start : temp)
+    //{
+    //    APlayerStart* startLoc = Cast<APlayerStart>(Start);
+    //    if (IsValid(startLoc))
+    //    {
+    //        PlayerStarts.Add(startLoc);
+    //    }
+    //}
+    //if (PlayerStarts.Num() > 0)
+    //{
+    //    TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
+    //    SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
+    //}
 
 }
 

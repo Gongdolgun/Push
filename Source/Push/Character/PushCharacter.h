@@ -114,7 +114,7 @@ public:
 	UFUNCTION(Server, Reliable)
 		void SetSpawnPoint();
 	UFUNCTION(NetMulticast, Reliable)
-		void SetSpawnPointNMC();
+		void SetSpawnPointNMC(FVector InLocation);
 
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 		void Dead_Server();

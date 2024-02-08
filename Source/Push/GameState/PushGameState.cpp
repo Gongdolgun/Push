@@ -8,6 +8,8 @@
 #include "Widgets/Rank.h"
 #include "Components/TextBlock.h"
 #include "Utilites/CLog.h"
+#include "Objects/PlayerBox.h"
+#include "GameFramework/PlayerStart.h"
 
 APushGameState::APushGameState()
 {
@@ -20,6 +22,35 @@ void APushGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 	DOREPLIFETIME(APushGameState, CurrentTime);
 	DOREPLIFETIME(APushGameState, RoundRank);
+}
+
+void APushGameState::BeginPlay()
+{
+	Super::BeginPlay();
+
+	TArray<AActor*> tempbox, tempstart;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerBox::StaticClass(), tempbox);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), tempstart);
+
+	for(AActor* tmp : tempbox)
+	{
+		APlayerBox* box = Cast<APlayerBox>(tmp);
+
+		if (box == nullptr)
+			continue;
+
+		Boxes.Push(box);
+	}
+
+	for (AActor* tmp : tempstart)
+	{
+		APlayerStart* start = Cast<APlayerStart>(tmp);
+
+		if (start == nullptr)
+			continue;
+
+		Starts.Push(start);
+	}
 }
 
 void APushGameState::SetTime(float InTime)
@@ -105,6 +136,32 @@ void APushGameState::GiveGold(TArray<int32> InGoldAmount, int32 InBaseMoney)
 
 		CLog::Log(InGoldAmount[i]);
 		resource->AdjustGold_NMC(InGoldAmount[i] + InBaseMoney);
+	}
+}
+
+void APushGameState::Respawn()
+{
+	for (APlayerBox* box : Boxes)
+	{
+		box->ToggleCollision_NMC(true);
+	}
+
+	for(int i = 0; i < PlayerArray.Num(); i++)
+	{
+		APushCharacter* character = Cast<APushCharacter>(PlayerArray[i]->GetPawn());
+
+		if (character == nullptr)
+			continue;
+
+		character->SetSpawnPointNMC(Starts[i % Starts.Num()]->GetActorLocation());
+	}
+}
+
+void APushGameState::RoundStart()
+{
+	for(APlayerBox* box : Boxes)
+	{
+		box->ToggleCollision_NMC(false);
 	}
 }
 
