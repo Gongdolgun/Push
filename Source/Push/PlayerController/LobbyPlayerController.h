@@ -19,4 +19,8 @@ public:
 
 	UFUNCTION(Client, Unreliable)
 		void UpdateTimer_Client(int InTime);
+
+	UPROPERTY(BlueprintReadWrite)
+		class APushGameMode* PushGameMode;
+
 };

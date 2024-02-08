@@ -1,5 +1,6 @@
 #include "PlayerController/LobbyPlayerController.h"
 #include "Global.h"
+#include "GameMode/PushGameMode.h"
 #include "GameState/LobbyGameState.h"
 #include "HUD/LobbyHUD.h"
 #include "Widgets/LobbyCountDown.h"
@@ -21,6 +22,9 @@ void ALobbyPlayerController::BeginPlay()
 				LobbyHUD->GetWidget<ULobbyCountDown>("LobbyCountDown")->SetPlayerNum(state->NumofPlayers);
 		}
 	}
+
+	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
 }
 
 void ALobbyPlayerController::Tick(float DeltaSeconds)

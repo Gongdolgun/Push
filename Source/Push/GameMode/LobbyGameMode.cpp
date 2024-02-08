@@ -1,8 +1,16 @@
 #include "GameMode/LobbyGameMode.h"
 #include "GameFramework/GameState.h"
 #include "GameState/LobbyGameState.h"
+#include "Kismet/GameplayStatics.h"
+#include "Objects/LobbyPlayerPlatform.h"
 #include "Utilites/CLog.h"
 #include "Widgets/LobbyCountDown.h"
+
+void ALobbyGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
 
 void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 {
@@ -35,6 +43,9 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 	}
 
 	lobbyGameState->PlayerConnection(NumOfPlayers);
+
+	AllPC.Add(NewPlayer);
+	UpdatePlayerList();
 }
 
 void ALobbyGameMode::Logout(AController* Exiting)
@@ -42,6 +53,9 @@ void ALobbyGameMode::Logout(AController* Exiting)
 	Super::Logout(Exiting);
 
 	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
+
+	AllPC.Empty();
+	UpdatePlayerList();
 }
 
 void ALobbyGameMode::PlayerLoginInServer_Implementation()
@@ -78,4 +92,9 @@ void ALobbyGameMode::EnterMap()
 		World->ServerTravel(FString("/Game/Maps/MainMap"));
 		CLog::Log("Dedicated Server entered MainMap!!");
 	}
+}
+
+void ALobbyGameMode::UpdatePlayerList()
+{
+
 }

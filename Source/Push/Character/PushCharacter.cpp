@@ -72,7 +72,9 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
-    
+
+	Helpers::CreateComponent(this, &WidgetComponent, "LobbyState", RootComponent);
+
 	/*if (ResourceComponent != nullptr)
 	{
 		ResourceComponent->SetNetAddressable();
@@ -84,6 +86,9 @@ APushCharacter::APushCharacter()
         SkillComponent->SetNetAddressable();
         SkillComponent->SetIsReplicated(true);
     }
+
+    bUseControllerRotationYaw = true;
+    GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
 // Input
@@ -312,8 +317,11 @@ void APushCharacter::SetSpawnPointNMC_Implementation()
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     }
 
-    StateComponent->SetIdleMode(); // 기본 상태로 되돌림
-    ResourceComponent->SetHP_Server(100.f); // HP 100으로 설정
+    if (IsLocalizedResource())
+    {
+        StateComponent->SetIdleMode(); // 기본 상태로 되돌림
+        ResourceComponent->SetHP_Server(100.f); // HP 100으로 설정
+    }
 
     TArray<AActor*> temp;
     UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
@@ -348,7 +356,8 @@ void APushCharacter::BeginPlay()
     Change_Color(BodyColor);
 
     SetUpLocalName();
-
+    //WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Visible);
+    //WidgetComponent->GetWidget()->AddToViewport(0);
     
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
+#include "Misc/Structures.h"
 #include "LobbyGameMode.generated.h"
 
 /** 게임 시작 시 GameMode
@@ -13,6 +14,8 @@ class PUSH_API ALobbyGameMode : public AGameMode
 	GENERATED_BODY()
 
 public:
+	virtual void BeginPlay() override;
+
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 
@@ -30,9 +33,20 @@ public:
 	void CountDown();
 	void EnterMap();
 
+public:
+	UFUNCTION(BlueprintCallable)
+		void UpdatePlayerList();
+
+	UPROPERTY(BlueprintReadWrite)
+		TArray<class APlayerController*> AllPC;
+
+	UPROPERTY(EditAnywhere, Category = "PlayerList")
+		TArray<FLobbyData> LobbyDatas;
+
 private:
 	uint8 NumOfPlayers = 0;
 	int countdownTimer = 0;
 	FTimerHandle LobbyTimeHandle;
 
+	bool bPlayerReady = false;
 };

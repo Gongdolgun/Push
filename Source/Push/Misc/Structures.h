@@ -108,6 +108,19 @@ public:
 };
 
 USTRUCT(BlueprintType)
+struct FLobbyData
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+        FString PlayerName = TEXT("");
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+        bool bReady = false;
+};
+
+USTRUCT(BlueprintType)
 struct FPlayerList
 {
     GENERATED_BODY()
@@ -121,9 +134,6 @@ public:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
         int32 Death = 0;
-
-    //UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-    //	FTexture Skill_Icon;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
         int32 Gold = 0;

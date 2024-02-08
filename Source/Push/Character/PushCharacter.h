@@ -60,6 +60,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UStateComponent* StateComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UWidgetComponent* WidgetComponent;
+
 	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
 		TSubclassOf<UCameraShakeBase> CameraShakeBase;
 
