@@ -24,6 +24,8 @@ protected:
 	virtual void OnSpawnPointDecal(FVector InLocation) override;
 	virtual void OnDestroy(FVector InLocation) override;
 
+	void DestroyExplosion();
+
 	UFUNCTION()
 		void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
@@ -38,9 +40,15 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Particle")
 		class UParticleSystem* Explosion;
+	UPROPERTY()
+		class UParticleSystemComponent* ExplosionComponent;
 	UPROPERTY(EditAnywhere, Category = "Particle")
 		FVector ExplosionScale = FVector(1, 1, 1);
 	UPROPERTY(EditAnywhere, Category = "PointDecal")
 		TSubclassOf<class APointDecal> PointDecal_Class;
 
+	UPROPERTY(EditAnywhere, Category = "DebugType")
+		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectType;
+
+	TArray<ACharacter*> Hitted;
 };

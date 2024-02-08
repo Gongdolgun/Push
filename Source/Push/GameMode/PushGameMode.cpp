@@ -61,6 +61,7 @@ void APushGameMode::BeginPlay()
 	}
 
 	OnRoundEnd.AddDynamic(this, &APushGameMode::RoundEnd);
+	OnRoundStart.AddDynamic(this, &APushGameMode::RoundStart);
 }
 
 
@@ -75,6 +76,10 @@ void APushGameMode::Tick(float DeltaSeconds)
 		{
 			CountdownTime = RoundTime[Round];
 			tempTime = GetWorld()->GetTimeSeconds();
+
+			if (OnRoundStart.IsBound())
+				OnRoundStart.Broadcast();
+
 			SetMatchState(MatchState::Round);
 		}
 	}
@@ -210,10 +215,22 @@ void APushGameMode::UpdatePlayerList()
 
 void APushGameMode::PlayerDead(APushPlayerController* InController)
 {
+	if (MatchState == "TotalResult")
+		return;
+
 	PushGameState->AddToRank(InController);
 
 	if (++NumofDeadPlayers >= (PushGameState->PlayerArray.Num() - 1))
 	{
+		if (Games >= TotalNumOfGames)
+		{
+			SetMatchState(MatchState::TotalResult);
+			PushGameState->ShowTotalRank();
+			SetActorTickEnabled(false);
+			CurrentTime = 0.0f;
+			return;
+		}
+
 		for (APlayerState* player : PushGameState->PlayerArray)
 		{
 			APushCharacter* character = Cast<APushCharacter>(player->GetPawn());
@@ -249,5 +266,11 @@ void APushGameMode::RoundEnd()
 {
 	PushGameState->GiveGold(MoneyPerRank, BaseMoney);
 	PushGameState->UpdateGameNum(++Games);
+	PushGameState->Respawn();
 	Ring->Reset();
+}
+
+void APushGameMode::RoundStart()
+{
+	PushGameState->RoundStart();
 }

@@ -107,7 +107,7 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 	// 결과발표가 끝나면 캐릭터 리스폰
 	if (MatchState == MatchState::Result)
 	{
-		if (0.f < TimeLeft && TimeLeft < 0.2f)
+		if (0.f < TimeLeft && TimeLeft < 0.18f)
 		{
 			pushCharacter->SetSpawnPoint();
 		}		

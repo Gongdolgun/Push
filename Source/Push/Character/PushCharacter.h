@@ -117,9 +117,16 @@ public:
 	UFUNCTION(Server, Reliable)
 		void SetSpawnPoint();
 	UFUNCTION(NetMulticast, Reliable)
-		void SetSpawnPointNMC();
+		void SetSpawnPointNMC(FVector InLocation);
 
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 		void Dead_Server();
+
+private:
+	UPROPERTY(Replicated)
+		APushCharacter* Attacker;
+
+	UFUNCTION(Server, Reliable)
+		void SetAttacker_Server(APushCharacter* InAttacker);
 };
 
