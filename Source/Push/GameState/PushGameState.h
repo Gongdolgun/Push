@@ -13,8 +13,6 @@ public:
 	APushGameState();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	virtual void BeginPlay() override;
-
 	UPROPERTY(Replicated)
 		float CurrentTime;
 
@@ -32,16 +30,10 @@ public:
 		void ShowTotalRank();
 
 	void GiveGold(TArray<int32> InGoldAmount, int32 InBaseMoney);
-	void Respawn();
-	void RoundStart();
 
 	UPROPERTY(VisibleAnywhere, Replicated)
 		TArray<class APushPlayerController*> RoundRank;
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class URank> RankWidget;
-
-private:
-	TArray<class APlayerBox*> Boxes;
-	TArray<class APlayerStart*> Starts;
 };

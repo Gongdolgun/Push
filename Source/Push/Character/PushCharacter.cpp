@@ -72,7 +72,9 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
-    
+
+	Helpers::CreateComponent(this, &WidgetComponent, "LobbyState", RootComponent);
+
 	/*if (ResourceComponent != nullptr)
 	{
 		ResourceComponent->SetNetAddressable();
@@ -84,6 +86,9 @@ APushCharacter::APushCharacter()
         SkillComponent->SetNetAddressable();
         SkillComponent->SetIsReplicated(true);
     }
+
+    bUseControllerRotationYaw = true;
+    GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
 // Input
@@ -116,16 +121,6 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     FVector launch = FVector(InHitData.xLaunchPower * direction.X, InHitData.xLaunchPower * direction.Y, InHitData.zLaunchPower);
 
-    if (InAttacker->GetOwner() != nullptr)
-    {
-        APushCharacter* attacker = Cast<APushCharacter>(InAttacker->GetOwner());
-        if (attacker != nullptr)
-        {
-            CLog::Log("SetAttacker_Server");
-            SetAttacker_Server(attacker);
-        }
-    }
-
     if(ResourceComponent != nullptr)
     {
         if (StateComponent->IsDeadMode() == true)
@@ -135,23 +130,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
         if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
         {
-            if (IsLocallyControlled())
-                ResourceComponent->SetHP_Server(0.f);
             // 킬 로그 출력
-            if(Attacker != nullptr)
-            {
-                CLog::Log("Attacker Exists");
-                UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(Attacker);
-
-                if (resource != nullptr)
-                    resource->AdjustKill_Server(1);
-
-                ResourceComponent->ShowKillLog(Attacker, this);
-            }
-            else
-            {
-				ResourceComponent->ShowKillLog(InAttacker, this);
-            }
+            ResourceComponent->ShowKillLog(InAttacker, this);
 
             Ragdoll();
             StateComponent->SetDeadMode();
@@ -270,7 +250,6 @@ void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
     DOREPLIFETIME(APushCharacter, BodyColor);
     DOREPLIFETIME(APushCharacter, CustomPlayerName);
-    DOREPLIFETIME(APushCharacter, Attacker);
 }
 
 void APushCharacter::SetUpLocalName()
@@ -303,14 +282,9 @@ void APushCharacter::Ragdoll()
     
 }
 
-void APushCharacter::SetAttacker_Server_Implementation(APushCharacter* InAttacker)
-{
-    Attacker = InAttacker;
-}
-
 void APushCharacter::SetSpawnPoint_Implementation()
 {
-    //SetSpawnPointNMC();
+    SetSpawnPointNMC();
 }
 
 void APushCharacter::Dead_Server_Implementation()
@@ -328,9 +302,8 @@ void APushCharacter::Dead_Server_Implementation()
     GameMode->PlayerDead(controller);
 }
 
-void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
+void APushCharacter::SetSpawnPointNMC_Implementation()
 {
-    CLog::Log("SetSpawnPoint");
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
@@ -344,31 +317,29 @@ void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     }
 
-    if(IsLocallyControlled())
+    if (IsLocalizedResource())
     {
-		StateComponent->SetIdleMode(); // 기본 상태로 되돌림
-		ResourceComponent->SetHP_Server(ResourceComponent->GetMaxHP()); // HP 100으로 설정
+        StateComponent->SetIdleMode(); // 기본 상태로 되돌림
+        ResourceComponent->SetHP_Server(100.f); // HP 100으로 설정
     }
 
-    SetActorLocation(InLocation);
+    TArray<AActor*> temp;
+    UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
 
-    //TArray<AActor*> temp;
-    //UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
-
-    //TArray<APlayerStart*> PlayerStarts;
-    //for (auto Start : temp)
-    //{
-    //    APlayerStart* startLoc = Cast<APlayerStart>(Start);
-    //    if (IsValid(startLoc))
-    //    {
-    //        PlayerStarts.Add(startLoc);
-    //    }
-    //}
-    //if (PlayerStarts.Num() > 0)
-    //{
-    //    TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
-    //    SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
-    //}
+    TArray<APlayerStart*> PlayerStarts;
+    for (auto Start : temp)
+    {
+        APlayerStart* startLoc = Cast<APlayerStart>(Start);
+        if (IsValid(startLoc))
+        {
+            PlayerStarts.Add(startLoc);
+        }
+    }
+    if (PlayerStarts.Num() > 0)
+    {
+        TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
+        SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
+    }
 
 }
 
@@ -385,7 +356,8 @@ void APushCharacter::BeginPlay()
     Change_Color(BodyColor);
 
     SetUpLocalName();
-
+    //WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Visible);
+    //WidgetComponent->GetWidget()->AddToViewport(0);
     
 }
 

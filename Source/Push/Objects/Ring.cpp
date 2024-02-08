@@ -91,7 +91,7 @@ void ARing::ChangeRadius()
 {
 	float radius = RingCapsule->GetUnscaledCapsuleRadius() - DeltaRadius;
 
-	SetCapsuleRadius_NMC(radius);
+	RingCapsule->SetCapsuleRadius(radius);
 
 	if (FMath::IsNearlyEqual(radius, TargetRadius))
 		GetWorldTimerManager().ClearTimer(TimerHandle);
@@ -111,21 +111,13 @@ void ARing::Refresh()
 
 void ARing::Reset()
 {
-	GetWorldTimerManager().ClearTimer(TimerHandle);
-
-	SetCapsuleRadius_NMC(StartRadius);
+	RingCapsule->SetCapsuleRadius(StartRadius);
 
 	float scale = StartRadius / Base;
 
 	OverlappedCharacters.Empty();
 
 	RingMesh->SetWorldScale3D(FVector(scale, scale, scale * 100));
-
-}
-
-void ARing::SetCapsuleRadius_NMC_Implementation(float InRadius)
-{
-	RingCapsule->SetCapsuleRadius(InRadius);
 }
 
 void ARing::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

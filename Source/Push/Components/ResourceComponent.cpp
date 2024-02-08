@@ -147,7 +147,6 @@ int UResourceComponent::GetKill()
 void UResourceComponent::AdjustKill_Server_Implementation(int32 InValue)
 {
 	AdjustKill_NMC(InValue);
-	CLog::Log("ADJKILL_SERVER");
 }
 
 void UResourceComponent::AdjustKill_NMC_Implementation(int32 InValue)
@@ -155,8 +154,6 @@ void UResourceComponent::AdjustKill_NMC_Implementation(int32 InValue)
 	if (InValue <= 0) return;
 
 	Kill += InValue;
-
-	CLog::Log("ADJKILL_NMC");
 
 	if (PushGameMode)
 		PushGameMode->UpdatePlayerList();
@@ -213,25 +210,13 @@ void UResourceComponent::AdjustDeath_NMC_Implementation(int32 InValue)
 
 void UResourceComponent::ShowKillLog(AActor* InAttack, APushCharacter* InHitted)
 {
-	if (InAttack == nullptr)
-		return;
+	if (!InAttack || !InAttack->GetOwner()) return;
 
-	FString killerName;
+	APushCharacter* killPlayer = Cast<APushCharacter>(InAttack->GetOwner());
+
+	FString killerName = killPlayer->CustomPlayerName;
 	FString deadName = InHitted->CustomPlayerName;
 
-	if(InAttack->GetOwner() == nullptr)
-	{
-		killerName = FString("ring");
-	}
-	else
-	{
-		APushCharacter* killPlayer = Cast<APushCharacter>(InAttack);
-		if (killPlayer == nullptr)
-			killerName = FString("Null Player");
-		else
-			killerName = killPlayer->CustomPlayerName;
-	}
-	
 	TArray<AActor*> PlayerControllers;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APushPlayerController::StaticClass(), PlayerControllers);
 

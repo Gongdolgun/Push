@@ -11,7 +11,6 @@
  */
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundEnd);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundStart);
 
 namespace MatchState
 {
@@ -102,16 +101,10 @@ public:
 	class APushGameState* PushGameState;
 
 
-public:	
+public:
 	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
 		FOnRoundEnd OnRoundEnd;
 
-	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
-		FOnRoundStart OnRoundStart;
-
 	UFUNCTION()
 		void RoundEnd();
-
-	UFUNCTION()
-		void RoundStart();
 };
