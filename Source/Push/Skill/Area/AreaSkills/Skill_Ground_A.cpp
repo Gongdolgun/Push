@@ -37,6 +37,8 @@ void ASkill_Ground_A::BeginPlay()
 	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::ASkill_Ground_A::OnComponentBeginOverlap);
 
 	OnSkillClicked();
+
+
 	
 }
 
@@ -60,6 +62,21 @@ void ASkill_Ground_A::OnSkillClicked()
 
 	// Spawn Decal
 	OnSpawnPointDecal(DecalLocation);
+
+	// 폭발 파티클 소환
+	if (IsValid(Explosion))
+	{
+		FTransform explosionTramsform;
+		explosionTramsform.SetLocation(DecalLocation);
+		explosionTramsform.SetScale3D(ExplosionScale);
+		ExplosionComponent = UGameplayStatics::SpawnEmitterAtLocation(Owner->GetWorld(), Explosion, explosionTramsform);
+
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(
+			TimerHandle, this, &ASkill_Ground_A::DestroyExplosion, 1.5f, false);
+
+		Particle->SetActive(false);
+	}
 }
 
 void ASkill_Ground_A::OnSpawnPointDecal(FVector InLocation)
@@ -130,23 +147,10 @@ void ASkill_Ground_A::OnDestroy(FVector InLocation)
 {
 	Super::OnDestroy(InLocation);
 
-	// 폭발 파티클 소환
-	if (IsValid(Explosion))
-	{
-		FTransform explosionTramsform;
-		explosionTramsform.SetLocation(InLocation);
-		explosionTramsform.SetScale3D(ExplosionScale);
-		ExplosionComponent = UGameplayStatics::SpawnEmitterAtLocation(Owner->GetWorld(), Explosion, explosionTramsform);
-		
-		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(
-			TimerHandle, this, &ASkill_Ground_A::DestroyExplosion, 1.5f, false);
-
-		Particle->SetActive(false);
-	}
 }
 
 void ASkill_Ground_A::DestroyExplosion()
 {
 	ExplosionComponent->DestroyComponent();
+	Destroy();
 }
