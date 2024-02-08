@@ -111,13 +111,16 @@ void ARing::Refresh()
 
 void ARing::Reset()
 {
-	RingCapsule->SetCapsuleRadius(StartRadius);
+	GetWorldTimerManager().ClearTimer(TimerHandle);
+
+	SetCapsuleRadius_NMC(StartRadius);
 
 	float scale = StartRadius / Base;
 
 	OverlappedCharacters.Empty();
 
 	RingMesh->SetWorldScale3D(FVector(scale, scale, scale * 100));
+
 }
 
 void ARing::SetCapsuleRadius_NMC_Implementation(float InRadius)
