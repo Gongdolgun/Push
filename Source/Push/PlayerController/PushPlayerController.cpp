@@ -16,6 +16,8 @@
 #include "Widgets/Rank.h"
 #include "Components/MoveComponent.h"
 
+// PushPlayerController 전체적으로 개인 작업 부분 Check
+
 void APushPlayerController::ShowRank_Client_Implementation(uint8 InRank, TSubclassOf<URank> InRankWidget)
 {
 	URank* RankWidget = CreateWidget<URank>(this, InRankWidget);

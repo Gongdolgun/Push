@@ -89,10 +89,6 @@ public:
 	void Create_DynamicMaterial();
 	void Change_Color(FLinearColor InColor);
 
-	//Testing!!
-	UFUNCTION(BlueprintCallable)
-		void Test();
-
 public:
 	UPROPERTY(Replicated)
 		FLinearColor BodyColor;

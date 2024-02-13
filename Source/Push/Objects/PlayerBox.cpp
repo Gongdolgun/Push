@@ -2,6 +2,8 @@
 #include "Utilites/Helpers.h"
 #include "Components/BoxComponent.h"
 
+// PlayerBox 전체적으로 개인 작업 부분 Check
+
 APlayerBox::APlayerBox()
 {
 	Helpers::CreateComponent<USceneComponent>(this, &Root, "Root");

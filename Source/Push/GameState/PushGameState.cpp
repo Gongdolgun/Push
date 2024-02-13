@@ -11,6 +11,8 @@
 #include "Objects/PlayerBox.h"
 #include "GameFramework/PlayerStart.h"
 
+// PushGameState 전체적으로 작업 부분 Check
+
 APushGameState::APushGameState()
 {
 	CurrentTime = 0.0f;

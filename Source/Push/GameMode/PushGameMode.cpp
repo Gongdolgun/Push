@@ -34,6 +34,7 @@ APushGameMode::APushGameMode()
 	
 }
 
+// 개인 작업 부분 Check
 void APushGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -65,6 +66,7 @@ void APushGameMode::BeginPlay()
 }
 
 
+// 개인 작업 부분 Check
 void APushGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -129,6 +131,7 @@ void APushGameMode::Tick(float DeltaSeconds)
 	}
 }
 
+// 개인 작업 부분 Check
 void APushGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
@@ -154,6 +157,7 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 	AllPC.Add(NewPlayer);
 	UpdatePlayerList();
 }
+
 
 void APushGameMode::Logout(AController* Exiting)
 {
@@ -213,6 +217,7 @@ void APushGameMode::UpdatePlayerList()
 	}
 }
 
+// 개인 작업 부분 Check
 void APushGameMode::PlayerDead(APushPlayerController* InController)
 {
 	if (MatchState == "TotalResult")
@@ -262,6 +267,7 @@ void APushGameMode::PlayerDead(APushPlayerController* InController)
 
 }
 
+// 개인 작업 부분 Check
 void APushGameMode::RoundEnd()
 {
 	PushGameState->GiveGold(MoneyPerRank, BaseMoney);
@@ -270,6 +276,7 @@ void APushGameMode::RoundEnd()
 	Ring->Reset();
 }
 
+// 개인 작업 부분 Check
 void APushGameMode::RoundStart()
 {
 	PushGameState->RoundStart();

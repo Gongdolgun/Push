@@ -108,12 +108,13 @@ int UResourceComponent::GetGold()
 	return Gold;
 }
 
+// 개인 작업 부분 Check
 void UResourceComponent::AdjustGold_Server_Implementation(int InValue)
 {
 	AdjustGold_NMC(InValue);
 }
 
-
+// 개인 작업 부분 Check
 void UResourceComponent::AdjustGold_NMC_Implementation(int InValue)
 {
 	// 골드제한 할거면 Clamp 추가
@@ -144,19 +145,18 @@ int UResourceComponent::GetKill()
 	return Kill;
 }
 
+// 개인 작업 부분 Check
 void UResourceComponent::AdjustKill_Server_Implementation(int32 InValue)
 {
 	AdjustKill_NMC(InValue);
-	CLog::Log("ADJKILL_SERVER");
 }
 
+// 개인 작업 부분 Check
 void UResourceComponent::AdjustKill_NMC_Implementation(int32 InValue)
 {
 	if (InValue <= 0) return;
 
 	Kill += InValue;
-
-	CLog::Log("ADJKILL_NMC");
 
 	if (PushGameMode)
 		PushGameMode->UpdatePlayerList();
@@ -181,11 +181,13 @@ int UResourceComponent::GetDeath()
 	return Death;
 }
 
+// 개인 작업 부분 Check
 void UResourceComponent::AdjustDeath_Server_Implementation(int32 InValue)
 {
 	AdjustDeath_NMC(InValue);
 }
 
+// 개인 작업 부분 Check
 void UResourceComponent::AdjustDeath_NMC_Implementation(int32 InValue)
 {
 	if (InValue <= 0) return;

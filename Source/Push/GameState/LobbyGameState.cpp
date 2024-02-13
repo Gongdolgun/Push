@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerState.h"
 #include "Net/UnrealNetwork.h"
 
+// 개인 작업 부분 Check
 void ALobbyGameState::CountDown(int InCountdown)
 {
 	Count = InCountdown;
@@ -33,6 +34,7 @@ void ALobbyGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME(ALobbyGameState, Count);
 }
 
+// 개인 작업 부분 Check
 void ALobbyGameState::PlayerConnection(int InPlayerNum)
 {
 	NumofPlayers = InPlayerNum;
@@ -42,7 +44,6 @@ void ALobbyGameState::PlayerConnection(int InPlayerNum)
 
 		if (controller == nullptr)
 		{
-			CLog::Log("No Controller");
 			continue;
 		}
 

@@ -63,6 +63,7 @@ bool UStateComponent::IsDeadMode()
 	return StateType == EStateType::ES_Dead;
 }
 
+// 개인 작업 부분 Check
 void UStateComponent::ChangeType_NMC_Implementation(EStateType InType)
 {
 	EStateType prevType = StateType;
@@ -72,6 +73,7 @@ void UStateComponent::ChangeType_NMC_Implementation(EStateType InType)
 		OnStateTypeChanged.Broadcast(prevType, StateType);
 }
 
+// 개인 작업 부분 Check
 void UStateComponent::ChangeType_Server_Implementation(EStateType InType)
 {
 	ChangeType_NMC(InType);

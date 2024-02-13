@@ -6,6 +6,8 @@
 #include "HUD/MainHUD.h"
 #include "Net/UnrealNetwork.h"
 
+// Ring 전체적으로 개인 작업 부분 Check
+
 ARing::ARing()
 {
 	PrimaryActorTick.bCanEverTick = true;

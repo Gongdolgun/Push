@@ -29,7 +29,7 @@ void USkillComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 }
 
-
+// 개인 작업 부분 Check
 void USkillComponent::UseSkill(TSubclassOf<USkillData> SkillData)
 {
 	if (SkillData != nullptr)
@@ -38,6 +38,7 @@ void USkillComponent::UseSkill(TSubclassOf<USkillData> SkillData)
 	}
 }
 
+// 개인 작업 부분 Check
 void USkillComponent::Execute()
 {
 	if(curSkillData != nullptr)

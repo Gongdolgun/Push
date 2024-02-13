@@ -4,6 +4,8 @@
 #include "HUD/LobbyHUD.h"
 #include "Widgets/LobbyCountDown.h"
 
+// LobbyPlayerController 전체적으로 개인 작업 부분 Check
+
 void ALobbyPlayerController::BeginPlay()
 {
 	Super::BeginPlay();

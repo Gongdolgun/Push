@@ -72,12 +72,6 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
-    
-	/*if (ResourceComponent != nullptr)
-	{
-		ResourceComponent->SetNetAddressable();
-		ResourceComponent->SetIsReplicated(true);
-	}*/
 
     if(SkillComponent != nullptr)
     {
@@ -102,13 +96,9 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
     PlayerInputComponent->BindAction("KD", EInputEvent::IE_Pressed, ResourceComponent, &UResourceComponent::OnKillDeathUI);
     PlayerInputComponent->BindAction("KD", EInputEvent::IE_Released, ResourceComponent, &UResourceComponent::OffKillDeathUI);
-
-    /*PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill1", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 0);
-    PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill2", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 1);
-    PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill3", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 2);
-    PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill4", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 3);*/
 }
 
+// 개인 작업 부분 Check
 void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 {
     FVector direction = GetActorLocation() - InAttacker->GetActorLocation();
@@ -121,7 +111,6 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
         APushCharacter* attacker = Cast<APushCharacter>(InAttacker->GetOwner());
         if (attacker != nullptr)
         {
-            CLog::Log("SetAttacker_Server");
             SetAttacker_Server(attacker);
         }
     }
@@ -229,7 +218,6 @@ void APushCharacter::Create_DynamicMaterial()
 
 void APushCharacter::Change_Color(FLinearColor InColor)
 {
-    //CLog::Print("ChangeColor");
     for(UMaterialInterface* material : this->GetMesh()->GetMaterials())
     {
         UMaterialInstanceDynamic* MaterialDynamic = Cast<UMaterialInstanceDynamic>(material);
@@ -242,24 +230,16 @@ void APushCharacter::Change_Color(FLinearColor InColor)
 
 }
 
+// 개인 작업 부분 Check
 void APushCharacter::LaunchServer_Implementation(FVector InLaunch)
 {
     LaunchNMC_Implementation(InLaunch);
 }
 
+// 개인 작업 부분 Check
 void APushCharacter::LaunchNMC_Implementation(FVector InLaunch)
 {
     LaunchCharacter(InLaunch, false, false);
-}
-
-void APushCharacter::Test()
-{
-    if (SkillComponent == nullptr)
-        return;
-    if (SkillComponent->curSkillData == nullptr)
-        return;
-
-    SkillComponent->curSkillData->Play(this);
 }
 
 void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -301,6 +281,7 @@ void APushCharacter::Ragdoll()
     
 }
 
+// 개인 작업 부분 Check
 void APushCharacter::SetAttacker_Server_Implementation(APushCharacter* InAttacker)
 {
     Attacker = InAttacker;
@@ -311,6 +292,7 @@ void APushCharacter::SetSpawnPoint_Implementation()
     //SetSpawnPointNMC();
 }
 
+// 개인 작업 부분 Check
 void APushCharacter::Dead_Server_Implementation()
 {
     APushGameMode* GameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -325,6 +307,7 @@ void APushCharacter::Dead_Server_Implementation()
 
     GameMode->PlayerDead(controller);
 }
+
 
 void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
 {
@@ -349,24 +332,6 @@ void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
     }
 
     SetActorLocation(InLocation);
-
-    //TArray<AActor*> temp;
-    //UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
-
-    //TArray<APlayerStart*> PlayerStarts;
-    //for (auto Start : temp)
-    //{
-    //    APlayerStart* startLoc = Cast<APlayerStart>(Start);
-    //    if (IsValid(startLoc))
-    //    {
-    //        PlayerStarts.Add(startLoc);
-    //    }
-    //}
-    //if (PlayerStarts.Num() > 0)
-    //{
-    //    TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
-    //    SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
-    //}
 
 }
 

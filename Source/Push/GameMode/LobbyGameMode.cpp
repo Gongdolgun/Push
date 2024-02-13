@@ -4,6 +4,8 @@
 #include "Utilites/CLog.h"
 #include "Widgets/LobbyCountDown.h"
 
+// LobbyGameMode 전체적으로 작업 부분 Check
+
 void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
@@ -19,7 +21,6 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		{
 			if (NumOfPlayers >= MaxNumofPlayers)
 			{
-				CLog::Log(NumOfPlayers);
 				countdownTimer = StartCountdown;
 				GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, this, &ALobbyGameMode::CountDown, 1.0f, true, 0);
 			}
@@ -30,7 +31,6 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 
 	if (lobbyGameState == nullptr)
 	{
-		CLog::Log("GameState Nullptr");
 		return;
 	}
 
