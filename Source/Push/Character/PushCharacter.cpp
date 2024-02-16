@@ -31,6 +31,7 @@
 #include "Widgets/SkillSlots.h"
 #include "Skill/SkillData.h"
 #include "PlayerController/PushPlayerController.h"
+#include "Widgets/LobbyReadyState.h"
 #include "Widgets/PlayerNameTag.h"
 #include "Widgets/SkillSlots.h"
 
@@ -65,6 +66,8 @@ APushCharacter::APushCharacter()
     FollowCamera->bUsePawnControlRotation = false;
 
     //Component
+    Helpers::CreateComponent(this, &WidgetComponent, "LobbyWidget", RootComponent);
+
     Helpers::CreateActorComponent<UMoveComponent>(this, &MoveComponent, "MoveComponent");
     Helpers::CreateActorComponent<UResourceComponent>(this, &ResourceComponent, "ResourceComponent");
     Helpers::CreateActorComponent<USkillComponent>(this, &SkillComponent, "SkillComponent");
@@ -270,6 +273,7 @@ void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
     DOREPLIFETIME(APushCharacter, BodyColor);
     DOREPLIFETIME(APushCharacter, CustomPlayerName);
+    DOREPLIFETIME(APushCharacter, PlayerLobbyInfo);
     DOREPLIFETIME(APushCharacter, Attacker);
 }
 
@@ -278,9 +282,51 @@ void APushCharacter::SetUpLocalName()
     if (IsLocallyControlled())
     {
         UPushGameInstance* gameInstance = Cast<UPushGameInstance>(GetGameInstance());
-        if (gameInstance)
-			SetPlayerNameServer(gameInstance->GetPlayerName());
+
+    	if (gameInstance)
+        {
+            SetPlayerNameServer(gameInstance->GetPlayerName());
+        }
     }
+}
+
+void APushCharacter::UpdatePlayerLobbyInfo(const FLobbyData& InLobbyInfo)
+{
+    PlayerLobbyInfo = InLobbyInfo;
+}
+
+void APushCharacter::OnRep_PlayerLobbyInfo()
+{
+	if (WidgetComponent->GetWidget())
+	{
+        ULobbyReadyState* lobbyReadyState = Cast<ULobbyReadyState>(WidgetComponent->GetWidget());
+        if (lobbyReadyState)
+        {
+            lobbyReadyState->UpdatePlayerData(PlayerLobbyInfo);
+
+            // 0은 기본자세, 1 ~ 10이 준비 자세
+            int32 randomInt = UKismetMathLibrary::RandomIntegerInRange(1, Ready_Montage.Max() - 1);
+            
+            // Ready
+            if (PlayerLobbyInfo.bReady == true)
+            {
+                PlayAnimMontage(Ready_Montage[randomInt]);
+            }
+            // Not Ready
+            else
+            {
+                PlayAnimMontage(Ready_Montage[0]);
+            }
+        }
+	}
+
+	else
+	{
+        FTimerHandle TimerHandle;
+        GetWorld()->GetTimerManager().SetTimer(
+            TimerHandle, this, &APushCharacter::OnRep_PlayerLobbyInfo, 0.1f, false);
+	}
+    
 }
 
 void APushCharacter::Ragdoll()
@@ -386,7 +432,11 @@ void APushCharacter::BeginPlay()
 
     SetUpLocalName();
 
-    
+    APushPlayerController* pushPlayerController = Cast<APushPlayerController>(GetController());
+    if (pushPlayerController)
+    {
+        WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Hidden);
+    }
 }
 
 void APushCharacter::Tick(float DeltaSeconds)

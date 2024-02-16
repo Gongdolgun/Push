@@ -22,6 +22,7 @@ public:
 
 	UFUNCTION()
 		void SetPlayerNum(int InNum);
+
 	UFUNCTION()
 		void SetCountdown(int InNum);
 

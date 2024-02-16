@@ -1,10 +1,17 @@
 #include "GameMode/LobbyGameMode.h"
+
+#include "Character/PushCharacter.h"
 #include "GameFramework/GameState.h"
 #include "GameState/LobbyGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "Objects/LobbyPlayerPlatform.h"
+#include "PlayerController/LobbyPlayerController.h"
 #include "Utilites/CLog.h"
 #include "Widgets/LobbyCountDown.h"
+#include "Global.h"
+#include "Components/WidgetComponent.h"
+#include "Widgets/LobbyReadyButton.h"
+#include "Widgets/LobbyReadyState.h"
 
 void ALobbyGameMode::BeginPlay()
 {
@@ -20,20 +27,6 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 
 	if (false == IsValid(NewPlayer)) return;
 
-	if (HasAuthority())
-	{
-		TWeakObjectPtr<UGameInstance> GameInstance = GetGameInstance();
-		if (GameInstance.IsValid())
-		{
-			if (NumOfPlayers >= MaxNumofPlayers)
-			{
-				CLog::Log(NumOfPlayers);
-				countdownTimer = StartCountdown;
-				GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, this, &ALobbyGameMode::CountDown, 1.0f, true, 0);
-			}
-		}
-	}
-
 	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
 
 	if (lobbyGameState == nullptr)
@@ -45,7 +38,7 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 	lobbyGameState->PlayerConnection(NumOfPlayers);
 
 	AllPC.Add(NewPlayer);
-	UpdatePlayerList();
+
 }
 
 void ALobbyGameMode::Logout(AController* Exiting)
@@ -55,7 +48,6 @@ void ALobbyGameMode::Logout(AController* Exiting)
 	ALobbyGameState* lobbyGameState = GetGameState<ALobbyGameState>();
 
 	AllPC.Empty();
-	UpdatePlayerList();
 }
 
 void ALobbyGameMode::PlayerLoginInServer_Implementation()
@@ -80,7 +72,9 @@ void ALobbyGameMode::CountDown()
 	countdownTimer--;
 
 	if (countdownTimer < 0)
+	{
 		EnterMap();
+	}
 }
 
 void ALobbyGameMode::EnterMap()
@@ -94,7 +88,68 @@ void ALobbyGameMode::EnterMap()
 	}
 }
 
-void ALobbyGameMode::UpdatePlayerList()
+void ALobbyGameMode::UpdateLobbyInfo(APlayerController* InPlayerController)
 {
+	for (ALobbyPlayerPlatform* lobbyInfo : LobbyPlatforms)
+	{
+		if (lobbyInfo->PlayerController == InPlayerController)
+		{
+			APushCharacter* pushCharacter = Cast<APushCharacter>(lobbyInfo->CurrentCharacter);
+			if (pushCharacter)
+			{
+				ALobbyPlayerController* lobbyPlayerController = Cast<ALobbyPlayerController>(InPlayerController);
+				if (lobbyPlayerController)
+				{
+					FLobbyData lobbyData;
 
+					lobbyData.PlayerController = InPlayerController;
+					lobbyData.PlayerName = lobbyPlayerController->PlayerLobbyData.PlayerName;
+					lobbyData.bReady = lobbyPlayerController->PlayerLobbyData.bReady;
+
+					pushCharacter->UpdatePlayerLobbyInfo(lobbyData);
+					OnCheckPlayerAllReady();
+
+					return;
+				}
+			}
+		}
+	}
+	// 제대로 값이 안들어왔을 때 다시 실행 (동기화 문제)
+	ALobbyPlayerController* lobbyPlayerController = Cast<ALobbyPlayerController>(InPlayerController);
+	if (lobbyPlayerController)
+	{
+		lobbyPlayerController->TryAgainUpdatingLobbyInfo();
+	}
+	
+}
+
+void ALobbyGameMode::OnCheckPlayerAllReady_Implementation()
+{
+	// 모든 플레이어가 준비되었는지 확인
+	bAllPlayerReady = true;
+
+	for (APlayerController* playerController : AllPC)
+	{
+		ALobbyPlayerController* lobbyController = Cast<ALobbyPlayerController>(playerController);
+		if (lobbyController)
+		{
+			if (lobbyController->PlayerLobbyData.bReady == false)
+			{
+				bAllPlayerReady = false;
+			}
+		}
+	}
+
+	if (bAllPlayerReady == true)
+	{
+		if (HasAuthority())
+		{
+			TWeakObjectPtr<UGameInstance> GameInstance = GetGameInstance();
+			if (GameInstance.IsValid())
+			{
+				countdownTimer = StartCountdown;
+				GetWorld()->GetTimerManager().SetTimer(LobbyTimeHandle, this, &ALobbyGameMode::CountDown, 1.0f, true, 0);
+			}
+		}
+	}
 }

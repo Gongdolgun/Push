@@ -50,7 +50,7 @@ public:
 		class UResourceComponent* resourceComponent;
 
 	UPROPERTY()
-	class APushCharacter* pushCharacter;
+		class APushCharacter* pushCharacter;
 
 protected:
 	virtual void BeginPlay() override;

@@ -35,18 +35,28 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable)
-		void UpdatePlayerList();
+		void UpdateLobbyInfo(APlayerController* InPlayerController);
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+		void OnCheckPlayerAllReady();
+
+public:
 	UPROPERTY(BlueprintReadWrite)
 		TArray<class APlayerController*> AllPC;
 
-	UPROPERTY(EditAnywhere, Category = "PlayerList")
+	UPROPERTY(EditAnywhere, Category = "LobbyData")
 		TArray<FLobbyData> LobbyDatas;
+
+	UPROPERTY(BlueprintReadWrite)
+		TArray<class ALobbyPlayerPlatform*> LobbyPlatforms;
+
+	FLobbyData LobbyData;
 
 private:
 	uint8 NumOfPlayers = 0;
 	int countdownTimer = 0;
 	FTimerHandle LobbyTimeHandle;
 
-	bool bPlayerReady = false;
+	bool bAllPlayerReady = false;
+
 };

@@ -24,3 +24,13 @@ void ALobbyPlayerPlatform::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void ALobbyPlayerPlatform::SpawnCharacter_Implementation(APlayerController* InPlayerController)
+{
+
+}
+
+void ALobbyPlayerPlatform::Clear_Implementation()
+{
+
+}

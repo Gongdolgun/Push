@@ -34,8 +34,8 @@ void APushPlayerController::BeginPlay()
 	if (IsValid(MainHUD))
 	{
 		MainHUD->AddWidget();
-		if (MainHUD->CheckWidget("KDA"))
-			MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
+		//if (MainHUD->CheckWidget("LeaderBoard"))
+		//	MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->SetVisibility(ESlateVisibility::Hidden);
 
 		if (MainHUD->CheckWidget("LeaderBoard_List"))
 			MainHUD->GetWidget<ULeaderBoard_List>("LeaderBoard_List")->SetVisibility(ESlateVisibility::Hidden);

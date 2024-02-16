@@ -111,6 +111,13 @@ public:
 	UFUNCTION(Server, Reliable)
 		void SetPlayerNameServer(const FString& NewPlayerName);
 
+	void UpdatePlayerLobbyInfo(const FLobbyData& InLobbyInfo);
+
+	UFUNCTION()
+		void OnRep_PlayerLobbyInfo();
+
+	UPROPERTY(ReplicatedUsing="OnRep_PlayerLobbyInfo")
+		FLobbyData PlayerLobbyInfo;
 
 	void Ragdoll();
 
@@ -126,7 +133,12 @@ private:
 	UPROPERTY(Replicated)
 		APushCharacter* Attacker;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "ReadyMontage", meta = (AllowPrivateAccess = "true"))
+		TArray<UAnimMontage*> Ready_Montage;
+
 	UFUNCTION(Server, Reliable)
 		void SetAttacker_Server(APushCharacter* InAttacker);
+
+
 };
 

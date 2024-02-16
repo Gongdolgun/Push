@@ -117,6 +117,9 @@ public:
         FString PlayerName = TEXT("");
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+        APlayerController* PlayerController;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
         bool bReady = false;
 };
 

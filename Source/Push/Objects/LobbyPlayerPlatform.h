@@ -18,6 +18,12 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+		void SpawnCharacter(APlayerController* InPlayerController);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+		void Clear();
+
 private:
 	UPROPERTY(VisibleAnywhere)
 		class USceneComponent* Root;
