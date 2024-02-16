@@ -124,6 +124,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
         if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
         {
+            if (IsLocallyControlled())
+                ResourceComponent->SetHP_Server(0.f);
             // 킬 로그 출력
             if(Attacker != nullptr)
             {
