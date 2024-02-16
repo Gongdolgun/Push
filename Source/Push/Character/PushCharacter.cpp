@@ -156,7 +156,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 				ResourceComponent->ShowKillLog(InAttacker, this);
             }
 
-            Ragdoll();
+            //Ragdoll();
             StateComponent->SetDeadMode();
 
             if(IsLocallyControlled())
