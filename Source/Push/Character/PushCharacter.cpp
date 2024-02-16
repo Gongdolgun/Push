@@ -31,6 +31,7 @@
 #include "Widgets/SkillSlots.h"
 #include "Skill/SkillData.h"
 #include "PlayerController/PushPlayerController.h"
+#include "Widgets/LobbyReadyState.h"
 #include "Widgets/PlayerNameTag.h"
 #include "Widgets/SkillSlots.h"
 
@@ -65,6 +66,8 @@ APushCharacter::APushCharacter()
     FollowCamera->bUsePawnControlRotation = false;
 
     //Component
+    Helpers::CreateComponent(this, &WidgetComponent, "LobbyWidget", RootComponent);
+
     Helpers::CreateActorComponent<UMoveComponent>(this, &MoveComponent, "MoveComponent");
     Helpers::CreateActorComponent<UResourceComponent>(this, &ResourceComponent, "ResourceComponent");
     Helpers::CreateActorComponent<USkillComponent>(this, &SkillComponent, "SkillComponent");
@@ -135,6 +138,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
         if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
         {
+            if (IsLocallyControlled())
+                ResourceComponent->SetHP_Server(0.f);
             // 킬 로그 출력
             if(Attacker != nullptr)
             {
@@ -268,6 +273,7 @@ void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
     DOREPLIFETIME(APushCharacter, BodyColor);
     DOREPLIFETIME(APushCharacter, CustomPlayerName);
+    DOREPLIFETIME(APushCharacter, PlayerLobbyInfo);
     DOREPLIFETIME(APushCharacter, Attacker);
 }
 
@@ -276,9 +282,51 @@ void APushCharacter::SetUpLocalName()
     if (IsLocallyControlled())
     {
         UPushGameInstance* gameInstance = Cast<UPushGameInstance>(GetGameInstance());
-        if (gameInstance)
-			SetPlayerNameServer(gameInstance->GetPlayerName());
+
+    	if (gameInstance)
+        {
+            SetPlayerNameServer(gameInstance->GetPlayerName());
+        }
     }
+}
+
+void APushCharacter::UpdatePlayerLobbyInfo(const FLobbyData& InLobbyInfo)
+{
+    PlayerLobbyInfo = InLobbyInfo;
+}
+
+void APushCharacter::OnRep_PlayerLobbyInfo()
+{
+	if (WidgetComponent->GetWidget())
+	{
+        ULobbyReadyState* lobbyReadyState = Cast<ULobbyReadyState>(WidgetComponent->GetWidget());
+        if (lobbyReadyState)
+        {
+            lobbyReadyState->UpdatePlayerData(PlayerLobbyInfo);
+
+            // 0은 기본자세, 1 ~ 10이 준비 자세
+            int32 randomInt = UKismetMathLibrary::RandomIntegerInRange(1, Ready_Montage.Max() - 1);
+            
+            // Ready
+            if (PlayerLobbyInfo.bReady == true)
+            {
+                PlayAnimMontage(Ready_Montage[randomInt]);
+            }
+            // Not Ready
+            else
+            {
+                PlayAnimMontage(Ready_Montage[0]);
+            }
+        }
+	}
+
+	else
+	{
+        FTimerHandle TimerHandle;
+        GetWorld()->GetTimerManager().SetTimer(
+            TimerHandle, this, &APushCharacter::OnRep_PlayerLobbyInfo, 0.1f, false);
+	}
+    
 }
 
 void APushCharacter::Ragdoll()
@@ -308,7 +356,7 @@ void APushCharacter::SetAttacker_Server_Implementation(APushCharacter* InAttacke
 
 void APushCharacter::SetSpawnPoint_Implementation()
 {
-    SetSpawnPointNMC();
+    //SetSpawnPointNMC();
 }
 
 void APushCharacter::Dead_Server_Implementation()
@@ -326,8 +374,9 @@ void APushCharacter::Dead_Server_Implementation()
     GameMode->PlayerDead(controller);
 }
 
-void APushCharacter::SetSpawnPointNMC_Implementation()
+void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
 {
+    CLog::Log("SetSpawnPoint");
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
     if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
@@ -344,26 +393,28 @@ void APushCharacter::SetSpawnPointNMC_Implementation()
     if(IsLocallyControlled())
     {
 		StateComponent->SetIdleMode(); // 기본 상태로 되돌림
-		ResourceComponent->SetHP_Server(100.f); // HP 100으로 설정
+		ResourceComponent->SetHP_Server(ResourceComponent->GetMaxHP()); // HP 100으로 설정
     }
 
-    TArray<AActor*> temp;
-    UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
+    SetActorLocation(InLocation);
 
-    TArray<APlayerStart*> PlayerStarts;
-    for (auto Start : temp)
-    {
-        APlayerStart* startLoc = Cast<APlayerStart>(Start);
-        if (IsValid(startLoc))
-        {
-            PlayerStarts.Add(startLoc);
-        }
-    }
-    if (PlayerStarts.Num() > 0)
-    {
-        TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
-        SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
-    }
+    //TArray<AActor*> temp;
+    //UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
+
+    //TArray<APlayerStart*> PlayerStarts;
+    //for (auto Start : temp)
+    //{
+    //    APlayerStart* startLoc = Cast<APlayerStart>(Start);
+    //    if (IsValid(startLoc))
+    //    {
+    //        PlayerStarts.Add(startLoc);
+    //    }
+    //}
+    //if (PlayerStarts.Num() > 0)
+    //{
+    //    TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
+    //    SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
+    //}
 
 }
 
@@ -381,7 +432,11 @@ void APushCharacter::BeginPlay()
 
     SetUpLocalName();
 
-    
+    APushPlayerController* pushPlayerController = Cast<APushPlayerController>(GetController());
+    if (pushPlayerController)
+    {
+        WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Hidden);
+    }
 }
 
 void APushCharacter::Tick(float DeltaSeconds)

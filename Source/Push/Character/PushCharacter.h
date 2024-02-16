@@ -60,6 +60,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UStateComponent* StateComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UWidgetComponent* WidgetComponent;
+
 	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
 		TSubclassOf<UCameraShakeBase> CameraShakeBase;
 
@@ -108,13 +111,20 @@ public:
 	UFUNCTION(Server, Reliable)
 		void SetPlayerNameServer(const FString& NewPlayerName);
 
+	void UpdatePlayerLobbyInfo(const FLobbyData& InLobbyInfo);
+
+	UFUNCTION()
+		void OnRep_PlayerLobbyInfo();
+
+	UPROPERTY(ReplicatedUsing="OnRep_PlayerLobbyInfo")
+		FLobbyData PlayerLobbyInfo;
 
 	void Ragdoll();
 
 	UFUNCTION(Server, Reliable)
 		void SetSpawnPoint();
 	UFUNCTION(NetMulticast, Reliable)
-		void SetSpawnPointNMC();
+		void SetSpawnPointNMC(FVector InLocation);
 
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 		void Dead_Server();
@@ -123,7 +133,12 @@ private:
 	UPROPERTY(Replicated)
 		APushCharacter* Attacker;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "ReadyMontage", meta = (AllowPrivateAccess = "true"))
+		TArray<UAnimMontage*> Ready_Montage;
+
 	UFUNCTION(Server, Reliable)
 		void SetAttacker_Server(APushCharacter* InAttacker);
+
+
 };
 
