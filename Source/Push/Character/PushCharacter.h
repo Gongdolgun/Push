@@ -66,6 +66,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
 		TSubclassOf<UCameraShakeBase> CameraShakeBase;
 
+	UPROPERTY(EditAnywhere, Category = "Dead Montage")
+		class UAnimMontage* DeadMontage;
+
 	/*UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* SkillSlots;*/
 
@@ -120,6 +123,7 @@ public:
 		FLobbyData PlayerLobbyInfo;
 
 	void Ragdoll();
+	void CharacterDead();
 
 	UFUNCTION(Server, Reliable)
 		void SetSpawnPoint();

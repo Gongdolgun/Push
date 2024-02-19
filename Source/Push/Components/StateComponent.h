@@ -35,7 +35,8 @@ public:
 	void SetHittedMode();
 	void SetDeadMode();
 
-	bool IsDeadMode();
+	UFUNCTION(BlueprintCallable)
+		bool IsDeadMode();
 
 public:
 	UPROPERTY(BlueprintReadWrite)
