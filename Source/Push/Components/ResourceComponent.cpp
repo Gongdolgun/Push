@@ -211,25 +211,20 @@ void UResourceComponent::AdjustDeath_NMC_Implementation(int32 InValue)
 
 }
 
-void UResourceComponent::ShowKillLog(AActor* InAttack, APushCharacter* InHitted)
+void UResourceComponent::ShowKillLog(AActor* InAttacker, APushCharacter* InHitted)
 {
-	if (InAttack == nullptr)
-		return;
-
 	FString killerName;
 	FString deadName = InHitted->CustomPlayerName;
 
-	if(InAttack->GetOwner() == nullptr)
+	APushCharacter* killPlayer = Cast<APushCharacter>(InAttacker);
+
+	if(killPlayer == nullptr)
 	{
 		killerName = FString("ring");
 	}
 	else
 	{
-		APushCharacter* killPlayer = Cast<APushCharacter>(InAttack);
-		if (killPlayer == nullptr)
-			killerName = FString("Null Player");
-		else
-			killerName = killPlayer->CustomPlayerName;
+		killerName = killPlayer->CustomPlayerName;
 	}
 	
 	TArray<AActor*> PlayerControllers;
