@@ -143,6 +143,8 @@ private:
 	UFUNCTION(Server, Reliable)
 		void SetAttacker_Server(APushCharacter* InAttacker);
 
+	UFUNCTION(NetMulticast, Reliable)
+		void SetAttacker_NMC(APushCharacter* InAttacker);
 
 };
 
