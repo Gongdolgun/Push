@@ -63,6 +63,7 @@ private:
 
 	float CurrentTime;
 	FName MatchState;
+	FName PreMatchState;
 
 public:
 	float HUDHealth;
