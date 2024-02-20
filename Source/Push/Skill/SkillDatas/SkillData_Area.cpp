@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Character/PushCharacter.h"
 #include "Components/SkillComponent.h"
+#include "Components/StateComponent.h"
 #include "Skill/Area/TracePoint.h"
 
 void USkillData_Area::BeginPlay()

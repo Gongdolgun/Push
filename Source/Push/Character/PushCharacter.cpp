@@ -26,11 +26,13 @@
 #include "Components/WidgetComponent.h"
 #include "GameInstance/PushGameInstance.h"
 #include "GameMode/PushGameMode.h"
+#include "GameState/PushGameState.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "Widgets/SkillSlots.h"
 #include "Skill/SkillData.h"
 #include "PlayerController/PushPlayerController.h"
+#include "Widgets/LobbyReadyState.h"
 #include "Widgets/PlayerNameTag.h"
 #include "Widgets/SkillSlots.h"
 
@@ -65,6 +67,8 @@ APushCharacter::APushCharacter()
     FollowCamera->bUsePawnControlRotation = false;
 
     //Component
+    Helpers::CreateComponent(this, &WidgetComponent, "LobbyWidget", RootComponent);
+
     Helpers::CreateActorComponent<UMoveComponent>(this, &MoveComponent, "MoveComponent");
     Helpers::CreateActorComponent<UResourceComponent>(this, &ResourceComponent, "ResourceComponent");
     Helpers::CreateActorComponent<USkillComponent>(this, &SkillComponent, "SkillComponent");
@@ -72,6 +76,12 @@ APushCharacter::APushCharacter()
     Helpers::CreateActorComponent<UItemComponent>(this, &ItemComponent, "ItemComponent");
     Helpers::CreateActorComponent<UShopComponent>(this, &ShopComponent, "ShopComponent");
     Helpers::CreateActorComponent<UStateComponent>(this, &StateComponent, "StateComponent");
+    
+	/*if (ResourceComponent != nullptr)
+	{
+		ResourceComponent->SetNetAddressable();
+		ResourceComponent->SetIsReplicated(true);
+	}*/
 
     if(SkillComponent != nullptr)
     {
@@ -92,13 +102,17 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
     PlayerInputComponent->BindAxis("Turn", MoveComponent, &UMoveComponent::OnTurnAt);
     PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
 
-    PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+    // PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 
     PlayerInputComponent->BindAction("KD", EInputEvent::IE_Pressed, ResourceComponent, &UResourceComponent::OnKillDeathUI);
     PlayerInputComponent->BindAction("KD", EInputEvent::IE_Released, ResourceComponent, &UResourceComponent::OffKillDeathUI);
+
+    /*PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill1", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 0);
+    PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill2", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 1);
+    PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill3", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 2);
+    PlayerInputComponent->BindAction<TDelegate<void(int)>>("Skill4", EInputEvent::IE_Pressed, SkillSlots, &USkillSlots::UseSkill, 3);*/
 }
 
-// 개인 작업 부분 Check
 void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 {
     FVector direction = GetActorLocation() - InAttacker->GetActorLocation();
@@ -111,6 +125,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
         APushCharacter* attacker = Cast<APushCharacter>(InAttacker->GetOwner());
         if (attacker != nullptr)
         {
+            CLog::Log("SetAttacker_Server");
             SetAttacker_Server(attacker);
         }
     }
@@ -142,7 +157,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 				ResourceComponent->ShowKillLog(InAttacker, this);
             }
 
-            Ragdoll();
+            CharacterDead();
+
             StateComponent->SetDeadMode();
 
             if(IsLocallyControlled())
@@ -220,6 +236,7 @@ void APushCharacter::Create_DynamicMaterial()
 
 void APushCharacter::Change_Color(FLinearColor InColor)
 {
+    //CLog::Print("ChangeColor");
     for(UMaterialInterface* material : this->GetMesh()->GetMaterials())
     {
         UMaterialInstanceDynamic* MaterialDynamic = Cast<UMaterialInstanceDynamic>(material);
@@ -232,16 +249,24 @@ void APushCharacter::Change_Color(FLinearColor InColor)
 
 }
 
-// 개인 작업 부분 Check
 void APushCharacter::LaunchServer_Implementation(FVector InLaunch)
 {
     LaunchNMC_Implementation(InLaunch);
 }
 
-// 개인 작업 부분 Check
 void APushCharacter::LaunchNMC_Implementation(FVector InLaunch)
 {
     LaunchCharacter(InLaunch, false, false);
+}
+
+void APushCharacter::Test()
+{
+    if (SkillComponent == nullptr)
+        return;
+    if (SkillComponent->curSkillData == nullptr)
+        return;
+
+    SkillComponent->curSkillData->Play(this);
 }
 
 void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -250,6 +275,7 @@ void APushCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
     DOREPLIFETIME(APushCharacter, BodyColor);
     DOREPLIFETIME(APushCharacter, CustomPlayerName);
+    DOREPLIFETIME(APushCharacter, PlayerLobbyInfo);
     DOREPLIFETIME(APushCharacter, Attacker);
 }
 
@@ -258,14 +284,56 @@ void APushCharacter::SetUpLocalName()
     if (IsLocallyControlled())
     {
         UPushGameInstance* gameInstance = Cast<UPushGameInstance>(GetGameInstance());
-        if (gameInstance)
-			SetPlayerNameServer(gameInstance->GetPlayerName());
+
+    	if (gameInstance)
+        {
+            SetPlayerNameServer(gameInstance->GetPlayerName());
+        }
     }
+}
+
+void APushCharacter::UpdatePlayerLobbyInfo(const FLobbyData& InLobbyInfo)
+{
+    PlayerLobbyInfo = InLobbyInfo;
+}
+
+void APushCharacter::OnRep_PlayerLobbyInfo()
+{
+	if (WidgetComponent->GetWidget())
+	{
+        ULobbyReadyState* lobbyReadyState = Cast<ULobbyReadyState>(WidgetComponent->GetWidget());
+        if (lobbyReadyState)
+        {
+            lobbyReadyState->UpdatePlayerData(PlayerLobbyInfo);
+
+            // 0은 기본자세, 1 ~ 10이 준비 자세
+            int32 randomInt = UKismetMathLibrary::RandomIntegerInRange(1, Ready_Montage.Max() - 1);
+            
+            // Ready
+            if (PlayerLobbyInfo.bReady == true)
+            {
+                PlayAnimMontage(Ready_Montage[randomInt]);
+            }
+            // Not Ready
+            else
+            {
+                PlayAnimMontage(Ready_Montage[0]);
+            }
+        }
+	}
+
+	else
+	{
+        FTimerHandle TimerHandle;
+        GetWorld()->GetTimerManager().SetTimer(
+            TimerHandle, this, &APushCharacter::OnRep_PlayerLobbyInfo, 0.1f, false);
+	}
+    
 }
 
 void APushCharacter::Ragdoll()
 {
-    GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    GetCapsuleComponent()->SetCollisionProfileName("Dead");
 
     GetMesh()->SetCollisionProfileName("Ragdoll");
     GetMesh()->SetSimulatePhysics(true);
@@ -283,10 +351,23 @@ void APushCharacter::Ragdoll()
     
 }
 
-// 개인 작업 부분 Check
+void APushCharacter::CharacterDead()
+{
+    GetCapsuleComponent()->SetCollisionProfileName("Dead");
+
+    if (DeadMontage != nullptr)
+        PlayAnimMontage(DeadMontage);
+}
+
 void APushCharacter::SetAttacker_Server_Implementation(APushCharacter* InAttacker)
 {
+    SetAttacker_NMC(InAttacker);
+}
+
+void APushCharacter::SetAttacker_NMC_Implementation(APushCharacter* InAttacker)
+{
     Attacker = InAttacker;
+
 }
 
 void APushCharacter::SetSpawnPoint_Implementation()
@@ -294,7 +375,6 @@ void APushCharacter::SetSpawnPoint_Implementation()
     //SetSpawnPointNMC();
 }
 
-// 개인 작업 부분 Check
 void APushCharacter::Dead_Server_Implementation()
 {
     APushGameMode* GameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -310,12 +390,11 @@ void APushCharacter::Dead_Server_Implementation()
     GameMode->PlayerDead(controller);
 }
 
-
 void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
 {
     CLog::Log("SetSpawnPoint");
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
-    if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
+    /*if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
         GetMesh()->SetSimulatePhysics(false);
         GetMesh()->SetAllBodiesSimulatePhysics(false);
@@ -325,7 +404,7 @@ void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
 
         GetMesh()->SetCollisionProfileName("PhysicsActor");
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    }
+    }*/
 
     if(IsLocallyControlled())
     {
@@ -333,7 +412,28 @@ void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
 		ResourceComponent->SetHP_Server(ResourceComponent->GetMaxHP()); // HP 100으로 설정
     }
 
+    GetCapsuleComponent()->SetCollisionProfileName("Pawn"); // Capsule Component 콜리전 프로파일 초기화
+    StopAnimMontage(); // 애니메이션 멈춤
+
     SetActorLocation(InLocation);
+
+    //TArray<AActor*> temp;
+    //UGameplayStatics::GetAllActorsOfClass(this, APlayerStart::StaticClass(), temp);
+
+    //TArray<APlayerStart*> PlayerStarts;
+    //for (auto Start : temp)
+    //{
+    //    APlayerStart* startLoc = Cast<APlayerStart>(Start);
+    //    if (IsValid(startLoc))
+    //    {
+    //        PlayerStarts.Add(startLoc);
+    //    }
+    //}
+    //if (PlayerStarts.Num() > 0)
+    //{
+    //    TWeakObjectPtr<APlayerStart> ChosenPlayerStart = PlayerStarts[FMath::RandRange(0, PlayerStarts.Num() - 1)];
+    //    SetActorLocationAndRotation(ChosenPlayerStart->GetActorLocation(), ChosenPlayerStart->GetActorRotation());
+    //}
 
 }
 
@@ -351,7 +451,11 @@ void APushCharacter::BeginPlay()
 
     SetUpLocalName();
 
-    
+    APushPlayerController* pushPlayerController = Cast<APushPlayerController>(GetController());
+    if (pushPlayerController)
+    {
+        WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Hidden);
+    }
 }
 
 void APushCharacter::Tick(float DeltaSeconds)

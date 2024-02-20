@@ -127,6 +127,12 @@ void APushGameState::ShowTotalRank()
 	}
 }
 
+void APushGameState::RoundEnd_NMC_Implementation()
+{
+	if (OnRoundEnd.IsBound() == true)
+		OnRoundEnd.Broadcast();
+}
+
 void APushGameState::GiveGold(TArray<int32> InGoldAmount, int32 InBaseMoney)
 {
 	CLog::Log("GiveGold");
@@ -157,6 +163,8 @@ void APushGameState::Respawn()
 
 		character->SetSpawnPointNMC(Starts[i % Starts.Num()]->GetActorLocation());
 	}
+
+	RoundEnd_NMC();
 }
 
 void APushGameState::RoundStart()

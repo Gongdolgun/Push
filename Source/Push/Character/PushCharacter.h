@@ -60,8 +60,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		class UStateComponent* StateComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		class UWidgetComponent* WidgetComponent;
+
 	UPROPERTY(EditAnywhere, Category = "CameraShakeBase")
 		TSubclassOf<UCameraShakeBase> CameraShakeBase;
+
+	UPROPERTY(EditAnywhere, Category = "Dead Montage")
+		class UAnimMontage* DeadMontage;
 
 	/*UPROPERTY(BlueprintReadWrite)
 		class USkillSlots* SkillSlots;*/
@@ -89,6 +95,10 @@ public:
 	void Create_DynamicMaterial();
 	void Change_Color(FLinearColor InColor);
 
+	//Testing!!
+	UFUNCTION(BlueprintCallable)
+		void Test();
+
 public:
 	UPROPERTY(Replicated)
 		FLinearColor BodyColor;
@@ -104,8 +114,16 @@ public:
 	UFUNCTION(Server, Reliable)
 		void SetPlayerNameServer(const FString& NewPlayerName);
 
+	void UpdatePlayerLobbyInfo(const FLobbyData& InLobbyInfo);
+
+	UFUNCTION()
+		void OnRep_PlayerLobbyInfo();
+
+	UPROPERTY(ReplicatedUsing="OnRep_PlayerLobbyInfo")
+		FLobbyData PlayerLobbyInfo;
 
 	void Ragdoll();
+	void CharacterDead();
 
 	UFUNCTION(Server, Reliable)
 		void SetSpawnPoint();
@@ -119,9 +137,14 @@ private:
 	UPROPERTY(Replicated)
 		APushCharacter* Attacker;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "ReadyMontage", meta = (AllowPrivateAccess = "true"))
+		TArray<UAnimMontage*> Ready_Montage;
+
 	UFUNCTION(Server, Reliable)
 		void SetAttacker_Server(APushCharacter* InAttacker);
 
+	UFUNCTION(NetMulticast, Reliable)
+		void SetAttacker_NMC(APushCharacter* InAttacker);
 
 };
 

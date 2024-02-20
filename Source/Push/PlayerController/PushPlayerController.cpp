@@ -36,8 +36,8 @@ void APushPlayerController::BeginPlay()
 	if (IsValid(MainHUD))
 	{
 		MainHUD->AddWidget();
-		if (MainHUD->CheckWidget("KDA"))
-			MainHUD->GetWidget<UKillDeathUI>("KDA")->SetVisibility(ESlateVisibility::Hidden);
+		//if (MainHUD->CheckWidget("LeaderBoard"))
+		//	MainHUD->GetWidget<UKillDeathUI>("LeaderBoard")->SetVisibility(ESlateVisibility::Hidden);
 
 		if (MainHUD->CheckWidget("LeaderBoard_List"))
 			MainHUD->GetWidget<ULeaderBoard_List>("LeaderBoard_List")->SetVisibility(ESlateVisibility::Hidden);
@@ -118,22 +118,26 @@ void APushPlayerController::SetHUDTime() // 화면에 시간 띄우기
 
 void APushPlayerController::UpdateCharacterMovement(const FName& matchState)
 {
-	// 상점,결과시간 시 캐릭터 멈추고 스킬시전X, 라운드 시 캐릭터 움직임+스킬O
-	if (matchState == MatchState::InProgress)
+	if (PreMatchState != MatchState)
 	{
-		pushCharacter->MoveComponent->Stop();
-		pushCharacter->bCanMove = false;
+		// 상점,결과시간 시 캐릭터 멈추고 스킬시전X, 라운드 시 캐릭터 움직임+스킬O
+		if (matchState == MatchState::InProgress)
+		{
+			pushCharacter->MoveComponent->Stop();
+			pushCharacter->bCanMove = false;
+		}
+		else if (matchState == MatchState::Round)
+		{
+			pushCharacter->MoveComponent->Move();
+			pushCharacter->bCanMove = true;
+		}
+		else if (matchState == MatchState::Result)
+		{
+			pushCharacter->MoveComponent->Stop();
+			pushCharacter->bCanMove = false;
+		}
 	}
-	else if (matchState == MatchState::Round)
-	{
-		pushCharacter->MoveComponent->Move();
-		pushCharacter->bCanMove = true;		
-	}
-	else if (matchState == MatchState::Result)
-	{
-		pushCharacter->MoveComponent->Stop();
-		pushCharacter->bCanMove = false;
-	}
+	PreMatchState = MatchState;
 }
 
 void APushPlayerController::UpdateGameNum_Client_Implementation(uint8 InNumofGames)

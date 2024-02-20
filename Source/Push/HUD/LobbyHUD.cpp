@@ -26,7 +26,7 @@ void ALobbyHUD::AddWidget()
 		if (IsValid(widgetClass.Value))
 		{
 			UUserWidget* temp = CreateWidget<UUserWidget>(PlayerController.Get(), widgetClass.Value);
-			temp->AddToViewport(); 
+			temp->AddToViewport(-1); 
 			UserWidgets.Add(widgetClass.Key, temp);
 		}
 	}

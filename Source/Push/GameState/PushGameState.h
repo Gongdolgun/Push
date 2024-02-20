@@ -3,6 +3,7 @@
 #include "GameFramework/GameState.h"
 #include "PushGameState.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundEnd_GS);
 
 UCLASS()
 class PUSH_API APushGameState : public AGameState
@@ -31,6 +32,9 @@ public:
 	UFUNCTION()
 		void ShowTotalRank();
 
+	UFUNCTION(NetMulticast, Reliable)
+		void RoundEnd_NMC();
+
 	void GiveGold(TArray<int32> InGoldAmount, int32 InBaseMoney);
 	void Respawn();
 	void RoundStart();
@@ -40,6 +44,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class URank> RankWidget;
+
+	UPROPERTY(BlueprintAssignable, VisibleAnywhere, BlueprintCallable)
+		FOnRoundEnd_GS OnRoundEnd;
 
 private:
 	TArray<class APlayerBox*> Boxes;

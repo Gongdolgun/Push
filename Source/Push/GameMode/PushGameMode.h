@@ -47,7 +47,7 @@ protected:
 	virtual void Logout(AController* Exiting) override;
 
 private:
-	FLinearColor Colors[4] = { FLinearColor::Red, FLinearColor::Blue, FLinearColor::Green, FLinearColor::Black };
+	// FLinearColor Colors[4] = { FLinearColor::Red, FLinearColor::Blue, FLinearColor::Green, FLinearColor::Black };
 	uint8 index = 0;
 	TArray<class APushPlayerController*> Controllers;
 
@@ -67,6 +67,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Ring")
 		float ShrinkRate;
+
+	UPROPERTY(EditAnywhere, Category = "Player Colors")
+		TArray<FLinearColor> Colors;
 
 	TWeakObjectPtr<class ARing> Ring;
 

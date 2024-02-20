@@ -152,7 +152,11 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 	CLog::Log("Post Login In the Game");
 	
 
-	character->BodyColor = Colors[index++];
+	if (index >= Colors.Num())
+		character->BodyColor = FLinearColor::Black;
+
+	else
+		character->BodyColor = Colors[index++];
 
 	AllPC.Add(NewPlayer);
 	UpdatePlayerList();
@@ -164,14 +168,14 @@ void APushGameMode::Logout(AController* Exiting)
 	Super::Logout(Exiting);
 
 	APlayerController* playercontroller = Cast<APlayerController>(Exiting);
-	AllPC.Empty();
 
+	AllPC.Empty();
 	UpdatePlayerList();
 }
 
 void APushGameMode::UpdatePlayerList()
 {
-	// 플레이어 리스트를 비워주고, GameState에서 Player의 이름을 가져와서 세팅
+	// 플레이어 리스트를 비워주고, Player의 이름을 가져와서 세팅
 	PlayerListData.Empty();
 
 	for (APlayerController* PlayerController : AllPC)
