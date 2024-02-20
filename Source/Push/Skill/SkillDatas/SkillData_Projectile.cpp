@@ -3,6 +3,7 @@
 #include "Character/PushCharacter.h"
 #include "Global.h"
 #include "Components/SkillComponent.h"
+#include "Components/StateComponent.h"
 
 
 void USkillData_Projectile::Play(ACharacter* InOwner)

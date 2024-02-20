@@ -240,10 +240,10 @@ void UResourceComponent::ShowKillLog(AActor* InAttack, APushCharacter* InHitted)
 		APushPlayerController* PlayerController = Cast<APushPlayerController>(Actor);
 		if (PlayerController)
 		{
-			PlayerController->ShowKillLog_NMC(killerName, deadName);
+			if(!Owner->HasAuthority())
+				PlayerController->ShowKillLog_Server(killerName, deadName);
 		}
 	}
-	
 }
 
 

@@ -149,7 +149,11 @@ void APushGameMode::PostLogin(APlayerController* NewPlayer)
 	CLog::Log("Post Login In the Game");
 	
 
-	character->BodyColor = Colors[index++];
+	if (index >= Colors.Num())
+		character->BodyColor = FLinearColor::Black;
+
+	else
+		character->BodyColor = Colors[index++];
 
 	AllPC.Add(NewPlayer);
 	UpdatePlayerList();

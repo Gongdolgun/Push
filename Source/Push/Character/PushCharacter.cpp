@@ -26,6 +26,7 @@
 #include "Components/WidgetComponent.h"
 #include "GameInstance/PushGameInstance.h"
 #include "GameMode/PushGameMode.h"
+#include "GameState/PushGameState.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "Widgets/SkillSlots.h"
@@ -101,7 +102,7 @@ void APushCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
     PlayerInputComponent->BindAxis("Turn", MoveComponent, &UMoveComponent::OnTurnAt);
     PlayerInputComponent->BindAxis("LookUp", MoveComponent, &UMoveComponent::OnLookUp);
 
-    PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+    // PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 
     PlayerInputComponent->BindAction("KD", EInputEvent::IE_Pressed, ResourceComponent, &UResourceComponent::OnKillDeathUI);
     PlayerInputComponent->BindAction("KD", EInputEvent::IE_Released, ResourceComponent, &UResourceComponent::OffKillDeathUI);
@@ -156,7 +157,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 				ResourceComponent->ShowKillLog(InAttacker, this);
             }
 
-            Ragdoll();
+            CharacterDead();
+
             StateComponent->SetDeadMode();
 
             if(IsLocallyControlled())
@@ -331,7 +333,7 @@ void APushCharacter::OnRep_PlayerLobbyInfo()
 
 void APushCharacter::Ragdoll()
 {
-    GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    GetCapsuleComponent()->SetCollisionProfileName("Dead");
 
     GetMesh()->SetCollisionProfileName("Ragdoll");
     GetMesh()->SetSimulatePhysics(true);
@@ -347,6 +349,14 @@ void APushCharacter::Ragdoll()
     //GetMesh()->SetPhysicsLinearVelocity(FVector::ZeroVector);
     GetMesh()->AddImpulseToAllBodiesBelow(FinalImpulse, NAME_None);
     
+}
+
+void APushCharacter::CharacterDead()
+{
+    GetCapsuleComponent()->SetCollisionProfileName("Dead");
+
+    if (DeadMontage != nullptr)
+        PlayAnimMontage(DeadMontage);
 }
 
 void APushCharacter::SetAttacker_Server_Implementation(APushCharacter* InAttacker)
@@ -378,7 +388,7 @@ void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
 {
     CLog::Log("SetSpawnPoint");
     // Ragdoll로 분리된 경우 capsule 다시 붙이기
-    if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
+    /*if (GetCapsuleComponent()->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
     {
         GetMesh()->SetSimulatePhysics(false);
         GetMesh()->SetAllBodiesSimulatePhysics(false);
@@ -388,13 +398,16 @@ void APushCharacter::SetSpawnPointNMC_Implementation(FVector InLocation)
 
         GetMesh()->SetCollisionProfileName("PhysicsActor");
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    }
+    }*/
 
     if(IsLocallyControlled())
     {
 		StateComponent->SetIdleMode(); // 기본 상태로 되돌림
 		ResourceComponent->SetHP_Server(ResourceComponent->GetMaxHP()); // HP 100으로 설정
     }
+
+    GetCapsuleComponent()->SetCollisionProfileName("Pawn"); // Capsule Component 콜리전 프로파일 초기화
+    StopAnimMontage(); // 애니메이션 멈춤
 
     SetActorLocation(InLocation);
 

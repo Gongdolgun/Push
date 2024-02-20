@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Blueprint/UserWidget.h"
 #include "Character/PushCharacter.h"
+#include "Components/StateComponent.h"
 #include "Widgets/WDG_EffectBase.h"
 #include "HUD/MainHUD.h"
 #include "Net/UnrealNetwork.h"
@@ -62,6 +63,9 @@ void ARing::Tick(float DeltaTime)
 	for(APushCharacter* character : OverlappedCharacters)
 	{
 		if (character == nullptr)
+			continue;
+
+		if(character->StateComponent->IsDeadMode())
 			continue;
 
 		character->Hit(this, hitData);
