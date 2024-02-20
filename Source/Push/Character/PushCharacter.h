@@ -121,5 +121,7 @@ private:
 
 	UFUNCTION(Server, Reliable)
 		void SetAttacker_Server(APushCharacter* InAttacker);
+
+
 };
 
