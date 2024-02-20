@@ -361,7 +361,13 @@ void APushCharacter::CharacterDead()
 
 void APushCharacter::SetAttacker_Server_Implementation(APushCharacter* InAttacker)
 {
+    SetAttacker_NMC(InAttacker);
+}
+
+void APushCharacter::SetAttacker_NMC_Implementation(APushCharacter* InAttacker)
+{
     Attacker = InAttacker;
+
 }
 
 void APushCharacter::SetSpawnPoint_Implementation()
