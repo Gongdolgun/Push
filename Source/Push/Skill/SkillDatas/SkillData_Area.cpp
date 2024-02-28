@@ -58,6 +58,6 @@ void USkillData_Area::Play(ACharacter* InOwner)
 		skillComponent->SpawnLocation = StartLocation;
 		character->PlayAnimMontage(Product.ActionMontage, Product.PlayRate);
 
-		TracePoint->Destroy();
+		Destroy_TracePoint();
 	}
 }
