@@ -141,6 +141,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
 		if (ResourceComponent->GetHP() - InHitData.Damage <= 0)
 		{
+			MoveComponent->Stop();
+
 			if (IsLocallyControlled())
 				ResourceComponent->SetHP_Server(0.f);
 
