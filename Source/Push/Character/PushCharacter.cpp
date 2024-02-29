@@ -130,6 +130,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
         }
     }
 
+
     if(ResourceComponent != nullptr)
     {
         if (StateComponent->IsDeadMode() == true)
@@ -141,6 +142,8 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
         {
             if (IsLocallyControlled())
                 ResourceComponent->SetHP_Server(0.f);
+
+			ResourceComponent->PlusDeathCount();
             // 킬 로그 출력
             if(Attacker != nullptr)
             {
