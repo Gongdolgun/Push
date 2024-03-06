@@ -235,7 +235,7 @@ void UResourceComponent::ShowKillLog(AActor* InAttacker, APushCharacter* InHitte
 		APushPlayerController* PlayerController = Cast<APushPlayerController>(Actor);
 		if (PlayerController)
 		{
-			if(!Owner->HasAuthority())
+			if(Owner->HasAuthority())
 				PlayerController->ShowKillLog_Server(killerName, deadName);
 		}
 	}

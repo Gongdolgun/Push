@@ -17,7 +17,7 @@ void USkillData_Area::Destroy_TracePoint()
 	Super::Destroy_TracePoint();
 
 	if (IsValid(TracePoint))
-		TracePoint->Destroy();
+		TracePoint->Destroy(); 
 }
 
 void USkillData_Area::Play(ACharacter* InOwner)
@@ -58,6 +58,6 @@ void USkillData_Area::Play(ACharacter* InOwner)
 		skillComponent->SpawnLocation = StartLocation;
 		character->PlayAnimMontage(Product.ActionMontage, Product.PlayRate);
 
-		TracePoint->Destroy();
+		Destroy_TracePoint();
 	}
 }
