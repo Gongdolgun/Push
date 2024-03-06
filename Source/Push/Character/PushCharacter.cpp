@@ -173,7 +173,7 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
 
     DoCameraShake(InHitData.Damage);
 
-    if(launch.X + launch.Y + launch.Z > 0.0f)
+    if(abs(launch.X) + abs(launch.Y) + abs(launch.Z) > 0.0f)
     {
         if(IsLocallyControlled())
     		LaunchServer(launch);
@@ -251,7 +251,8 @@ void APushCharacter::Change_Color(FLinearColor InColor)
 
 void APushCharacter::LaunchServer_Implementation(FVector InLaunch)
 {
-    LaunchNMC_Implementation(InLaunch);
+	LaunchCharacter(InLaunch, false, false);
+    //LaunchNMC_Implementation(InLaunch);
 }
 
 void APushCharacter::LaunchNMC_Implementation(FVector InLaunch)
