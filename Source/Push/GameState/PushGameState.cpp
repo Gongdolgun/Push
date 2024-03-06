@@ -175,5 +175,6 @@ void APushGameState::RoundStart()
 
 void APushGameState::AddToRank(APushPlayerController* InController)
 {
-	RoundRank.Push(InController);
+
+	RoundRank.AddUnique(InController);
 }

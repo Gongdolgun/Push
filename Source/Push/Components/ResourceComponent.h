@@ -20,6 +20,8 @@ public:
 	FORCEINLINE float GetHP() { return HP; }
 	FORCEINLINE float GetMaxHP() { return MaxHP; }
 
+	FORCEINLINE void PlusDeathCount() { Death++; }
+
 	//2024.01.09 이현중
 	//기존 INLINE함수 RPC를 이용한 함수로 변경
 	UFUNCTION(Server, Reliable)
@@ -110,4 +112,5 @@ private:
 	class AMainHUD* MainHUD;
 
 	TWeakObjectPtr<class APushCharacter> Owner;
+
 };
