@@ -37,9 +37,6 @@ void ASkill_Ground_A::BeginPlay()
 	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::ASkill_Ground_A::OnComponentBeginOverlap);
 
 	OnSkillClicked();
-
-
-	
 }
 
 void ASkill_Ground_A::OnSkillClicked()
@@ -58,7 +55,7 @@ void ASkill_Ground_A::OnSkillClicked()
 
 	// Meteor Trace
 	UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), SkillComponent->SpawnLocation, DecalLocation,
-		ETraceTypeQuery::TraceTypeQuery1, false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
+		ETraceTypeQuery::TraceTypeQuery1, false, ignores, DrawDebug, HitResult, true);
 
 	// Spawn Decal
 	OnSpawnPointDecal(DecalLocation);
@@ -81,27 +78,28 @@ void ASkill_Ground_A::OnSkillClicked()
 
 void ASkill_Ground_A::OnSpawnPointDecal(FVector InLocation)
 {
-	Super::OnSpawnPointDecal(InLocation);
+	//Super::OnSpawnPointDecal(InLocation);
 
-	// Point Decal Spawn
-	FTransform decalTransform;
-	decalTransform.SetLocation(InLocation);
+	//// Point Decal Spawn
+	//FTransform decalTransform;
+	//decalTransform.SetLocation(InLocation);
 
-	// 테스트용으로 메테오 데칼 스폰
-	APointDecal_Meteor* DeferredDecal = Cast<APointDecal_Meteor>(
-		Owner->GetWorld()->SpawnActorDeferred<APointDecal_Meteor>(PointDecal_Class, decalTransform));
+	//// 테스트용으로 메테오 데칼 스폰
+	//APointDecal_Meteor* DeferredDecal = Cast<APointDecal_Meteor>(
+	//	Owner->GetWorld()->SpawnActorDeferred<APointDecal_Meteor>(PointDecal_Class, decalTransform));
 
-	// Meteor Trace
-	FHitResult HitResult;
-	TArray<AActor*> ignores;
-	ignores.Add(Owner);
-	UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), SkillComponent->SpawnLocation, DecalLocation, ETraceTypeQuery::TraceTypeQuery1, false, ignores, EDrawDebugTrace::ForDuration, HitResult, true);
+	//// Meteor Trace
+	//FHitResult HitResult;
+	//TArray<AActor*> ignores;
+	//ignores.Add(Owner);
+	//UKismetSystemLibrary::LineTraceSingle(Owner->GetWorld(), SkillComponent->SpawnLocation, 
+	//	DecalLocation, ETraceTypeQuery::TraceTypeQuery1, false, ignores, DrawDebug, HitResult, true);
 
-	if (DeferredDecal != nullptr)
-	{
-		DeferredDecal->SetDecalTime(0.0f);
-		UGameplayStatics::FinishSpawningActor(DeferredDecal, decalTransform);
-	}
+	//if (DeferredDecal != nullptr)
+	//{
+	//	DeferredDecal->SetDecalTime(0.0f);
+	//	UGameplayStatics::FinishSpawningActor(DeferredDecal, decalTransform);
+	//}
 }
 
 void ASkill_Ground_A::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -152,5 +150,6 @@ void ASkill_Ground_A::OnDestroy(FVector InLocation)
 void ASkill_Ground_A::DestroyExplosion()
 {
 	ExplosionComponent->DestroyComponent();
+
 	Destroy();
 }

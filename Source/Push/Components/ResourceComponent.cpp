@@ -218,7 +218,7 @@ void UResourceComponent::ShowKillLog(AActor* InAttacker, APushCharacter* InHitte
 
 	APushCharacter* killPlayer = Cast<APushCharacter>(InAttacker);
 
-	if (killPlayer == nullptr)
+	if(killPlayer == nullptr)
 	{
 		killerName = FString("ring");
 	}

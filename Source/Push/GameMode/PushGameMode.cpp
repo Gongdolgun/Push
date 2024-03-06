@@ -261,6 +261,7 @@ void APushGameMode::PlayerDead(APushPlayerController* InController)
 		tempTime = GetWorld()->GetTimeSeconds();
 		CountdownTime = ResultTime;
 		Round = 0;
+		NumofDeadPlayers = 0;
 		SetMatchState(MatchState::Result); // 결과발표
 	}
 
