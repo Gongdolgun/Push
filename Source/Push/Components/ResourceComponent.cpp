@@ -154,7 +154,7 @@ void UResourceComponent::AdjustKill_NMC_Implementation(int32 InValue)
 {
 	if (InValue <= 0) return;
 
-	Kill += InValue;
+	//Kill += InValue;
 
 	CLog::Log("ADJKILL_NMC");
 
