@@ -151,8 +151,6 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
                 UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(Attacker);
 				if (resource != nullptr)
 					resource->PlusKillCount();
-				if (resource != nullptr)
-                    resource->AdjustKill_Server(1);
 
                 ResourceComponent->ShowKillLog(Attacker, this);
             }
