@@ -150,7 +150,10 @@ void APushCharacter::Hit(AActor* InAttacker, const FHitData& InHitData)
                 CLog::Log("Attacker Exists");
                 UResourceComponent* resource = Helpers::GetComponent<UResourceComponent>(Attacker);
 				if (resource != nullptr)
-					resource->PlusKillCount();
+				{
+                    resource->PlusKillCount();
+                    resource->AdjustKill_Server(1);
+				}
 
                 ResourceComponent->ShowKillLog(Attacker, this);
             }

@@ -45,6 +45,4 @@ void UAnimInstance_PushCharacter::NativeUpdateAnimation(float DeltaSeconds)
 
 	//FString Message = FString::Printf(TEXT("%s : , %f"), *OwnerCharacter->CustomPlayerName, Pitch);
 	//CLog::Print(Message);
-
-
 }

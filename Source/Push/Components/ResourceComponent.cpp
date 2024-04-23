@@ -24,6 +24,16 @@ void UResourceComponent::BeginPlay()
 	PushGameMode = Cast<APushGameMode>(UGameplayStatics::GetGameMode(Owner->GetWorld()));
 }
 
+void UResourceComponent::PlusDeathCount()
+{
+	Death++;
+}
+
+void UResourceComponent::PlusKillCount()
+{
+	Kill++;
+}
+
 void UResourceComponent::SetHP_Server_Implementation(float hp)
 {
 	SetHP_NMC(hp);
